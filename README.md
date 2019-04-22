@@ -16,11 +16,11 @@ Then you should call `showRateDialog` which is going to show a native rating dia
 
 ## Screenshots
 
-_On Android :_
+### On Android
 
 ![Android screenshot](https://github.com/Skyost/rate_my_app/blob/master/screenshots/android.png)
 
-_On iOS :_
+### On iOS
 
 No screenshot for the moment. If you have one, please don't hesitate to submit it !
 
