@@ -1,0 +1,19 @@
+name: rate_my_app_example
+description: Demonstrates how to use the rate_my_app plugin.
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  rate_my_app:
+    path: ../
+
+flutter:
+  uses-material-design: true

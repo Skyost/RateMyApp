@@ -1,0 +1,23 @@
+name: rate_my_app
+description: Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
+version: 0.1.0
+author: Skyost
+homepage: https://github.com/Skyost/rate_my_app
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  app_review: ^0.1.1
+  shared_preferences: ^0.5.2
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    androidPackage: fr.skyost.rate_my_app
+    pluginClass: RateMyAppPlugin
