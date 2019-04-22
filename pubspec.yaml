@@ -1,7 +1,7 @@
 name: rate_my_app
 description: Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
 version: 0.1.0
-author: Skyost
+author: Skyost <me@skyost.eu>
 homepage: https://github.com/Skyost/rate_my_app
 
 environment:
