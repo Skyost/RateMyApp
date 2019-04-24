@@ -4,7 +4,24 @@ This plugin allows to kindly ask users to rate your app if custom conditions are
 
 Rate my app is really inspired by [Android-Rate](https://github.com/hotchemi/Android-Rate/).
 
-## How it works
+## How to use
+
+### Installation
+
+To target an iOS version before _10.3_, add this in your `Info.plist` :
+
+```xml
+<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>itms</string>
+</array>
+```
+
+By the way, it's important to note that your bundle identifier (in your `Info.plist`) must match the App ID on iTunes Connect and the package identifier (in your `build.gradle`) must match your App ID on Google Play.
+
+If for any reason it doesn't match please go to the _[Using custom identifiers](#using-custom-identifiers)_ section.
+
+### How it works
 
 _Rate my app_ takes two parameters :
 
@@ -12,7 +29,14 @@ _Rate my app_ takes two parameters :
 2. `minLaunches` Minimum launches.
 
 If everything above is verified, the method `shouldOpenDialog` will return `true` (`false` otherwise).
-Then you should call `showRateDialog` which is going to show a native rating dialog on iOS and a custom rating prompt dialog on Android.
+Then you should call `showRateDialog` which is going to show a native rating dialog on iOS >= _10.3_ and a custom rating prompt dialog on Android (and on older iOS versions).
+
+### Using custom identifiers
+
+It's possible to use custom identifiers ! Just pass the following parameters during the plugin initialization :
+
+1. `googlePlayIdentifier` Your Google Play identifier (usually a package name).
+2. `appStoreIdentifier` Your App Store identifier (usually numbers). **It's required if you're targeting an iOS version before iOS 10.3.**
 
 ## Screenshots
 
@@ -22,7 +46,13 @@ Then you should call `showRateDialog` which is going to show a native rating dia
 
 ### On iOS
 
+#### iOS < 10.3
+
 No screenshot for the moment. If you have one, please don't hesitate to submit it !
+
+#### iOS >= 10.3
+
+![iOS 10.3 screenshot](https://github.com/Skyost/rate_my_app/blob/master/screenshots/ios_10_3.png)
 
 ## Example
 
@@ -49,11 +79,6 @@ if(rateMyApp.shouldOpenDialog) {
 
 ## Dependencies
 
-This library depends on two other libraries :
+This library depends on some other libraries :
 
-* [app_review](https://pub.dartlang.org/packages/app_review)
 * [shared_preferences](https://pub.dartlang.org/packages/shared_preferences)
-
-Please note that `app_review` requires you to do some added steps for the plugin to work (see _[How to use](https://pub.dartlang.org/packages/app_review#how-to-use)_ paragraph) :
-
-> It's important to note that the App ID must match the App ID in Google Play and iTunes Connect. This can be changed in the Info.plist on iOS and app/build.gradle on Android. You will use this App ID for other services like Firebase, Admob and publishing the app.
