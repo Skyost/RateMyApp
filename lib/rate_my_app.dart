@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app_review/app_review.dart';
 
 /// Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
 class RateMyApp {
-  // static const MethodChannel _channel = const MethodChannel('rate_my_app');
+  static const MethodChannel _CHANNEL = const MethodChannel('rate_my_app');
 
   /// Prefix for preferences.
   String preferencesPrefix;
@@ -22,6 +22,12 @@ class RateMyApp {
 
   /// Launches to subtract to the number of launches when the user clicks on "Maybe later".
   int remindLaunches;
+
+  /// The google play identifier.
+  String googlePlayIdentifier;
+
+  /// The app store identifier.
+  String appStoreIdentifier;
 
   /// The base launch date.
   DateTime baseLaunchDate;
@@ -39,6 +45,8 @@ class RateMyApp {
     this.minLaunches = 10,
     this.remindDays = 7,
     this.remindLaunches = 10,
+    this.googlePlayIdentifier,
+    this.appStoreIdentifier,
   });
 
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
@@ -77,8 +85,12 @@ class RateMyApp {
     String rateButton = 'RATE',
     String noButton = 'NO THANKS',
     String laterButton = 'MAYBE LATER',
-  }) async =>
-      await (Platform.isIOS ? AppReview.requestReview : RateMyAppDialog.openDialog(this, context, title, message, rateButton, noButton, laterButton));
+  }) async {
+    if (Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
+      return _CHANNEL.invokeMethod('requestReview');
+    }
+    return RateMyAppDialog.openDialog(this, context, title, message, rateButton, noButton, laterButton);
+  }
 }
 
 /// The Android rate my app dialog.
@@ -106,7 +118,13 @@ class RateMyAppDialog extends StatelessWidget {
                   children: [
                     FlatButton(
                       child: Text(rateButton),
-                      onPressed: () => AppReview.storeListing,
+                      onPressed: () {
+                        rateMyApp.doNotOpenAgain = true;
+                        Navigator.pop(context);
+                        return RateMyApp._CHANNEL.invokeMethod('launchStore', {
+                          'appId': Platform.isIOS ? rateMyApp.appStoreIdentifier : rateMyApp.googlePlayIdentifier,
+                        });
+                      },
                     ),
                     FlatButton(
                       child: Text(laterButton),
