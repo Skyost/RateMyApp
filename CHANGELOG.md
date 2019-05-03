@@ -1,3 +1,11 @@
+## 0.2.0+2
+
+* Updated README and examples.
+
+## 0.2.0+1
+
+* Updated minimum SDK version.
+
 ## 0.2.0
 
 * Added the ability to use custom identifiers.

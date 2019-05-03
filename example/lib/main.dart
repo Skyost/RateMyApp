@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:rate_my_app/rate_my_app.dart';
 
 /// Main rate my app instance.
@@ -7,7 +6,7 @@ RateMyApp _rateMyApp = RateMyApp();
 
 /// First plugin test method.
 void main() {
-  _rateMyApp.init().then((v) {
+  _rateMyApp.init().then((_) {
     runApp(_RateMyAppTestApp());
     print('Minimum days : ' + _rateMyApp.minDays.toString());
     print('Minimum launches : ' + _rateMyApp.minLaunches.toString());
