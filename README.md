@@ -63,18 +63,19 @@ RateMyApp rateMyApp = RateMyApp(
   remindDays: 7,
   remindLaunches: 10,
 );
-rateMyApp.init();
 
-if(rateMyApp.shouldOpenDialog) {
-  rateMyApp.showRateDialog(
-    context,
-      title: 'Rate this app',
-      message: 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
-      rateButton: 'RATE',
-      noButton: 'NO THANKS',
-      laterButton: 'MAYBE LATER',
-  );
-}
+rateMyApp.init().then((_){
+    if(rateMyApp.shouldOpenDialog) {
+      rateMyApp.showRateDialog(
+        context,
+        title: 'Rate this app',
+        message: 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+        rateButton: 'RATE',
+        noButton: 'NO THANKS',
+        laterButton: 'MAYBE LATER',
+      );
+    }
+});
 ```
 
 ## Dependencies
