@@ -132,7 +132,7 @@ class RateMyAppDialog extends StatelessWidget {
                         rateMyApp.baseLaunchDate.add(Duration(
                           days: rateMyApp.remindDays,
                         ));
-                        rateMyApp.launches += rateMyApp.remindLaunches;
+                        rateMyApp.launches -= rateMyApp.remindLaunches;
                         rateMyApp.save().then((v) => Navigator.pop(context));
                       },
                     ),
