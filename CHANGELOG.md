@@ -1,3 +1,7 @@
+## 0.2.0+3
+
+* Fixed `remindLaunches` constantly triggering.
+
 ## 0.2.0+2
 
 * Updated README and examples.
