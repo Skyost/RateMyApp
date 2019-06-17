@@ -1,3 +1,8 @@
+## 0.2.0+4
+
+* `preferencesPrefix` was not used. As it changes preference keys, this release resets Rate my app user preferences.
+* `baseLaunchDate` not affected by the _Maybe Later_ button.
+
 ## 0.2.0+3
 
 * Fixed `remindLaunches` constantly triggering.

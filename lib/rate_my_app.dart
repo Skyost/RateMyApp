@@ -40,7 +40,7 @@ class RateMyApp {
 
   /// Creates a new rate my app instance.
   RateMyApp({
-    this.preferencesPrefix = 'rateMyApp',
+    this.preferencesPrefix = 'rateMyApp_',
     this.minDays = 7,
     this.minLaunches = 10,
     this.remindDays = 7,
@@ -52,18 +52,18 @@ class RateMyApp {
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch((preferences.getInt('baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch));
-    launches = (preferences.getInt('launches') ?? 0) + 1;
-    doNotOpenAgain = preferences.getBool('doNotOpenAgain') ?? false;
+    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch((preferences.getInt(preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch));
+    launches = (preferences.getInt(preferencesPrefix + 'launches') ?? 0) + 1;
+    doNotOpenAgain = preferences.getBool(preferencesPrefix + 'doNotOpenAgain') ?? false;
     await save();
   }
 
   /// Saves the plugin current data to the shared preferences.
   Future<void> save() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setInt('baseLaunchDate', baseLaunchDate.millisecondsSinceEpoch);
-    preferences.setInt('launches', launches);
-    preferences.setBool('doNotOpenAgain', doNotOpenAgain);
+    await preferences.setInt(preferencesPrefix + 'baseLaunchDate', baseLaunchDate.millisecondsSinceEpoch);
+    await preferences.setInt(preferencesPrefix + 'launches', launches);
+    await preferences.setBool(preferencesPrefix + 'doNotOpenAgain', doNotOpenAgain);
   }
 
   /// Resets the plugin data.
@@ -129,7 +129,7 @@ class RateMyAppDialog extends StatelessWidget {
                     FlatButton(
                       child: Text(laterButton),
                       onPressed: () {
-                        rateMyApp.baseLaunchDate.add(Duration(
+                        rateMyApp.baseLaunchDate = rateMyApp.baseLaunchDate.add(Duration(
                           days: rateMyApp.remindDays,
                         ));
                         rateMyApp.launches -= rateMyApp.remindLaunches;

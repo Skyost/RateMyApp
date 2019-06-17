@@ -44,16 +44,20 @@ class _RateMyAppTestAppBody extends StatefulWidget {
 /// The body state of the main rate my app test widget.
 class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
   @override
-  Widget build(BuildContext context) => Center(
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 40,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Minimum days : ' + _rateMyApp.minDays.toString()),
-            Text('Minimum launches : ' + _rateMyApp.minLaunches.toString()),
-            Text('Base launch : ' + _dateToString(_rateMyApp.baseLaunchDate)),
-            Text('Launches : ' + _rateMyApp.launches.toString()),
-            Text('Do not open again ? ' + (_rateMyApp.doNotOpenAgain ? 'Yes' : 'No')),
-            Text('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
+            _textCenter('Minimum days : ' + _rateMyApp.minDays.toString()),
+            _textCenter('Minimum launches : ' + _rateMyApp.minLaunches.toString()),
+            _textCenter('Base launch : ' + _dateToString(_rateMyApp.baseLaunchDate)),
+            _textCenter('Launches : ' + _rateMyApp.launches.toString()),
+            _textCenter('Do not open again ? ' + (_rateMyApp.doNotOpenAgain ? 'Yes' : 'No')),
+            _textCenter('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: RaisedButton(
@@ -67,5 +71,11 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
             )
           ],
         ),
+      );
+
+  /// Returns a centered text.
+  Text _textCenter(String content) => Text(
+        content,
+        textAlign: TextAlign.center,
       );
 }
