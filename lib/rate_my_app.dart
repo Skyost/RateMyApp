@@ -109,6 +109,7 @@ class RateMyAppDialog extends StatelessWidget {
   /// Opens the dialog.
   static Future<void> openDialog(RateMyApp rateMyApp, BuildContext context, String title, String message, String rateButton, String noButton, String laterButton) async => await showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (context) => AlertDialog(
               title: Text(title),
               content: RateMyAppDialog(message),
