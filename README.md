@@ -78,6 +78,14 @@ _rateMyApp.init().then((_) {
 });
 ```
 
+## Contributions
+
+You have a lot of options to contribute to this project ! You can :
+
+* [Fork it](https://github.com/Skyost/rate_my_app/fork) on Github.
+* [Submit](https://github.com/Skyost/rate_my_app/issues/new/choose) a feature request or a bug report.
+* [Donate](https://paypal.me/Skyost) to the developer.
+
 ## Dependencies
 
 This library depends on some other libraries :

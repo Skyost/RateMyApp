@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rate_my_app/dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
@@ -77,6 +78,9 @@ class RateMyApp {
   /// Whether the dialog should be opened.
   bool get shouldOpenDialog => !doNotOpenAgain && (DateTime.now().millisecondsSinceEpoch - baseLaunchDate.millisecondsSinceEpoch) / (1000 * 60 * 60 * 24) >= minDays && launches >= minLaunches;
 
+  /// Returns the corresponding store identifier.
+  String get storeIdentifier => Platform.isIOS ? appStoreIdentifier : googlePlayIdentifier;
+
   /// Shows the rate dialog.
   Future<void> showRateDialog(
     BuildContext context, {
@@ -85,68 +89,30 @@ class RateMyApp {
     String rateButton = 'RATE',
     String noButton = 'NO THANKS',
     String laterButton = 'MAYBE LATER',
+    bool ignoreIOS = false,
   }) async {
-    if (Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
+    if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
     }
-    return RateMyAppDialog.openDialog(this, context, title, message, rateButton, noButton, laterButton);
+    return RateMyAppDialog.openDialog(context, this, title, message, rateButton, noButton, laterButton);
   }
-}
 
-/// The Android rate my app dialog.
-class RateMyAppDialog extends StatelessWidget {
-  /// The dialog's message.
-  final String _message;
+  /// Shows the star rate dialog.
+  Future<void> showStarRateDialog(
+    BuildContext context, {
+    String title = 'Rate this app',
+    String message = 'You like this app ? Then take a little bit of your time to leave a rating :',
+    @required List<Widget> Function(int) onRatingChanged,
+    bool ignoreIOS = false,
+  }) async {
+    if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
+      return _CHANNEL.invokeMethod('requestReview');
+    }
+    return RateMyAppStarDialog.openDialog(context, title, message, onRatingChanged);
+  }
 
-  /// Creates a new rate my app dialog.
-  RateMyAppDialog(this._message);
-
-  @override
-  Widget build(BuildContext context) => SingleChildScrollView(
-        child: Text(_message),
-      );
-
-  /// Opens the dialog.
-  static Future<void> openDialog(RateMyApp rateMyApp, BuildContext context, String title, String message, String rateButton, String noButton, String laterButton) async => await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => AlertDialog(
-              title: Text(title),
-              content: RateMyAppDialog(message),
-              actions: [
-                Wrap(
-                  alignment: WrapAlignment.end,
-                  children: [
-                    FlatButton(
-                      child: Text(rateButton),
-                      onPressed: () {
-                        rateMyApp.doNotOpenAgain = true;
-                        Navigator.pop(context);
-                        return RateMyApp._CHANNEL.invokeMethod('launchStore', {
-                          'appId': Platform.isIOS ? rateMyApp.appStoreIdentifier : rateMyApp.googlePlayIdentifier,
-                        });
-                      },
-                    ),
-                    FlatButton(
-                      child: Text(laterButton),
-                      onPressed: () {
-                        rateMyApp.baseLaunchDate = rateMyApp.baseLaunchDate.add(Duration(
-                          days: rateMyApp.remindDays,
-                        ));
-                        rateMyApp.launches -= rateMyApp.remindLaunches;
-                        rateMyApp.save().then((v) => Navigator.pop(context));
-                      },
-                    ),
-                    FlatButton(
-                      child: Text(noButton),
-                      onPressed: () {
-                        rateMyApp.doNotOpenAgain = true;
-                        rateMyApp.save().then((v) => Navigator.pop(context));
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-      );
+  /// Launches the corresponding store.
+  Future<void> launchStore() => RateMyApp._CHANNEL.invokeMethod('launchStore', {
+        'appId': storeIdentifier,
+      });
 }
