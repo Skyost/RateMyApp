@@ -91,5 +91,5 @@ You have a lot of options to contribute to this project ! You can :
 
 This library depends on some other libraries :
 
-* [shared_preferences](https://pub.dartlang.org/packages/shared_preferences)
+* [shared_preferences](https://pub.dev/packages/shared_preferences)
 * [smooth_star_rating](https://pub.dev/packages/smooth_star_rating)
