@@ -1,3 +1,8 @@
+## 0.3.0
+
+* Added an option to ignore iOS checks (when showing a dialog).
+* Added a `showStarRateDialog` method that allows to show a dialog with stars rating.
+
 ## 0.2.0+4
 
 * `preferencesPrefix` was not used. As it changes preference keys, this release resets Rate my app user preferences.
