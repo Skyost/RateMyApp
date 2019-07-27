@@ -31,6 +31,9 @@ _Rate my app_ takes two parameters :
 If everything above is verified, the method `shouldOpenDialog` will return `true` (`false` otherwise).
 Then you should call `showRateDialog` which is going to show a native rating dialog on iOS >= _10.3_ and a custom rating prompt dialog on Android (and on older iOS versions).
 
+If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar which will allow you to take custom actions based on the rating
+(for example if the user puts less than 3 stars then open your app bugs report page or something like this).
+
 ### Using custom identifiers
 
 It's possible to use custom identifiers ! Just pass the following parameters during the plugin initialization :
@@ -73,6 +76,26 @@ _rateMyApp.init().then((_) {
       rateButton: 'RATE',
       noButton: 'NO THANKS',
       laterButton: 'MAYBE LATER',
+      ignoreIOS: false,
+    );
+    
+    // Or if you prefer to show a star rating bar :
+    
+    _rateMyApp.showStarRateDialog(
+      context,
+      title: 'Rate this app',
+      message: 'You like this app ? Then take a little bit of your time to leave a rating :',
+      onRatingChanged: (stars) {
+        return [
+          FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              print('Thanks for the ' + (stars == null ? '0' : stars.toString()) + ' star(s) !');
+              Navigator.pop(context);
+            },
+          ),
+        ];
+      },
       ignoreIOS: false,
     );
   }

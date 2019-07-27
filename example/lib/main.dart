@@ -79,7 +79,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
 
                     String message = 'You put ' + count.toString() + ' star(s). ';
                     Color color;
-                    switch(count) {
+                    switch (count) {
                       case 1:
                         message += 'Did this app hurt you physically ?';
                         color = Colors.red;

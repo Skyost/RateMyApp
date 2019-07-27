@@ -53,7 +53,7 @@ class RateMyApp {
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch((preferences.getInt(preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch));
+    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt(preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch);
     launches = (preferences.getInt(preferencesPrefix + 'launches') ?? 0) + 1;
     doNotOpenAgain = preferences.getBool(preferencesPrefix + 'doNotOpenAgain') ?? false;
     await save();
@@ -108,6 +108,8 @@ class RateMyApp {
     if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
     }
+
+    assert(onRatingChanged != null);
     return RateMyAppStarDialog.openDialog(context, title, message, onRatingChanged);
   }
 

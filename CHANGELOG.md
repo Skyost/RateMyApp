@@ -1,3 +1,7 @@
+## 0.3.0+1
+
+* Updated README.
+
 ## 0.3.0
 
 * Added an option to ignore iOS checks (when showing a dialog).
