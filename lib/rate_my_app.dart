@@ -106,6 +106,8 @@ class RateMyApp {
     bool ignoreIOS = false,
     Color starsFillColor,
     Color starsBorderColor,
+    double starSize,
+    int initialRating
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
@@ -113,7 +115,7 @@ class RateMyApp {
 
     assert(onRatingChanged != null);
     return RateMyAppStarDialog.openDialog(
-        context, title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor);
+        context, title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor, starSize: starSize, initialRating: initialRating);
   }
 
   /// Launches the corresponding store.

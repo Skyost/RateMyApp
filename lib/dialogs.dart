@@ -90,16 +90,22 @@ class RateMyAppStarDialog extends StatefulWidget {
   // The border color for the stars.
   final Color starsBorderColor;
 
+  // The size of a star.
+  final double starSize;
+
+  // The initial rating when the dialog is opened.
+  final int initialRating;
+
   /// Creates a new rate my app star dialog.
-  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged, {this.starsFillColor, this.starsBorderColor});
+  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged, {this.starsFillColor, this.starsBorderColor, this.starSize, this.initialRating});
 
   @override
   State<StatefulWidget> createState() => RateMyAppStarDialogState();
 
   /// Opens the dialog.
-  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(int) onRatingChanged, {Color starsFillColor, Color starsBorderColor}) async => await showDialog(
+  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(int) onRatingChanged, {Color starsFillColor, Color starsBorderColor, double starSize, int initialRating}) async => await showDialog(
         context: context,
-        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor),
+        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor, starSize: starSize, initialRating: initialRating),
       );
 }
 
@@ -107,6 +113,12 @@ class RateMyAppStarDialog extends StatefulWidget {
 class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
   /// The current rating.
   int _currentRating;
+
+  @override
+  void initState() {
+    _currentRating = widget.initialRating;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -128,7 +140,7 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
                     _currentRating = rating.toInt();
                   });
                 },
-                size: 40,
+                size: widget.starSize ?? 40,
                 rating: _currentRating == null ? 0 : _currentRating.toDouble(),
               ),
             ),
