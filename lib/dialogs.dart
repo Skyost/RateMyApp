@@ -84,16 +84,22 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// The rating changed callback.
   final List<Widget> Function(int) _onRatingChanged;
 
+  // The fill color of the stars.
+  final Color starsFillColor;
+
+  // The border color for the stars.
+  final Color starsBorderColor;
+
   /// Creates a new rate my app star dialog.
-  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged);
+  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged, {this.starsFillColor, this.starsBorderColor});
 
   @override
   State<StatefulWidget> createState() => RateMyAppStarDialogState();
 
   /// Opens the dialog.
-  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(int) onRatingChanged) async => await showDialog(
+  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(int) onRatingChanged, {Color starsFillColor, Color starsBorderColor}) async => await showDialog(
         context: context,
-        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged),
+        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor),
       );
 }
 
@@ -114,6 +120,8 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: SmoothStarRating(
+                color: widget.starsFillColor,
+                borderColor: widget.starsBorderColor,
                 allowHalfRating: false,
                 onRatingChanged: (rating) {
                   setState(() {
