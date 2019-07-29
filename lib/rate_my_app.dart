@@ -104,13 +104,16 @@ class RateMyApp {
     String message = 'You like this app ? Then take a little bit of your time to leave a rating :',
     @required List<Widget> Function(int) onRatingChanged,
     bool ignoreIOS = false,
+    Color starsFillColor,
+    Color starsBorderColor,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
     }
 
     assert(onRatingChanged != null);
-    return RateMyAppStarDialog.openDialog(context, title, message, onRatingChanged);
+    return RateMyAppStarDialog.openDialog(
+        context, title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor);
   }
 
   /// Launches the corresponding store.
