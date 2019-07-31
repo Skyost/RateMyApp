@@ -68,57 +68,63 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
             RaisedButton(
               child: Text('Launch "Rate my app" star dialog'),
               onPressed: () => _rateMyApp.showStarRateDialog(context, onRatingChanged: (count) {
-                    FlatButton cancelButton = FlatButton(
-                      child: Text('CANCEL'),
-                      onPressed: () => Navigator.pop(context),
-                    );
+                FlatButton cancelButton = FlatButton(
+                  child: Text('CANCEL'),
+                  onPressed: () {
+                    _rateMyApp.doNotOpenAgain = true;
+                    _rateMyApp.save().then((v) => Navigator.pop(context));
+                    setState(() {});
+                  },
+                );
 
-                    if (count == null) {
-                      return [cancelButton];
-                    }
+                if (count == null) {
+                  return [cancelButton];
+                }
 
-                    String message = 'You put ' + count.toString() + ' star(s). ';
-                    Color color;
-                    switch (count) {
-                      case 1:
-                        message += 'Did this app hurt you physically ?';
-                        color = Colors.red;
-                        break;
-                      case 2:
-                        message += 'That\'s not really cool man.';
-                        color = Colors.orange;
-                        break;
-                      case 3:
-                        message += 'Well, it\'s average.';
-                        color = Colors.yellow;
-                        break;
-                      case 4:
-                        message += 'This is cool, like this app.';
-                        color = Colors.lime;
-                        break;
-                      case 5:
-                        message += 'Great ! <3';
-                        color = Colors.green;
-                        break;
-                    }
+                String message = 'You put ' + count.round().toString() + ' star(s). ';
+                Color color;
+                switch (count.round()) {
+                  case 1:
+                    message += 'Did this app hurt you physically ?';
+                    color = Colors.red;
+                    break;
+                  case 2:
+                    message += 'That\'s not really cool man.';
+                    color = Colors.orange;
+                    break;
+                  case 3:
+                    message += 'Well, it\'s average.';
+                    color = Colors.yellow;
+                    break;
+                  case 4:
+                    message += 'This is cool, like this app.';
+                    color = Colors.lime;
+                    break;
+                  case 5:
+                    message += 'Great ! <3';
+                    color = Colors.green;
+                    break;
+                }
 
-                    return [
-                      FlatButton(
-                        child: Text('OK'),
-                        onPressed: () {
-                          print(message);
-                          Scaffold.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(message),
-                              backgroundColor: color,
-                            ),
-                          );
-                          Navigator.pop(context);
-                        },
-                      ),
-                      cancelButton,
-                    ];
-                  }),
+                return [
+                  FlatButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      print(message);
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message),
+                          backgroundColor: color,
+                        ),
+                      );
+                      _rateMyApp.doNotOpenAgain = true;
+                      _rateMyApp.save().then((v) => Navigator.pop(context));
+                      setState(() {});
+                    },
+                  ),
+                  cancelButton,
+                ];
+              }),
             ),
             RaisedButton(
               child: Text('Reset'),

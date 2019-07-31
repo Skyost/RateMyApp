@@ -1,3 +1,7 @@
+## 0.3.0+2
+
+* Added an option to change the `showStarRateDialog` style.
+
 ## 0.3.0+1
 
 * Updated README.

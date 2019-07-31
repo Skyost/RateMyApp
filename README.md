@@ -90,13 +90,16 @@ _rateMyApp.init().then((_) {
           FlatButton(
             child: Text('OK'),
             onPressed: () {
-              print('Thanks for the ' + (stars == null ? '0' : stars.toString()) + ' star(s) !');
-              Navigator.pop(context);
+              print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
+              // You can handle the result as you want (for instance if the user puts 1 star then open your contact page, if he puts more then open the store page, etc...).
+              _rateMyApp.doNotOpenAgain = true;
+              _rateMyApp.save().then((v) => Navigator.pop(context));
             },
           ),
         ];
       },
       ignoreIOS: false,
+      starRatingOptions: StarRatingOptions(),
     );
   }
 });
