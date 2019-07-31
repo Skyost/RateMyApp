@@ -31,8 +31,8 @@ _Rate my app_ takes two parameters :
 If everything above is verified, the method `shouldOpenDialog` will return `true` (`false` otherwise).
 Then you should call `showRateDialog` which is going to show a native rating dialog on iOS >= _10.3_ and a custom rating prompt dialog on Android (and on older iOS versions).
 
-If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar which will allow you to take custom actions based on the rating
-(for example if the user puts less than 3 stars then open your app bugs report page or something like this).
+If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar that will allow you to take custom actions based on the rating
+(for example if the user puts less than 3 stars then open your app bugs report page or something like this and if he puts more ask him to rate your app on the store page).
 
 ### Using custom identifiers
 
