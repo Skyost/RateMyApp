@@ -39,8 +39,10 @@ class RateMyAppDialog extends StatelessWidget {
                 child: Text(_rateButton),
                 onPressed: () {
                   _rateMyApp.doNotOpenAgain = true;
-                  Navigator.pop(context);
-                  return _rateMyApp.launchStore();
+                  _rateMyApp.save().then((v) {
+                    Navigator.pop(context);
+                    _rateMyApp.launchStore();
+                  });
                 },
               ),
               FlatButton(
@@ -82,31 +84,34 @@ class RateMyAppStarDialog extends StatefulWidget {
   final String _message;
 
   /// The rating changed callback.
-  final List<Widget> Function(int) _onRatingChanged;
+  final List<Widget> Function(double) _onRatingChanged;
 
-  // The fill color of the stars.
-  final Color starsFillColor;
-
-  // The border color for the stars.
-  final Color starsBorderColor;
+  /// The smooth star rating style.
+  final StarRatingOptions _starRatingOptions;
 
   /// Creates a new rate my app star dialog.
-  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged, {this.starsFillColor, this.starsBorderColor});
+  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged, this._starRatingOptions);
 
   @override
   State<StatefulWidget> createState() => RateMyAppStarDialogState();
 
   /// Opens the dialog.
-  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(int) onRatingChanged, {Color starsFillColor, Color starsBorderColor}) async => await showDialog(
+  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(double) onRatingChanged, StarRatingOptions starRatingOptions) async => await showDialog(
         context: context,
-        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor),
+        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged, starRatingOptions),
       );
 }
 
 /// The rate my app star dialog state.
 class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
   /// The current rating.
-  int _currentRating;
+  double _currentRating;
+
+  @override
+  void initState() {
+    _currentRating = widget._starRatingOptions.initialRating;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -120,15 +125,16 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: SmoothStarRating(
-                color: widget.starsFillColor,
-                borderColor: widget.starsBorderColor,
-                allowHalfRating: false,
                 onRatingChanged: (rating) {
                   setState(() {
-                    _currentRating = rating.toInt();
+                    _currentRating = rating;
                   });
                 },
-                size: 40,
+                color: widget._starRatingOptions.starsFillColor,
+                borderColor: widget._starRatingOptions.starsBorderColor,
+                spacing: widget._starRatingOptions.starsSpacing,
+                size: widget._starRatingOptions.starsSize,
+                allowHalfRating: widget._starRatingOptions.allowHalfRating,
                 rating: _currentRating == null ? 0 : _currentRating.toDouble(),
               ),
             ),

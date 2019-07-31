@@ -102,22 +102,53 @@ class RateMyApp {
     BuildContext context, {
     String title = 'Rate this app',
     String message = 'You like this app ? Then take a little bit of your time to leave a rating :',
-    @required List<Widget> Function(int) onRatingChanged,
+    @required List<Widget> Function(double) onRatingChanged,
     bool ignoreIOS = false,
-    Color starsFillColor,
-    Color starsBorderColor,
+    StarRatingOptions starRatingOptions = const StarRatingOptions(),
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
     }
 
     assert(onRatingChanged != null);
-    return RateMyAppStarDialog.openDialog(
-        context, title, message, onRatingChanged, starsFillColor: starsFillColor, starsBorderColor: starsBorderColor);
+    assert(starRatingOptions != null);
+    return RateMyAppStarDialog.openDialog(context, title, message, onRatingChanged, starRatingOptions);
   }
 
   /// Launches the corresponding store.
   Future<void> launchStore() => RateMyApp._CHANNEL.invokeMethod('launchStore', {
         'appId': storeIdentifier,
       });
+}
+
+/// Just a little class that allows to customize some rating bar options.
+class StarRatingOptions {
+
+  /// The fill color of the stars.
+  final Color starsFillColor;
+
+  /// The border color for the stars.
+  final Color starsBorderColor;
+
+  /// The stars size.
+  final double starsSize;
+
+  /// The space between two stars.
+  final double starsSpacing;
+
+  /// The initial rating.
+  final double initialRating;
+
+  /// Whether we allow half-stars ratings.
+  final bool allowHalfRating;
+
+  const StarRatingOptions({
+    this.starsFillColor = Colors.orangeAccent,
+    this.starsBorderColor = Colors.black54,
+    this.starsSize = 40,
+    this.starsSpacing = 0,
+    this.initialRating,
+    this.allowHalfRating = false,
+  });
+
 }
