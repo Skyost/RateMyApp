@@ -77,7 +77,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                   },
                 );
 
-                if (count == null) {
+                if (count == null || count == 0) {
                   return [cancelButton];
                 }
 
