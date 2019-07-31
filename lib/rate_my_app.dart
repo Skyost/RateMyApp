@@ -123,7 +123,6 @@ class RateMyApp {
 
 /// Just a little class that allows to customize some rating bar options.
 class StarRatingOptions {
-
   /// The fill color of the stars.
   final Color starsFillColor;
 
@@ -144,11 +143,10 @@ class StarRatingOptions {
 
   const StarRatingOptions({
     this.starsFillColor = Colors.orangeAccent,
-    this.starsBorderColor = Colors.black54,
+    this.starsBorderColor = Colors.orangeAccent,
     this.starsSize = 40,
     this.starsSpacing = 0,
     this.initialRating,
     this.allowHalfRating = false,
   });
-
 }

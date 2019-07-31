@@ -1,3 +1,7 @@
+## 0.3.0+3
+
+* Changed the default stars border color.
+
 ## 0.3.0+2
 
 * Added an option to change the `showStarRateDialog` style.
