@@ -10,8 +10,14 @@ class RateMyAppDialog extends StatelessWidget {
   /// The dialog's title.
   final String _title;
 
+  /// The dialog's title alignment.
+  final TextAlign _titleAlign;
+
   /// The dialog's message.
   final String _message;
+
+  /// The dialog's message alignment.
+  final TextAlign _messageAlign;
 
   /// The dialog's rate button.
   final String _rateButton;
@@ -23,13 +29,19 @@ class RateMyAppDialog extends StatelessWidget {
   final String _laterButton;
 
   /// Creates a new rate my app dialog.
-  RateMyAppDialog(this._rateMyApp, this._title, this._message, this._rateButton, this._noButton, this._laterButton);
+  RateMyAppDialog(this._rateMyApp, this._title, this._titleAlign, this._message, this._messageAlign, this._rateButton, this._noButton, this._laterButton);
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-        title: Text(_title),
+        title: Text(
+          _title,
+          textAlign: _titleAlign,
+        ),
         content: SingleChildScrollView(
-          child: Text(_message),
+          child: Text(
+            _message,
+            textAlign: _titleAlign,
+          ),
         ),
         actions: [
           Wrap(
@@ -68,10 +80,21 @@ class RateMyAppDialog extends StatelessWidget {
       );
 
   /// Opens the dialog.
-  static Future<void> openDialog(BuildContext context, RateMyApp rateMyApp, String title, String message, String rateButton, String noButton, String laterButton) async => await showDialog(
+  static Future<void> openDialog(
+    BuildContext context,
+    RateMyApp rateMyApp,
+    String title,
+    TextAlign titleAlign,
+    String message,
+    TextAlign messageAlign,
+    String rateButton,
+    String noButton,
+    String laterButton,
+  ) async =>
+      await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => RateMyAppDialog(rateMyApp, title, message, rateButton, noButton, laterButton),
+        builder: (context) => RateMyAppDialog(rateMyApp, title, titleAlign, message, messageAlign, rateButton, noButton, laterButton),
       );
 }
 
@@ -80,8 +103,14 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// The dialog's title.
   final String _title;
 
+  /// The dialog's title alignment.
+  final TextAlign _titleAlign;
+
   /// The dialog's message.
   final String _message;
+
+  /// The dialog's message alignment.
+  final TextAlign _messageAlign;
 
   /// The rating changed callback.
   final List<Widget> Function(double) _onRatingChanged;
@@ -90,15 +119,24 @@ class RateMyAppStarDialog extends StatefulWidget {
   final StarRatingOptions _starRatingOptions;
 
   /// Creates a new rate my app star dialog.
-  RateMyAppStarDialog(this._title, this._message, this._onRatingChanged, this._starRatingOptions);
+  RateMyAppStarDialog(this._title, this._titleAlign, this._message, this._messageAlign, this._onRatingChanged, this._starRatingOptions);
 
   @override
   State<StatefulWidget> createState() => RateMyAppStarDialogState();
 
   /// Opens the dialog.
-  static Future<void> openDialog(BuildContext context, String title, String message, List<Widget> Function(double) onRatingChanged, StarRatingOptions starRatingOptions) async => await showDialog(
+  static Future<void> openDialog(
+    BuildContext context,
+    String title,
+    TextAlign titleAlign,
+    String message,
+    TextAlign messageAlign,
+    List<Widget> Function(double) onRatingChanged,
+    StarRatingOptions starRatingOptions,
+  ) async =>
+      await showDialog(
         context: context,
-        builder: (context) => RateMyAppStarDialog(title, message, onRatingChanged, starRatingOptions),
+        builder: (context) => RateMyAppStarDialog(title, titleAlign, message, messageAlign, onRatingChanged, starRatingOptions),
       );
 }
 
@@ -115,20 +153,24 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
 
   @override
   Widget build(BuildContext context) => AlertDialog(
-        title: Text(widget._title),
+        title: Text(
+          widget._title,
+          textAlign: widget._titleAlign,
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SingleChildScrollView(
-              child: Text(widget._message),
+              child: Text(
+                widget._message,
+                textAlign: widget._messageAlign,
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(top: 20),
               child: SmoothStarRating(
                 onRatingChanged: (rating) {
-                  setState(() {
-                    _currentRating = rating;
-                  });
+                  setState(() => _currentRating = rating);
                 },
                 color: widget._starRatingOptions.starsFillColor,
                 borderColor: widget._starRatingOptions.starsBorderColor,

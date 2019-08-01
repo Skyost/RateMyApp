@@ -85,7 +85,9 @@ class RateMyApp {
   Future<void> showRateDialog(
     BuildContext context, {
     String title = 'Rate this app',
+    TextAlign titleAlign = TextAlign.left,
     String message = 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+    TextAlign messageAlign = TextAlign.left,
     String rateButton = 'RATE',
     String noButton = 'NO THANKS',
     String laterButton = 'MAYBE LATER',
@@ -94,14 +96,16 @@ class RateMyApp {
     if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
     }
-    return RateMyAppDialog.openDialog(context, this, title, message, rateButton, noButton, laterButton);
+    return RateMyAppDialog.openDialog(context, this, title, titleAlign, message, messageAlign, rateButton, noButton, laterButton);
   }
 
   /// Shows the star rate dialog.
   Future<void> showStarRateDialog(
     BuildContext context, {
     String title = 'Rate this app',
+    TextAlign titleAlign = TextAlign.center,
     String message = 'You like this app ? Then take a little bit of your time to leave a rating :',
+    TextAlign messageAlign = TextAlign.center,
     @required List<Widget> Function(double) onRatingChanged,
     bool ignoreIOS = false,
     StarRatingOptions starRatingOptions = const StarRatingOptions(),
@@ -112,7 +116,7 @@ class RateMyApp {
 
     assert(onRatingChanged != null);
     assert(starRatingOptions != null);
-    return RateMyAppStarDialog.openDialog(context, title, message, onRatingChanged, starRatingOptions);
+    return RateMyAppStarDialog.openDialog(context, title, titleAlign, message, messageAlign, onRatingChanged, starRatingOptions);
   }
 
   /// Launches the corresponding store.
