@@ -141,6 +141,7 @@ class StarRatingOptions {
   /// Whether we allow half-stars ratings.
   final bool allowHalfRating;
 
+  /// Creates a new star rating options instance.
   const StarRatingOptions({
     this.starsFillColor = Colors.orangeAccent,
     this.starsBorderColor = Colors.orangeAccent,
