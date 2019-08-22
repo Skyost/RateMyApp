@@ -45,7 +45,10 @@ It's possible to use custom identifiers ! Just pass the following parameters dur
 
 ### On Android
 
-![Android screenshot](https://github.com/Skyost/rate_my_app/blob/master/screenshots/android.png)
+<img src="https://github.com/Skyost/rate_my_app/raw/master/screenshots/android.png" height="500">
+
+_`showRateDialog` method._
+
 
 ### On iOS
 
@@ -55,7 +58,9 @@ No screenshot for the moment. If you have one, please don't hesitate to submit i
 
 #### iOS >= 10.3
 
-![iOS 10.3 screenshot](https://github.com/Skyost/rate_my_app/blob/master/screenshots/ios_10_3.png)
+<img src="https://github.com/Skyost/rate_my_app/raw/master/screenshots/ios_10_3.png" height="500">
+
+_`showRateDialog` and `showStarRateDialog` method with `ignoreIOS` set to `false`._
 
 ## Example
 

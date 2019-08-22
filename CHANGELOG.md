@@ -1,3 +1,7 @@
+## 0.3.0+4
+
+* Updated README.
+
 ## 0.3.0+3
 
 * Changed the default stars border color.
