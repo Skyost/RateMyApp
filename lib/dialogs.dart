@@ -28,8 +28,17 @@ class RateMyAppDialog extends StatelessWidget {
   /// The dialog's later button.
   final String _laterButton;
 
+  // The dialogs content padding
+  final EdgeInsetsGeometry _titlePadding;
+
+  // The dialogs content padding
+  final EdgeInsetsGeometry _contentPadding;
+
+  // The dialogs button text color
+  final TextStyle _buttonTextStyle;
+
   /// Creates a new rate my app dialog.
-  RateMyAppDialog(this._rateMyApp, this._title, this._titleAlign, this._message, this._messageAlign, this._rateButton, this._noButton, this._laterButton);
+  RateMyAppDialog(this._rateMyApp, this._title, this._titleAlign, this._message, this._messageAlign, this._rateButton, this._noButton, this._laterButton, this._titlePadding, this._contentPadding, this._buttonTextStyle);
 
   @override
   Widget build(BuildContext context) => AlertDialog(
@@ -43,12 +52,14 @@ class RateMyAppDialog extends StatelessWidget {
             textAlign: _titleAlign,
           ),
         ),
+        titlePadding: _titlePadding ?? EdgeInsets.fromLTRB(24.0, 24.0, 24.0, _message == null ? 20.0 : 0.0),
+        contentPadding: _contentPadding ?? const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
         actions: [
           Wrap(
             alignment: WrapAlignment.end,
             children: [
               FlatButton(
-                child: Text(_rateButton),
+                child: Text(_rateButton, style: _buttonTextStyle),
                 onPressed: () {
                   _rateMyApp.doNotOpenAgain = true;
                   _rateMyApp.save().then((v) {
@@ -58,7 +69,7 @@ class RateMyAppDialog extends StatelessWidget {
                 },
               ),
               FlatButton(
-                child: Text(_laterButton),
+                child: Text(_laterButton, style: _buttonTextStyle),
                 onPressed: () {
                   _rateMyApp.baseLaunchDate = _rateMyApp.baseLaunchDate.add(Duration(
                     days: _rateMyApp.remindDays,
@@ -68,7 +79,7 @@ class RateMyAppDialog extends StatelessWidget {
                 },
               ),
               FlatButton(
-                child: Text(_noButton),
+                child: Text(_noButton, style: _buttonTextStyle),
                 onPressed: () {
                   _rateMyApp.doNotOpenAgain = true;
                   _rateMyApp.save().then((v) => Navigator.pop(context));
@@ -90,11 +101,14 @@ class RateMyAppDialog extends StatelessWidget {
     String rateButton,
     String noButton,
     String laterButton,
+    EdgeInsetsGeometry titlePadding,
+    EdgeInsetsGeometry contentPadding,
+    TextStyle buttonTextStyle,
   ) async =>
       await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => RateMyAppDialog(rateMyApp, title, titleAlign, message, messageAlign, rateButton, noButton, laterButton),
+        builder: (context) => RateMyAppDialog(rateMyApp, title, titleAlign, message, messageAlign, rateButton, noButton, laterButton, titlePadding, contentPadding, buttonTextStyle),
       );
 }
 

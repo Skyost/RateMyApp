@@ -92,11 +92,14 @@ class RateMyApp {
     String noButton = 'NO THANKS',
     String laterButton = 'MAYBE LATER',
     bool ignoreIOS = false,
+    EdgeInsetsGeometry titlePadding,
+    EdgeInsetsGeometry contentPadding,
+    TextStyle buttonTextStyle,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
       return _CHANNEL.invokeMethod('requestReview');
     }
-    return RateMyAppDialog.openDialog(context, this, title, titleAlign, message, messageAlign, rateButton, noButton, laterButton);
+    return RateMyAppDialog.openDialog(context, this, title, titleAlign, message, messageAlign, rateButton, noButton, laterButton, titlePadding, contentPadding, buttonTextStyle);
   }
 
   /// Shows the star rate dialog.
