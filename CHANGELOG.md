@@ -1,3 +1,8 @@
+## 0.4.0
+
+* Moved some files to the `src` folder.
+* Added some options that allow you to tweak the dialogs look.
+
 ## 0.3.0+4
 
 * Updated README.

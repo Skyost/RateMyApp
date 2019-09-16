@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 
+/// Allows to tweak the plugin dialogs.
 class DialogStyle {
+  /// The title padding.
   final EdgeInsetsGeometry titlePadding;
+
+  /// The title text align.
   final TextAlign titleAlign;
+
+  /// The title text style.
   final TextStyle titleStyle;
+
+  /// The message padding.
   final EdgeInsetsGeometry messagePadding;
+
+  /// The message text align.
   final TextAlign messageAlign;
+
+  /// The message padding.
   final TextStyle messageStyle;
 
+  /// Creates a new dialog style instance.
   const DialogStyle({
     this.titlePadding = const EdgeInsets.all(0),
     this.titleAlign = TextAlign.left,

@@ -66,6 +66,7 @@ _`showRateDialog` and `showStarRateDialog` method with `ignoreIOS` set to `false
 
 ```dart
 RateMyApp rateMyApp = RateMyApp(
+  preferencesPrefix: 'rateMyApp_',
   minDays: 7,
   minLaunches: 10,
   remindDays: 7,
@@ -82,6 +83,7 @@ _rateMyApp.init().then((_) {
       noButton: 'NO THANKS',
       laterButton: 'MAYBE LATER',
       ignoreIOS: false,
+      dialogStyle: DialogStyle(),
     );
     
     // Or if you prefer to show a star rating bar :
@@ -104,6 +106,11 @@ _rateMyApp.init().then((_) {
         ];
       },
       ignoreIOS: false,
+      dialogStyle: DialogStyle(
+        titleAlign: TextAlign.center,
+        messageAlign: TextAlign.center,
+        messagePadding: EdgeInsets.only(bottom: 20),
+      ),
       starRatingOptions: StarRatingOptions(),
     );
   }
