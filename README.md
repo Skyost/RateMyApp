@@ -124,6 +124,7 @@ You have a lot of options to contribute to this project ! You can :
 * [Fork it](https://github.com/Skyost/rate_my_app/fork) on Github.
 * [Submit](https://github.com/Skyost/rate_my_app/issues/new/choose) a feature request or a bug report.
 * [Donate](https://paypal.me/Skyost) to the developer.
+* [Watch a little ad](https://utip.io/skyost) on uTip.
 
 ## Dependencies
 
