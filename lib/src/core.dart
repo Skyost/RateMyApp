@@ -6,7 +6,7 @@ import 'package:rate_my_app/src/dialogs.dart';
 import 'package:rate_my_app/src/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-typedef CustomRateAction = void Function();
+typedef void CustomRateAction();
 
 /// Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
 class RateMyApp {
