@@ -6,6 +6,8 @@ import 'package:rate_my_app/src/dialogs.dart';
 import 'package:rate_my_app/src/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+typedef CustomRateAction = void Function();
+
 /// Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
 class RateMyApp {
   /// The plugin channel.
@@ -40,6 +42,9 @@ class RateMyApp {
 
   /// Whether the dialog should not be opened again.
   bool doNotOpenAgain;
+
+  /// Custom rate action for launching store
+  CustomRateAction rateAction;
 
   /// Creates a new rate my app instance.
   RateMyApp({
@@ -139,7 +144,13 @@ class RateMyApp {
   }
 
   /// Launches the corresponding store.
-  Future<void> launchStore() => RateMyApp._CHANNEL.invokeMethod('launchStore', {
+  Future<void> launchStore() async {
+    if (rateAction != null) {
+      rateAction();
+    } else {
+      RateMyApp._CHANNEL.invokeMethod('launchStore', {
         'appId': storeIdentifier,
       });
+    }
+  }
 }

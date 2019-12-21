@@ -6,6 +6,10 @@ RateMyApp _rateMyApp = RateMyApp();
 
 /// First plugin test method.
 void main() {
+  _rateMyApp.rateAction = () {
+    print('go to huawei store');
+  };
+
   _rateMyApp.init().then((_) {
     runApp(_RateMyAppTestApp());
     print('Minimum days : ' + _rateMyApp.minDays.toString());
