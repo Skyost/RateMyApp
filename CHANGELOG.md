@@ -1,3 +1,7 @@
+## 0.4.1
+
+* Added the ability to attach a listener to the `RateMyAppDialog` buttons.
+
 ## 0.4.0
 
 * Moved some files to the `src` folder.

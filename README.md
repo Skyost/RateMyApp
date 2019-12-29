@@ -82,6 +82,21 @@ _rateMyApp.init().then((_) {
       rateButton: 'RATE',
       noButton: 'NO THANKS',
       laterButton: 'MAYBE LATER',
+      listener: (button) {
+        switch(button) {
+          case RateMyAppDialogButton.rate:
+            print('Clicked on "Rate".');
+            break;
+          case RateMyAppDialogButton.later:
+            print('Clicked on "Later".');
+            break;
+          case RateMyAppDialogButton.no:
+            print('Clicked on "No".');
+            break;
+        }
+        
+        return true;
+      },
       ignoreIOS: false,
       dialogStyle: DialogStyle(),
     );

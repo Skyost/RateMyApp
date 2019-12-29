@@ -3,6 +3,9 @@ import 'package:rate_my_app/src/core.dart';
 import 'package:rate_my_app/src/style.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+/// A simple dialog button click listener.
+typedef bool RateMyAppDialogButtonClickListener(RateMyAppDialogButton button);
+
 /// The Android rate my app dialog.
 class RateMyAppDialog extends StatelessWidget {
   /// The rate my app instance.
@@ -23,6 +26,9 @@ class RateMyAppDialog extends StatelessWidget {
   /// The dialog's later button.
   final String laterButton;
 
+  /// The buttons listener.
+  final RateMyAppDialogButtonClickListener listener;
+
   /// The dialog's style.
   final DialogStyle dialogStyle;
 
@@ -34,6 +40,7 @@ class RateMyAppDialog extends StatelessWidget {
     this.rateButton,
     this.noButton,
     this.laterButton,
+    this.listener,
     this.dialogStyle,
   });
 
@@ -73,6 +80,10 @@ class RateMyAppDialog extends StatelessWidget {
   Widget _createRateButton(BuildContext context) => FlatButton(
         child: Text(rateButton),
         onPressed: () {
+          if (listener != null && !listener(RateMyAppDialogButton.rate)) {
+            return;
+          }
+
           _rateMyApp.doNotOpenAgain = true;
           _rateMyApp.save().then((v) {
             Navigator.pop(context);
@@ -85,6 +96,10 @@ class RateMyAppDialog extends StatelessWidget {
   Widget _createLaterButton(BuildContext context) => FlatButton(
         child: Text(laterButton),
         onPressed: () {
+          if (listener != null && !listener(RateMyAppDialogButton.later)) {
+            return;
+          }
+
           _rateMyApp.baseLaunchDate = _rateMyApp.baseLaunchDate.add(Duration(
             days: _rateMyApp.remindDays,
           ));
@@ -97,6 +112,10 @@ class RateMyAppDialog extends StatelessWidget {
   Widget _createNoButton(BuildContext context) => FlatButton(
         child: Text(noButton),
         onPressed: () {
+          if (listener != null && !listener(RateMyAppDialogButton.no)) {
+            return;
+          }
+
           _rateMyApp.doNotOpenAgain = true;
           _rateMyApp.save().then((v) => Navigator.pop(context));
         },
@@ -111,6 +130,7 @@ class RateMyAppDialog extends StatelessWidget {
     String rateButton,
     String noButton,
     String laterButton,
+    RateMyAppDialogButtonClickListener listener,
     DialogStyle dialogStyle,
   }) =>
       showDialog(
@@ -126,6 +146,18 @@ class RateMyAppDialog extends StatelessWidget {
           dialogStyle: dialogStyle,
         ),
       );
+}
+
+/// Represents a rate my app dialog button.
+enum RateMyAppDialogButton {
+  /// The "rate" button.
+  rate,
+
+  /// The "later" button.
+  later,
+
+  /// The "no" button.
+  no,
 }
 
 /// The rate my app star dialog.

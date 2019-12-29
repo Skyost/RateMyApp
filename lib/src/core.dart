@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
 class RateMyApp {
   /// The plugin channel.
-  static const MethodChannel _CHANNEL = const MethodChannel('rate_my_app');
+  static const MethodChannel _channel = const MethodChannel('rate_my_app');
 
   /// Prefix for preferences.
   String preferencesPrefix;
@@ -91,11 +91,12 @@ class RateMyApp {
     String rateButton = 'RATE',
     String noButton = 'NO THANKS',
     String laterButton = 'MAYBE LATER',
+    RateMyAppDialogButtonClickListener listener,
     bool ignoreIOS = false,
     DialogStyle dialogStyle = const DialogStyle(),
   }) async {
-    if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
-      return _CHANNEL.invokeMethod('requestReview');
+    if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
+      return _channel.invokeMethod('requestReview');
     }
     return RateMyAppDialog.openDialog(
       context,
@@ -105,6 +106,7 @@ class RateMyApp {
       rateButton: rateButton,
       noButton: noButton,
       laterButton: laterButton,
+      listener: listener,
       dialogStyle: dialogStyle,
     );
   }
@@ -123,8 +125,8 @@ class RateMyApp {
     ),
     StarRatingOptions starRatingOptions = const StarRatingOptions(),
   }) async {
-    if (!ignoreIOS && Platform.isIOS && await _CHANNEL.invokeMethod('canRequestReview')) {
-      return _CHANNEL.invokeMethod('requestReview');
+    if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
+      return _channel.invokeMethod('requestReview');
     }
 
     assert(onRatingChanged != null);
@@ -139,7 +141,7 @@ class RateMyApp {
   }
 
   /// Launches the corresponding store.
-  Future<void> launchStore() => RateMyApp._CHANNEL.invokeMethod('launchStore', {
+  Future<void> launchStore() => RateMyApp._channel.invokeMethod('launchStore', {
         'appId': storeIdentifier,
       });
 }
