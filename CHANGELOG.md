@@ -1,3 +1,7 @@
+## 0.4.1+1
+
+* A little bug fixed when using a button listener.
+
 ## 0.4.1
 
 * Added the ability to attach a listener to the `RateMyAppDialog` buttons.

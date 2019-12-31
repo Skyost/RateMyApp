@@ -35,7 +35,7 @@ class RateMyApp {
   /// The base launch date.
   DateTime baseLaunchDate;
 
-  /// Number of launches.
+  /// Number of app launches.
   int launches;
 
   /// Whether the dialog should not be opened again.

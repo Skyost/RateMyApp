@@ -85,7 +85,7 @@ class RateMyAppDialog extends StatelessWidget {
           }
 
           _rateMyApp.doNotOpenAgain = true;
-          _rateMyApp.save().then((v) {
+          _rateMyApp.save().then((_) {
             Navigator.pop(context);
             _rateMyApp.launchStore();
           });
@@ -104,7 +104,7 @@ class RateMyAppDialog extends StatelessWidget {
             days: _rateMyApp.remindDays,
           ));
           _rateMyApp.launches -= _rateMyApp.remindLaunches;
-          _rateMyApp.save().then((v) => Navigator.pop(context));
+          _rateMyApp.save().then((_) => Navigator.pop(context));
         },
       );
 
@@ -117,7 +117,7 @@ class RateMyAppDialog extends StatelessWidget {
           }
 
           _rateMyApp.doNotOpenAgain = true;
-          _rateMyApp.save().then((v) => Navigator.pop(context));
+          _rateMyApp.save().then((_) => Navigator.pop(context));
         },
       );
 

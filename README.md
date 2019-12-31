@@ -95,7 +95,7 @@ _rateMyApp.init().then((_) {
             break;
         }
         
-        return true;
+        return true; // Return false if you want to cancel the event.
       },
       ignoreIOS: false,
       dialogStyle: DialogStyle(),
@@ -115,7 +115,7 @@ _rateMyApp.init().then((_) {
               print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
               // You can handle the result as you want (for instance if the user puts 1 star then open your contact page, if he puts more then open the store page, etc...).
               _rateMyApp.doNotOpenAgain = true;
-              _rateMyApp.save().then((v) => Navigator.pop(context));
+              _rateMyApp.save().then((_) => Navigator.pop(context));
             },
           ),
         ];

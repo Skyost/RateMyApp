@@ -62,7 +62,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
               padding: EdgeInsets.only(top: 10),
               child: RaisedButton(
                 child: Text('Launch "Rate my app" dialog'),
-                onPressed: () => _rateMyApp.showRateDialog(context).then((v) => setState(() {})),
+                onPressed: () => _rateMyApp.showRateDialog(context).then((_) => setState(() {})),
               ),
             ),
             RaisedButton(
@@ -72,7 +72,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                   child: Text('CANCEL'),
                   onPressed: () {
                     _rateMyApp.doNotOpenAgain = true;
-                    _rateMyApp.save().then((v) => Navigator.pop(context));
+                    _rateMyApp.save().then((_) => Navigator.pop(context));
                     setState(() {});
                   },
                 );
@@ -118,7 +118,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                         ),
                       );
                       _rateMyApp.doNotOpenAgain = true;
-                      _rateMyApp.save().then((v) => Navigator.pop(context));
+                      _rateMyApp.save().then((_) => Navigator.pop(context));
                       setState(() {});
                     },
                   ),
@@ -128,7 +128,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
             ),
             RaisedButton(
               child: Text('Reset'),
-              onPressed: () => _rateMyApp.reset().then((v) => setState(() {})),
+              onPressed: () => _rateMyApp.reset().then((_) => setState(() {})),
             ),
           ],
         ),
