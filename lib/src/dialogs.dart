@@ -143,6 +143,7 @@ class RateMyAppDialog extends StatelessWidget {
           rateButton: rateButton,
           noButton: noButton,
           laterButton: laterButton,
+          listener: listener,
           dialogStyle: dialogStyle,
         ),
       );
