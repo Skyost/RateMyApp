@@ -151,6 +151,7 @@ You can easily create your custom conditions ! All you have to do is to extend t
 * `reset` You should reset your condition values here.
 * `isMet` Whether this condition is met.
 * `onEventOccurred` When an event occurs in the plugin lifecycle. This is usually here that you can update your condition values.
+Please note that you're not obligated to override this one (although this is recommended).
 
 You can have an easy example of it by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/rate_my_app/tree/master/lib/src/conditions.dart#L163).
 
