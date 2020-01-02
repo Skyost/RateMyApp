@@ -6,21 +6,18 @@ RateMyApp _rateMyApp = RateMyApp();
 
 /// First plugin test method.
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   _rateMyApp.init().then((_) {
     runApp(_RateMyAppTestApp());
-    print('Minimum days : ' + _rateMyApp.minDays.toString());
-    print('Minimum launches : ' + _rateMyApp.minLaunches.toString());
-
-    print('Base launch : ' + _dateToString(_rateMyApp.baseLaunchDate));
-    print('Launches : ' + _rateMyApp.launches.toString());
-    print('Do not open again ? ' + (_rateMyApp.doNotOpenAgain ? 'Yes' : 'No'));
+    _rateMyApp.conditions.forEach((condition) {
+      if (condition is DebuggableCondition) {
+        print(condition.valuesAsString());
+      }
+    });
 
     print('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No'));
   });
 }
-
-/// Returns a formatted date string.
-String _dateToString(DateTime date) => date.day.toString().padLeft(2, '0') + '/' + date.month.toString().padLeft(2, '0') + '/' + date.year.toString();
 
 /// The main rate my app test widget.
 class _RateMyAppTestApp extends StatelessWidget {
@@ -52,11 +49,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _textCenter('Minimum days : ' + _rateMyApp.minDays.toString()),
-            _textCenter('Minimum launches : ' + _rateMyApp.minLaunches.toString()),
-            _textCenter('Base launch : ' + _dateToString(_rateMyApp.baseLaunchDate)),
-            _textCenter('Launches : ' + _rateMyApp.launches.toString()),
-            _textCenter('Do not open again ? ' + (_rateMyApp.doNotOpenAgain ? 'Yes' : 'No')),
+            for (Condition condition in _rateMyApp.conditions) if (condition is DebuggableCondition) _textCenter(condition.valuesAsString()),
             _textCenter('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
             Padding(
               padding: EdgeInsets.only(top: 10),
@@ -68,15 +61,11 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
             RaisedButton(
               child: Text('Launch "Rate my app" star dialog'),
               onPressed: () => _rateMyApp.showStarRateDialog(context, onRatingChanged: (count) {
-                FlatButton cancelButton = FlatButton(
-                  child: Text('CANCEL'),
-                  onPressed: () {
-                    _rateMyApp.doNotOpenAgain = true;
-                    _rateMyApp.save().then((_) => Navigator.pop(context));
-                    setState(() {});
-                  },
+                final Widget cancelButton = RateMyAppNoButton(
+                  _rateMyApp,
+                  text: 'CANCEL',
+                  callback: () => setState(() {}),
                 );
-
                 if (count == null || count == 0) {
                   return [cancelButton];
                 }
@@ -109,7 +98,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                 return [
                   FlatButton(
                     child: Text('OK'),
-                    onPressed: () {
+                    onPressed: () async {
                       print(message);
                       Scaffold.of(context).showSnackBar(
                         SnackBar(
@@ -117,8 +106,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                           backgroundColor: color,
                         ),
                       );
-                      _rateMyApp.doNotOpenAgain = true;
-                      _rateMyApp.save().then((_) => Navigator.pop(context));
+                      await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
                       setState(() {});
                     },
                   ),

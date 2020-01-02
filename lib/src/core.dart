@@ -1,7 +1,9 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rate_my_app/src/conditions.dart';
 import 'package:rate_my_app/src/dialogs.dart';
 import 'package:rate_my_app/src/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,134 +16,209 @@ class RateMyApp {
   /// Prefix for preferences.
   String preferencesPrefix;
 
-  /// Minimum days before being able to show the dialog.
-  int minDays;
-
-  /// Minimum launches before being able to show the dialog.
-  int minLaunches;
-
-  /// Days to add to the base date when the user clicks on "Maybe later".
-  int remindDays;
-
-  /// Launches to subtract to the number of launches when the user clicks on "Maybe later".
-  int remindLaunches;
-
   /// The google play identifier.
   String googlePlayIdentifier;
 
   /// The app store identifier.
   String appStoreIdentifier;
 
-  /// The base launch date.
-  DateTime baseLaunchDate;
-
-  /// Number of app launches.
-  int launches;
-
-  /// Whether the dialog should not be opened again.
-  bool doNotOpenAgain;
+  /// All conditions that should be met to show the dialog.
+  Set<Condition> conditions;
 
   /// Creates a new rate my app instance.
   RateMyApp({
     this.preferencesPrefix = 'rateMyApp_',
-    this.minDays = 7,
-    this.minLaunches = 10,
-    this.remindDays = 7,
-    this.remindLaunches = 10,
+    int minDays,
+    int remindDays,
+    int minLaunches,
+    int remindLaunches,
     this.googlePlayIdentifier,
     this.appStoreIdentifier,
-  });
+  }) : assert(preferencesPrefix != null) {
+    conditions = HashSet<Condition>();
+    populateWithDefaultConditions(
+      minDays: minDays,
+      remindDays: remindDays,
+      minLaunches: minLaunches,
+      remindLaunches: remindLaunches,
+    );
+  }
+
+  /// Creates a new rate my app instance with custom conditions.
+  RateMyApp.withCustomConditions({
+    this.preferencesPrefix = 'rateMyApp_',
+    this.googlePlayIdentifier,
+    this.appStoreIdentifier,
+    @required this.conditions,
+  })  : assert(preferencesPrefix != null),
+        assert(conditions != null);
 
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt(preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch);
-    launches = (preferences.getInt(preferencesPrefix + 'launches') ?? 0) + 1;
-    doNotOpenAgain = preferences.getBool(preferencesPrefix + 'doNotOpenAgain') ?? false;
-    await save();
+    conditions.forEach((condition) => condition.readFromPreferences(preferences));
+
+    callEvent(RateMyAppEventType.initialized);
   }
 
   /// Saves the plugin current data to the shared preferences.
   Future<void> save() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setInt(preferencesPrefix + 'baseLaunchDate', baseLaunchDate.millisecondsSinceEpoch);
-    await preferences.setInt(preferencesPrefix + 'launches', launches);
-    await preferences.setBool(preferencesPrefix + 'doNotOpenAgain', doNotOpenAgain);
+    for (Condition condition in conditions) {
+      await condition.saveToPreferences(preferences);
+    }
+
+    callEvent(RateMyAppEventType.saved);
   }
 
   /// Resets the plugin data.
   Future<void> reset() async {
-    baseLaunchDate = DateTime.now();
-    launches = 0;
-    doNotOpenAgain = false;
+    conditions.forEach((condition) => condition.reset());
     await save();
   }
 
   /// Whether the dialog should be opened.
-  bool get shouldOpenDialog => !doNotOpenAgain && (DateTime.now().millisecondsSinceEpoch - baseLaunchDate.millisecondsSinceEpoch) / (1000 * 60 * 60 * 24) >= minDays && launches >= minLaunches;
+  bool get shouldOpenDialog => conditions.firstWhere((condition) => !condition.isMet, orElse: null) == null;
 
   /// Returns the corresponding store identifier.
-  String get storeIdentifier => Platform.isIOS ? appStoreIdentifier : googlePlayIdentifier;
+  String get storeIdentifier {
+    if (Platform.isIOS) {
+      return appStoreIdentifier;
+    }
+
+    if (Platform.isAndroid) {
+      return googlePlayIdentifier;
+    }
+
+    return null;
+  }
 
   /// Shows the rate dialog.
   Future<void> showRateDialog(
     BuildContext context, {
-    String title = 'Rate this app',
-    String message = 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
-    String rateButton = 'RATE',
-    String noButton = 'NO THANKS',
-    String laterButton = 'MAYBE LATER',
+    String title,
+    String message,
+    String rateButton,
+    String noButton,
+    String laterButton,
     RateMyAppDialogButtonClickListener listener,
     bool ignoreIOS = false,
-    DialogStyle dialogStyle = const DialogStyle(),
+    DialogStyle dialogStyle,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
+      callEvent(RateMyAppEventType.iOSRequestReview);
       return _channel.invokeMethod('requestReview');
     }
+
+    callEvent(RateMyAppEventType.dialogOpen);
     return RateMyAppDialog.openDialog(
       context,
       this,
-      title: title,
-      message: message,
-      rateButton: rateButton,
-      noButton: noButton,
-      laterButton: laterButton,
+      title: title ?? 'Rate this app',
+      message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+      rateButton: rateButton ?? 'RATE',
+      noButton: noButton ?? 'NO THANKS',
+      laterButton: laterButton ?? 'MAYBE LATER',
       listener: listener,
-      dialogStyle: dialogStyle,
+      dialogStyle: dialogStyle ?? DialogStyle(),
     );
   }
 
   /// Shows the star rate dialog.
   Future<void> showStarRateDialog(
     BuildContext context, {
-    String title = 'Rate this app',
-    String message = 'You like this app ? Then take a little bit of your time to leave a rating :',
-    @required List<Widget> Function(double) onRatingChanged,
+    String title,
+    String message,
+    List<Widget> Function(double) onRatingChanged,
     bool ignoreIOS = false,
-    DialogStyle dialogStyle = const DialogStyle(
-      titleAlign: TextAlign.center,
-      messageAlign: TextAlign.center,
-      messagePadding: EdgeInsets.only(bottom: 20),
-    ),
-    StarRatingOptions starRatingOptions = const StarRatingOptions(),
+    DialogStyle dialogStyle,
+    StarRatingOptions starRatingOptions,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
+      callEvent(RateMyAppEventType.iOSRequestReview);
       return _channel.invokeMethod('requestReview');
     }
 
     assert(onRatingChanged != null);
+    callEvent(RateMyAppEventType.starDialogOpen);
     return RateMyAppStarDialog.openDialog(
       context,
-      title: title,
-      message: message,
+      this,
+      title: title ?? 'Rate this app',
+      message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
       onRatingChanged: onRatingChanged,
-      dialogStyle: dialogStyle,
-      starRatingOptions: starRatingOptions,
+      dialogStyle: dialogStyle ??
+          DialogStyle(
+            titleAlign: TextAlign.center,
+            messageAlign: TextAlign.center,
+            messagePadding: EdgeInsets.only(bottom: 20),
+          ),
+      starRatingOptions: starRatingOptions ?? StarRatingOptions(),
     );
   }
 
   /// Launches the corresponding store.
-  Future<void> launchStore() => RateMyApp._channel.invokeMethod('launchStore', {
-        'appId': storeIdentifier,
-      });
+  Future<void> launchStore() {
+    assert(storeIdentifier != null);
+    return RateMyApp._channel.invokeMethod('launchStore', {
+      'appId': storeIdentifier,
+    });
+  }
+
+  /// Calls the specified event.
+  Future<void> callEvent(RateMyAppEventType eventType) {
+    bool saveSharedPreferences = false;
+    for (Condition condition in conditions) {
+      saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences;
+    }
+
+    return saveSharedPreferences ? save() : null;
+  }
+
+  /// Adds the default conditions to the current conditions list.
+  void populateWithDefaultConditions({
+    int minDays,
+    int remindDays,
+    int minLaunches,
+    int remindLaunches,
+  }) {
+    conditions.add(MinimumDaysCondition(
+      this,
+      minDays: minDays ?? 7,
+      remindDays: remindDays ?? 7,
+    ));
+    conditions.add(MinimumAppLaunchesCondition(
+      this,
+      minLaunches: minLaunches ?? 10,
+      remindLaunches: remindLaunches ?? 10,
+    ));
+    conditions.add(DoNotOpenAgainCondition(this));
+  }
+}
+
+/// Represents all events that can occur during the rate my app lifecycle.
+enum RateMyAppEventType {
+  /// When rate my app is fully initialized.
+  initialized,
+
+  /// When rate my app is saved.
+  saved,
+
+  /// When a native iOS rating dialog will be opened.
+  iOSRequestReview,
+
+  /// When the classic Rate my app dialog will be opened.
+  dialogOpen,
+
+  /// When the star dialog will be opened.
+  starDialogOpen,
+
+  /// When the rate button has been pressed.
+  rateButtonPressed,
+
+  /// When the later button has been pressed.
+  laterButtonPressed,
+
+  /// When the no button has been pressed.
+  noButtonPressed,
 }
