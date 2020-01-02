@@ -250,6 +250,8 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
                 spacing: widget.starRatingOptions.starsSpacing,
                 size: widget.starRatingOptions.starsSize,
                 allowHalfRating: widget.starRatingOptions.allowHalfRating,
+                halfFilledIconData: widget.starRatingOptions.halfFilledIconData,
+                filledIconData: widget.starRatingOptions.filledIconData,
                 rating: _currentRating == null ? 0 : _currentRating.toDouble(),
               ),
             ],

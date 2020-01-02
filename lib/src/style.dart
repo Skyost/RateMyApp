@@ -51,6 +51,12 @@ class StarRatingOptions {
   /// Whether we allow half-stars ratings.
   final bool allowHalfRating;
 
+  /// The half filled icon.
+  final IconData halfFilledIconData;
+
+  /// The filled icon.
+  final IconData filledIconData;
+
   /// Creates a new star rating options instance.
   const StarRatingOptions({
     this.starsFillColor = Colors.orangeAccent,
@@ -59,5 +65,7 @@ class StarRatingOptions {
     this.starsSpacing = 0,
     this.initialRating,
     this.allowHalfRating = false,
-  });
+    this.halfFilledIconData,
+    this.filledIconData,
+  }) : assert(starsSize != null), assert(allowHalfRating != null);
 }

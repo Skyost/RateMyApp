@@ -60,6 +60,8 @@ You can easily add custom conditions to the plugin. All you have to do is to ext
 
 You can have an easy example by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/rate_my_app/tree/master/lib/src/conditions.dart#L163).
 
+Then you can add your custom condition to Rate my app by using the constructor `withCustomConditions` (or by using `rateMyApp.conditions.add` before initialization).
+
 ## Screenshots
 
 ### On Android
