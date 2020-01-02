@@ -80,7 +80,7 @@ _`showRateDialog` and `showStarRateDialog` method with `ignoreIOS` set to `false
 
 ```dart
 // In this example, I'm giving a value to all parameters.
-// Please note that not everyone are required (those that are required are marked with the @required annotation).
+// Please note that not all are required (those that are required are marked with the @required annotation).
 
 RateMyApp rateMyApp = RateMyApp(
   preferencesPrefix: 'rateMyApp_',

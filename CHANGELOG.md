@@ -1,3 +1,9 @@
+## 0.5.0
+
+* Added a more modular condition system.
+* Updated `smooth_star_rating` (and thus allowing further star rating bar customizations).
+* Improved the README.md.
+
 ## 0.4.1+1
 
 * A little bug fixed when using a button listener.
