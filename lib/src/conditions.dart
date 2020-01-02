@@ -11,13 +11,13 @@ abstract class Condition {
   /// Creates a new condition instance.
   const Condition(this.rateMyApp) : assert(rateMyApp != null);
 
-  /// Reads the condition state from the specified shared preferences.
+  /// Reads the condition values from the specified shared preferences.
   void readFromPreferences(SharedPreferences preferences);
 
-  /// Saves the condition state to the specified shared preferences.
+  /// Saves the condition values to the specified shared preferences.
   Future<void> saveToPreferences(SharedPreferences preferences);
 
-  /// Resets the condition state.
+  /// Resets the condition values.
   void reset();
 
   /// Whether this condition is met.

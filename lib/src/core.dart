@@ -33,7 +33,8 @@ class RateMyApp {
     int remindLaunches,
     this.googlePlayIdentifier,
     this.appStoreIdentifier,
-  }) : conditions = [], assert(preferencesPrefix != null) {
+  })  : conditions = [],
+        assert(preferencesPrefix != null) {
     populateWithDefaultConditions(
       minDays: minDays,
       remindDays: remindDays,
@@ -156,20 +157,14 @@ class RateMyApp {
   }
 
   /// Launches the corresponding store.
-  Future<void> launchStore() {
-    assert(storeIdentifier != null);
-    return RateMyApp._channel.invokeMethod('launchStore', {
-      'appId': storeIdentifier,
-    });
-  }
+  Future<void> launchStore() => RateMyApp._channel.invokeMethod('launchStore', {
+        'appId': storeIdentifier,
+      });
 
   /// Calls the specified event.
   Future<void> callEvent(RateMyAppEventType eventType) {
     bool saveSharedPreferences = false;
-    for (Condition condition in conditions) {
-      saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences;
-    }
-
+    conditions.forEach((condition) => saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences);
     return saveSharedPreferences ? save() : null;
   }
 

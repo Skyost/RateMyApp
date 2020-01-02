@@ -1,8 +1,9 @@
 # Rate my app !
 
 This plugin allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
+You can even add your own conditions.
 
-Rate my app is really inspired by [Android-Rate](https://github.com/hotchemi/Android-Rate/).
+_Rate my app_ is really inspired by [Android-Rate](https://github.com/hotchemi/Android-Rate/).
 
 ## How to use
 
@@ -23,44 +24,44 @@ If for any reason it doesn't match please go to the _[Using custom identifiers](
 
 ### How it works
 
-_Rate my app_ takes two parameters :
+_Rate my app_ default constructor takes two main parameters (see [Example](#example) for more info) :
 
 1. `minDays` Minimum elapsed days since the first app launch.
 2. `minLaunches` Minimum app launches count.
 
 If everything above is verified, the method `shouldOpenDialog` will return `true` (`false` otherwise).
-Then you should call `showRateDialog` which is going to show a native rating dialog on iOS >= _10.3_ and a custom rating prompt dialog on Android (and on older iOS versions).
+Then you should call `showRateDialog` which is going to show a native rating dialog on iOS ≥ _10.3_ and a custom rating prompt dialog on Android (and on older iOS versions).
 
 If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar that will allow you to take custom actions based on the rating
 (for example if the user puts less than 3 stars then open your app bugs report page or something like this and if he puts more ask him to rate your app on the store page).
 
-### Using store identifiers
+### Using custom identifiers
 
-It's possible to use store identifiers ! Just pass the following parameters during the plugin initialization :
+It's possible to use custom store identifiers ! Just pass the following parameters during the plugin initialization :
 
 1. `googlePlayIdentifier` Your Google Play identifier (usually a package name).
 2. `appStoreIdentifier` Your App Store identifier (usually numbers). **It's required if you're targeting an iOS version before iOS 10.3.**
 
 ### Using custom conditions
 
-A condition is something required to be met in order for the dialog to open.
-Rate my app comes with three default conditions :
+A condition is something required to be met in order for the `shouldOpenDialog` method to return `true`.
+_Rate my app_ comes with three default conditions :
 
 1. `MinimumDaysCondition` Allows to set a minimum elapsed days since the first app launch before showing the dialog.
 2. `MinimumAppLaunchesCondition` Allows to set a minimum app launches count since the first app launch before showing the dialog.
-3. `DoNotOpenAgainCondition` Allows to block the dialog from being opened.
+3. `DoNotOpenAgainCondition` Allows to prevent the dialog from being opened (when the user click on the `No` button for example).
 
-You can easily add custom conditions to the plugin. All you have to do is to extend the `Condition` class. There are five methods to override :
+You can easily create your custom conditions ! All you have to do is to extend the `Condition` class. There are five methods to override :
 
-1. `readFromPreferences` You should read your condition state from the provided shared preferences here.
-2. `saveToPreferences` You should save your condition state to the provided shared preferences here.
-3. `reset` You should reset your condition state here.
+1. `readFromPreferences` You should read your condition values from the provided shared preferences here.
+2. `saveToPreferences` You should save your condition values to the provided shared preferences here.
+3. `reset` You should reset your condition values here.
 4. `isMet` Whether this condition is met.
-5. `onEventOccurred` When an event occurs in the plugin lifecycle. This is usually here that you can change your condition values.
+5. `onEventOccurred` When an event occurs in the plugin lifecycle. This is usually here that you can update your condition values.
 
 You can have an easy example by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/rate_my_app/tree/master/lib/src/conditions.dart#L163).
 
-Then you can add your custom condition to Rate my app by using the constructor `customConditions` (or by using `rateMyApp.conditions.add` before initialization).
+Then you can add your custom condition to _Rate my app_ by using the constructor `customConditions` (or by calling `rateMyApp.conditions.add` before initialization).
 
 ## Screenshots
 
@@ -92,9 +93,9 @@ RateMyApp rateMyApp = RateMyApp(
   appStoreIdentifier: '1491556149',
 );
 
-_rateMyApp.init().then((_) {
-  if (_rateMyApp.shouldOpenDialog) {
-    _rateMyApp.showRateDialog(
+rateMyApp.init().then((_) {
+  if (rateMyApp.shouldOpenDialog) {
+    rateMyApp.showRateDialog(
       context,
       title: 'Rate this app', // The dialog title.
       message: 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.', // The dialog message.
@@ -122,7 +123,7 @@ _rateMyApp.init().then((_) {
     
     // Or if you prefer to show a star rating bar :
     
-    _rateMyApp.showStarRateDialog(
+    rateMyApp.showStarRateDialog(
       context,
       title: 'Rate this app', // The dialog title.
       message: 'You like this app ? Then take a little bit of your time to leave a rating :', // The dialog message.
@@ -130,11 +131,11 @@ _rateMyApp.init().then((_) {
         return [ // Return a list of actions (that will be shown at the bottom of the dialog).
           FlatButton(
             child: Text('OK'),
-            onPressed: () {
+            onPressed: () async {
               print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
               // You can handle the result as you want (for instance if the user puts 1 star then open your contact page, if he puts more then open the store page, etc...).
-              _rateMyApp.doNotOpenAgain = true;
-              _rateMyApp.save().then((_) => Navigator.pop(context));
+              await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed); // This allows to broadcast the button click event to conditions.
+              Navigator.pop(context);
             },
           ),
         ];
@@ -145,7 +146,7 @@ _rateMyApp.init().then((_) {
         messageAlign: TextAlign.center,
         messagePadding: EdgeInsets.only(bottom: 20),
       ),
-      starRatingOptions: StarRatingOptions(), // Custom star rating options.
+      starRatingOptions: StarRatingOptions(), // Custom star bar rating options.
     );
   }
 });
