@@ -3,6 +3,7 @@
 * Added a more modular condition system.
 * Updated `smooth_star_rating` (and thus allowing further star rating bar customizations).
 * Improved the README.md.
+* Now using AndroidX.
 
 ## 0.4.1+1
 
