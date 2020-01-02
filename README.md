@@ -34,9 +34,9 @@ Then you should call `showRateDialog` which is going to show a native rating dia
 If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar that will allow you to take custom actions based on the rating
 (for example if the user puts less than 3 stars then open your app bugs report page or something like this and if he puts more ask him to rate your app on the store page).
 
-### Using custom identifiers
+### Using store identifiers
 
-It's possible to use custom identifiers ! Just pass the following parameters during the plugin initialization :
+It's possible to use store identifiers ! Just pass the following parameters during the plugin initialization :
 
 1. `googlePlayIdentifier` Your Google Play identifier (usually a package name).
 2. `appStoreIdentifier` Your App Store identifier (usually numbers). **It's required if you're targeting an iOS version before iOS 10.3.**
