@@ -1,3 +1,7 @@
+## 0.5.0+1
+
+* Updated example and README.
+
 ## 0.5.0
 
 * Added a more modular condition system.

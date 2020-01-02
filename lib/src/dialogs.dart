@@ -16,9 +16,9 @@ bool validatorTrue() => true;
 /// A validator that always returns false.
 bool validatorFalse() => true;
 
-/// The Android rate my app dialog.
+/// The Android Rate my app dialog.
 class RateMyAppDialog extends StatelessWidget {
-  /// The rate my app instance.
+  /// The Rate my app instance.
   final RateMyApp rateMyApp;
 
   /// The dialog's title.
@@ -42,7 +42,7 @@ class RateMyAppDialog extends StatelessWidget {
   /// The dialog's style.
   final DialogStyle dialogStyle;
 
-  /// Creates a new rate my app dialog.
+  /// Creates a new Rate my app dialog.
   const RateMyAppDialog(
     this.rateMyApp, {
     @required this.title,
@@ -131,9 +131,9 @@ class RateMyAppDialog extends StatelessWidget {
       );
 }
 
-/// The rate my app star dialog.
+/// The Rate my app star dialog.
 class RateMyAppStarDialog extends StatefulWidget {
-  /// The rate my app instance.
+  /// The Rate my app instance.
   final RateMyApp rateMyApp;
 
   /// The dialog's title.
@@ -151,7 +151,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// The smooth star rating style.
   final StarRatingOptions starRatingOptions;
 
-  /// Creates a new rate my app star dialog.
+  /// Creates a new Rate my app star dialog.
   const RateMyAppStarDialog(
     this.rateMyApp, {
     @required this.title,
@@ -208,7 +208,7 @@ class RateMyAppStarDialog extends StatefulWidget {
       ];
 }
 
-/// The rate my app star dialog state.
+/// The Rate my app star dialog state.
 class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
   /// The current rating.
   double _currentRating;
@@ -261,9 +261,9 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       );
 }
 
-/// A rate my app dialog button with a text, a validator and a callback.
+/// A Rate my app dialog button with a text, a validator and a callback.
 abstract class _RateMyAppDialogButton extends StatelessWidget {
-  /// The rate my app instance.
+  /// The Rate my app instance.
   final RateMyApp rateMyApp;
 
   /// The button text.
@@ -275,7 +275,7 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
   /// Called when the action has been executed.
   final VoidCallback callback;
 
-  /// Creates a new rate my app button widget instance.
+  /// Creates a new Rate my app button widget instance.
   const _RateMyAppDialogButton(
     this.rateMyApp, {
     @required this.text,
@@ -302,9 +302,9 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
   Future<void> onButtonClicked(BuildContext context);
 }
 
-/// The rate my app "rate" button widget.
+/// The Rate my app "rate" button widget.
 class RateMyAppRateButton extends _RateMyAppDialogButton {
-  /// Creates a new rate my app "rate" button widget instance.
+  /// Creates a new Rate my app "rate" button widget instance.
   const RateMyAppRateButton(
     RateMyApp rateMyApp, {
     @required String text,
@@ -326,9 +326,9 @@ class RateMyAppRateButton extends _RateMyAppDialogButton {
   }
 }
 
-/// The rate my app "latter" button widget.
+/// The Rate my app "later" button widget.
 class RateMyAppLaterButton extends _RateMyAppDialogButton {
-  /// Creates a new rate my app "later" button widget instance.
+  /// Creates a new Rate my app "later" button widget instance.
   const RateMyAppLaterButton(
     RateMyApp rateMyApp, {
     @required String text,
@@ -345,9 +345,9 @@ class RateMyAppLaterButton extends _RateMyAppDialogButton {
   Future<void> onButtonClicked(BuildContext context) => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed).then((_) => Navigator.pop(context));
 }
 
-/// The rate my app "no" button widget.
+/// The Rate my app "no" button widget.
 class RateMyAppNoButton extends _RateMyAppDialogButton {
-  /// Creates a new rate my app "no" button widget instance.
+  /// Creates a new Rate my app "no" button widget instance.
   const RateMyAppNoButton(
     RateMyApp rateMyApp, {
     @required String text,
@@ -364,7 +364,7 @@ class RateMyAppNoButton extends _RateMyAppDialogButton {
   Future<void> onButtonClicked(BuildContext context) => rateMyApp.callEvent(RateMyAppEventType.noButtonPressed).then((_) => Navigator.pop(context));
 }
 
-/// Represents a rate my app dialog button.
+/// Represents a Rate my app dialog button.
 enum RateMyAppDialogButton {
   /// The "rate" button.
   rate,

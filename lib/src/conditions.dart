@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Represents a condition, which need to be met in order for the rate my app dialog to open.
+/// Represents a condition, which need to be met in order for the Rate my app dialog to open.
 abstract class Condition {
-  /// The rate my app instance.
+  /// The Rate my app instance.
   @protected
   final RateMyApp rateMyApp;
 
@@ -28,7 +28,7 @@ abstract class Condition {
   bool onEventOccurred(RateMyAppEventType eventType) => false;
 
   /// Returns an iterable containing all conditions matching the specified type.
-  /// This can be particularly useful when you want to get a value of a condition added to a specified rate my app instance.
+  /// This can be particularly useful when you want to get a value of a condition added to a specified Rate my app instance.
   static Iterable<Condition> getFromRateMyApp(RateMyApp rateMyApp, Type type) {
     return rateMyApp.conditions.where((condition) => condition.runtimeType == type);
   }

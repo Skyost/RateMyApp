@@ -24,7 +24,7 @@ class RateMyApp {
   /// All conditions that should be met to show the dialog.
   List<Condition> conditions;
 
-  /// Creates a new rate my app instance.
+  /// Creates a new Rate my app instance.
   RateMyApp({
     this.preferencesPrefix = 'rateMyApp_',
     int minDays,
@@ -43,7 +43,7 @@ class RateMyApp {
     );
   }
 
-  /// Creates a new rate my app instance with custom conditions.
+  /// Creates a new Rate my app instance with custom conditions.
   RateMyApp.customConditions({
     this.preferencesPrefix = 'rateMyApp_',
     this.googlePlayIdentifier,
@@ -189,12 +189,12 @@ class RateMyApp {
   }
 }
 
-/// Represents all events that can occur during the rate my app lifecycle.
+/// Represents all events that can occur during the Rate my app lifecycle.
 enum RateMyAppEventType {
-  /// When rate my app is fully initialized.
+  /// When Rate my app is fully initialized.
   initialized,
 
-  /// When rate my app is saved.
+  /// When Rate my app is saved.
   saved,
 
   /// When a native iOS rating dialog will be opened.

@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
-/// Main rate my app instance.
+/// Main Rate my app instance.
 RateMyApp _rateMyApp = RateMyApp();
 
 /// First plugin test method.
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized(); // This allows to use async methods in the main method without any problem.
+
   _rateMyApp.init().then((_) {
+    // We initialize our Rate my app instance.
     runApp(_RateMyAppTestApp());
     _rateMyApp.conditions.forEach((condition) {
       if (condition is DebuggableCondition) {
-        print(condition.valuesAsString());
+        print(condition.valuesAsString()); // We iterate through our list of conditions and we print all debuggable ones.
       }
     });
 
-    print('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No'));
+    print('Are all conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No'));
   });
 }
 
-/// The main rate my app test widget.
+/// The main Rate my app test widget.
 class _RateMyAppTestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MaterialApp(
@@ -32,13 +34,13 @@ class _RateMyAppTestApp extends StatelessWidget {
       );
 }
 
-/// The body of the main rate my app test widget.
+/// The body of the main Rate my app test widget.
 class _RateMyAppTestAppBody extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _RateMyAppTestAppBodyState();
 }
 
-/// The body state of the main rate my app test widget.
+/// The body state of the main Rate my app test widget.
 class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
   @override
   Widget build(BuildContext context) => Padding(
@@ -49,27 +51,32 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            for (Condition condition in _rateMyApp.conditions) if (condition is DebuggableCondition) _textCenter(condition.valuesAsString()),
+            for (Condition condition in _rateMyApp.conditions)
+              if (condition is DebuggableCondition) // Same here, we put all debuggable conditions in a Text widget.
+                _textCenter(condition.valuesAsString()),
             _textCenter('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
             Padding(
               padding: EdgeInsets.only(top: 10),
               child: RaisedButton(
                 child: Text('Launch "Rate my app" dialog'),
-                onPressed: () => _rateMyApp.showRateDialog(context).then((_) => setState(() {})),
+                onPressed: () => _rateMyApp.showRateDialog(context).then((_) => setState(() {})), // We launch the default Rate my app dialog.
               ),
             ),
             RaisedButton(
               child: Text('Launch "Rate my app" star dialog'),
               onPressed: () => _rateMyApp.showStarRateDialog(context, onRatingChanged: (count) {
                 final Widget cancelButton = RateMyAppNoButton(
+                  // We create a custom "Cancel" button using the RateMyAppNoButton class.
                   _rateMyApp,
                   text: 'CANCEL',
                   callback: () => setState(() {}),
                 );
                 if (count == null || count == 0) {
+                  // If there is no rating (or a 0 star rating), we only have to return our cancel button.
                   return [cancelButton];
                 }
 
+                // Otherwise we can do some little more things...
                 String message = 'You\'ve put ' + count.round().toString() + ' star(s). ';
                 Color color;
                 switch (count.round()) {
@@ -106,7 +113,10 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                           backgroundColor: color,
                         ),
                       );
+
+                      // This allow to mimic a click on the default "Rate" button and thus update the conditions based on it ("Do not open again" condition for example) :
                       await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+
                       Navigator.pop(context);
                       setState(() {});
                     },
@@ -117,7 +127,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
             ),
             RaisedButton(
               child: Text('Reset'),
-              onPressed: () => _rateMyApp.reset().then((_) => setState(() {})),
+              onPressed: () => _rateMyApp.reset().then((_) => setState(() {})), // We reset all Rate my app conditions values.
             ),
           ],
         ),
