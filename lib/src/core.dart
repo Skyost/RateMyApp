@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -23,7 +22,7 @@ class RateMyApp {
   String appStoreIdentifier;
 
   /// All conditions that should be met to show the dialog.
-  Set<Condition> conditions;
+  List<Condition> conditions;
 
   /// Creates a new rate my app instance.
   RateMyApp({
@@ -34,8 +33,7 @@ class RateMyApp {
     int remindLaunches,
     this.googlePlayIdentifier,
     this.appStoreIdentifier,
-  }) : assert(preferencesPrefix != null) {
-    conditions = HashSet<Condition>();
+  }) : conditions = [], assert(preferencesPrefix != null) {
     populateWithDefaultConditions(
       minDays: minDays,
       remindDays: remindDays,
@@ -45,7 +43,7 @@ class RateMyApp {
   }
 
   /// Creates a new rate my app instance with custom conditions.
-  RateMyApp.withCustomConditions({
+  RateMyApp.customConditions({
     this.preferencesPrefix = 'rateMyApp_',
     this.googlePlayIdentifier,
     this.appStoreIdentifier,
@@ -78,7 +76,7 @@ class RateMyApp {
   }
 
   /// Whether the dialog should be opened.
-  bool get shouldOpenDialog => conditions.firstWhere((condition) => !condition.isMet, orElse: null) == null;
+  bool get shouldOpenDialog => conditions.firstWhere((condition) => !condition.isMet, orElse: () => null) == null;
 
   /// Returns the corresponding store identifier.
   String get storeIdentifier {

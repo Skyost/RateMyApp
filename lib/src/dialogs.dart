@@ -90,12 +90,12 @@ class RateMyAppDialog extends StatelessWidget {
               ),
               RateMyAppLaterButton(
                 rateMyApp,
-                text: rateButton,
+                text: laterButton,
                 validator: () => listener == null || listener(RateMyAppDialogButton.later),
               ),
               RateMyAppNoButton(
                 rateMyApp,
-                text: rateButton,
+                text: noButton,
                 validator: () => listener == null || listener(RateMyAppDialogButton.no),
               ),
             ],
@@ -287,7 +287,7 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
   Widget build(BuildContext context) => FlatButton(
         child: Text(text),
         onPressed: () async {
-          if (!validator()) {
+          if (validator != null && !validator()) {
             return;
           }
 

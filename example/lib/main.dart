@@ -70,7 +70,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                   return [cancelButton];
                 }
 
-                String message = 'You put ' + count.round().toString() + ' star(s). ';
+                String message = 'You\'ve put ' + count.round().toString() + ' star(s). ';
                 Color color;
                 switch (count.round()) {
                   case 1:
@@ -107,6 +107,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                         ),
                       );
                       await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+                      Navigator.pop(context);
                       setState(() {});
                     },
                   ),
