@@ -126,6 +126,10 @@ rateMyApp.init().then((_) {
 });
 ```
 
+If you want a more complete example, please check [this one](https://github.com/Skyost/rate_my_app/tree/master/example/) on Github.    
+You can also follow [the tutorial of Marcus Ng](https://youtu.be/gOiaSwp984s) on YouTube
+(for a replacement of `doNotOpenAgain`, see [Broadcasting events](#broadcasting-events)).
+
 ## Advanced
 
 ### Using custom identifiers

@@ -1,3 +1,7 @@
+## 0.5.0+3
+
+* Updated README and added a link to Marcus Ng video on YouTube.
+
 ## 0.5.0+2
 
 * Updated README and added more details about what has been deleted.
