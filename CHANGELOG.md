@@ -1,3 +1,7 @@
+## 0.5.0+2
+
+* Updated README and added more details about what has been deleted.
+
 ## 0.5.0+1
 
 * Updated example and README.
