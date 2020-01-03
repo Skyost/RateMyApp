@@ -175,7 +175,7 @@ Here are what events default conditions are listening to :
 * `DoNotOpenAgainCondition` : _Rate_ button press, _No_ button press.
 
 For example, starting from version 0.5.0, the getter/setter `doNotOpenAgain` has been removed.
-You must trigger the `DoNotOpenAgainCondition` either by calling a _Rate_ button press or a _No_ button press (see [Example on Github](https://github.com/Skyost/rate_my_app/tree/master/example/lib/main.dart#L120)).
+You must trigger the `DoNotOpenAgainCondition` either by calling a _Rate_ button press event or a _No_ button press event (see [Example on Github](https://github.com/Skyost/rate_my_app/tree/master/example/lib/main.dart#L120)).
 
 ## Contributions
 
