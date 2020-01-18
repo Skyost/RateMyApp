@@ -103,6 +103,7 @@ class RateMyApp {
     RateMyAppDialogButtonClickListener listener,
     bool ignoreIOS = false,
     DialogStyle dialogStyle,
+    VoidCallback onDismissed,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
       callEvent(RateMyAppEventType.iOSRequestReview);
@@ -120,6 +121,7 @@ class RateMyApp {
       laterButton: laterButton ?? 'MAYBE LATER',
       listener: listener,
       dialogStyle: dialogStyle ?? DialogStyle(),
+      onDismissed: onDismissed,
     );
   }
 
@@ -132,6 +134,7 @@ class RateMyApp {
     bool ignoreIOS = false,
     DialogStyle dialogStyle,
     StarRatingOptions starRatingOptions,
+    VoidCallback onDismissed,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
       callEvent(RateMyAppEventType.iOSRequestReview);
@@ -153,6 +156,7 @@ class RateMyApp {
             messagePadding: EdgeInsets.only(bottom: 20),
           ),
       starRatingOptions: starRatingOptions ?? StarRatingOptions(),
+      onDismissed: onDismissed,
     );
   }
 

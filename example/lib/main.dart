@@ -118,8 +118,8 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
 
                       // This allow to mimic a click on the default "Rate" button and thus update the conditions based on it ("Do not open again" condition for example) :
                       await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+                      Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
 
-                      Navigator.pop(context);
                       setState(() {});
                     },
                   ),

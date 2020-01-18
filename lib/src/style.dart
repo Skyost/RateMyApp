@@ -5,6 +5,9 @@ class DialogStyle {
   /// The title padding.
   final EdgeInsetsGeometry titlePadding;
 
+  /// The content padding.
+  final EdgeInsetsGeometry contentPadding;
+
   /// The title text align.
   final TextAlign titleAlign;
 
@@ -23,10 +26,11 @@ class DialogStyle {
   /// Creates a new dialog style instance.
   const DialogStyle({
     this.titlePadding = const EdgeInsets.all(0),
-    this.titleAlign = TextAlign.left,
+    this.contentPadding = const EdgeInsets.all(24),
+    this.titleAlign,
     this.titleStyle,
     this.messagePadding = const EdgeInsets.all(0),
-    this.messageAlign = TextAlign.left,
+    this.messageAlign,
     this.messageStyle,
   });
 }

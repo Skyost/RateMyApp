@@ -92,6 +92,7 @@ rateMyApp.init().then((_) {
       },
       ignoreIOS: false, // Set to false if you want to show the native Apple app rating dialog on iOS.
       dialogStyle: DialogStyle(), // Custom dialog styles.
+      onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
     );
     
     // Or if you prefer to show a star rating bar :
@@ -107,9 +108,9 @@ rateMyApp.init().then((_) {
             onPressed: () async {
               print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
               // You can handle the result as you want (for instance if the user puts 1 star then open your contact page, if he puts more then open the store page, etc...).
-              await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed); // This allows to mimic the behavior of the default "Rate" button. See "Advanced > Broadcasting events" for more information.
-              
-              Navigator.pop(context);
+              // This allows to mimic the behavior of the default "Rate" button. See "Advanced > Broadcasting events" for more information :
+              await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+              Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
             },
           ),
         ];
@@ -121,6 +122,7 @@ rateMyApp.init().then((_) {
         messagePadding: EdgeInsets.only(bottom: 20),
       ),
       starRatingOptions: StarRatingOptions(), // Custom star bar rating options.
+      onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
     );
   }
 });

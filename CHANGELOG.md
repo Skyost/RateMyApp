@@ -1,3 +1,8 @@
+## 0.5.0+4
+
+* Added the ability to run code when the dialog has been dismissed.
+* Added a dialog style that allows to change the content padding.
+
 ## 0.5.0+3
 
 * Updated README and added a link to Marcus Ng video on YouTube.
