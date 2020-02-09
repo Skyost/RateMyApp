@@ -1,3 +1,9 @@
+## 0.6.0
+
+* Added some styling options.
+* Now exposing the `BuildContext` in stars dialog.
+* Updated repository link.
+
 ## 0.5.0+4
 
 * Added the ability to run code when the dialog has been dismissed.

@@ -101,7 +101,7 @@ rateMyApp.init().then((_) {
       context,
       title: 'Rate this app', // The dialog title.
       message: 'You like this app ? Then take a little bit of your time to leave a rating :', // The dialog message.
-      onRatingChanged: (stars) { // Triggered when the user updates the star rating.
+      onRatingChanged: (_, stars) { // Triggered when the user updates the star rating.
         return [ // Return a list of actions (that will be shown at the bottom of the dialog).
           FlatButton(
             child: Text('OK'),

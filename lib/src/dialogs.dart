@@ -5,10 +5,16 @@ import 'package:rate_my_app/src/style.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 /// A simple dialog button click listener.
-typedef bool RateMyAppDialogButtonClickListener(RateMyAppDialogButton button);
+typedef RateMyAppDialogButtonClickListener = bool Function(RateMyAppDialogButton button);
 
 /// Validates a state when called in a function.
-typedef bool Validator();
+typedef Validator = bool Function();
+
+/// Allows to dynamically build actions.
+typedef DialogActionsBuilder = List<Widget> Function(BuildContext context);
+
+/// Allows to dynamically build actions according to the specified rating.
+typedef StarDialogActionsBuilder = List<Widget> Function(BuildContext context, double stars);
 
 /// A validator that always returns true.
 bool validatorTrue() => true;
@@ -26,6 +32,9 @@ class RateMyAppDialog extends StatelessWidget {
 
   /// The dialog's message.
   final String message;
+
+  /// The actions builder.
+  final DialogActionsBuilder actionsBuilder;
 
   /// The dialog's rate button.
   final String rateButton;
@@ -47,6 +56,7 @@ class RateMyAppDialog extends StatelessWidget {
     this.rateMyApp, {
     @required this.title,
     @required this.message,
+    this.actionsBuilder,
     @required this.rateButton,
     @required this.noButton,
     @required this.laterButton,
@@ -80,28 +90,8 @@ class RateMyAppDialog extends StatelessWidget {
           ),
         ),
         contentPadding: dialogStyle.contentPadding,
-        actions: [
-          Wrap(
-            alignment: WrapAlignment.end,
-            children: [
-              RateMyAppRateButton(
-                rateMyApp,
-                text: rateButton,
-                validator: () => listener == null || listener(RateMyAppDialogButton.rate),
-              ),
-              RateMyAppLaterButton(
-                rateMyApp,
-                text: laterButton,
-                validator: () => listener == null || listener(RateMyAppDialogButton.later),
-              ),
-              RateMyAppNoButton(
-                rateMyApp,
-                text: noButton,
-                validator: () => listener == null || listener(RateMyAppDialogButton.no),
-              ),
-            ],
-          ),
-        ],
+        shape: dialogStyle.dialogShape,
+        actions: (actionsBuilder ?? _defaultActionsBuilder)(context),
       );
 
   /// Opens the dialog.
@@ -115,6 +105,7 @@ class RateMyAppDialog extends StatelessWidget {
     @required String laterButton,
     RateMyAppDialogButtonClickListener listener,
     @required DialogStyle dialogStyle,
+    DialogActionsBuilder actionsBuilder,
     VoidCallback onDismissed,
   }) async {
     RateMyAppDialogButton clickedButton = await showDialog<RateMyAppDialogButton>(
@@ -123,6 +114,7 @@ class RateMyAppDialog extends StatelessWidget {
         rateMyApp,
         title: title,
         message: message,
+        actionsBuilder: actionsBuilder,
         rateButton: rateButton,
         noButton: noButton,
         laterButton: laterButton,
@@ -135,6 +127,29 @@ class RateMyAppDialog extends StatelessWidget {
       onDismissed();
     }
   }
+
+  List<Widget> _defaultActionsBuilder(BuildContext context) => [
+        Wrap(
+          alignment: WrapAlignment.end,
+          children: [
+            RateMyAppRateButton(
+              rateMyApp,
+              text: rateButton,
+              validator: () => listener == null || listener(RateMyAppDialogButton.rate),
+            ),
+            RateMyAppLaterButton(
+              rateMyApp,
+              text: laterButton,
+              validator: () => listener == null || listener(RateMyAppDialogButton.later),
+            ),
+            RateMyAppNoButton(
+              rateMyApp,
+              text: noButton,
+              validator: () => listener == null || listener(RateMyAppDialogButton.no),
+            ),
+          ],
+        ),
+      ];
 }
 
 /// The Rate my app star dialog.
@@ -149,7 +164,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   final String message;
 
   /// The rating changed callback.
-  final List<Widget> Function(double) onRatingChanged;
+  final StarDialogActionsBuilder actionsBuilder;
 
   /// The dialog's style.
   final DialogStyle dialogStyle;
@@ -162,7 +177,7 @@ class RateMyAppStarDialog extends StatefulWidget {
     this.rateMyApp, {
     @required this.title,
     @required this.message,
-    this.onRatingChanged,
+    this.actionsBuilder,
     @required this.dialogStyle,
     @required this.starRatingOptions,
   })  : assert(title != null),
@@ -181,7 +196,7 @@ class RateMyAppStarDialog extends StatefulWidget {
     TextAlign titleAlign,
     @required String message,
     TextAlign messageAlign,
-    List<Widget> Function(double) onRatingChanged,
+    StarDialogActionsBuilder actionsBuilder,
     @required DialogStyle dialogStyle,
     @required StarRatingOptions starRatingOptions,
     VoidCallback onDismissed,
@@ -192,7 +207,7 @@ class RateMyAppStarDialog extends StatefulWidget {
         rateMyApp,
         title: title,
         message: message,
-        onRatingChanged: onRatingChanged,
+        actionsBuilder: actionsBuilder,
         dialogStyle: dialogStyle,
         starRatingOptions: starRatingOptions,
       ),
@@ -204,7 +219,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   }
 
   /// Used when there is no onRatingChanged callback.
-  List<Widget> _defaultOnRatingChanged(double rating) => [
+  List<Widget> _defaultOnRatingChanged(BuildContext context, double rating) => [
         RateMyAppRateButton(
           rateMyApp,
           text: 'RATE',
@@ -227,8 +242,8 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
 
   @override
   void initState() {
-    _currentRating = widget.starRatingOptions.initialRating;
     super.initState();
+    _currentRating = widget.starRatingOptions.initialRating;
   }
 
   @override
@@ -264,13 +279,14 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
                 allowHalfRating: widget.starRatingOptions.allowHalfRating,
                 halfFilledIconData: widget.starRatingOptions.halfFilledIconData,
                 filledIconData: widget.starRatingOptions.filledIconData,
-                rating: _currentRating == null ? 0 : _currentRating.toDouble(),
+                rating: _currentRating == null ? 0.0 : _currentRating.toDouble(),
               ),
             ],
           ),
         ),
         contentPadding: widget.dialogStyle.contentPadding,
-        actions: widget.onRatingChanged == null ? widget._defaultOnRatingChanged(_currentRating) : widget.onRatingChanged(_currentRating),
+        shape: widget.dialogStyle.dialogShape,
+        actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, _currentRating),
       );
 }
 

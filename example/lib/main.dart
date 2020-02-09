@@ -29,7 +29,7 @@ class _RateMyAppTestApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Rate my app !'),
+            title: const Text('Rate my app !'),
           ),
           body: _RateMyAppTestAppBody(),
         ),
@@ -46,9 +46,7 @@ class _RateMyAppTestAppBody extends StatefulWidget {
 class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
   @override
   Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 40,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,15 +56,15 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
                 _textCenter(condition.valuesAsString()),
             _textCenter('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
             Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: RaisedButton(
-                child: Text('Launch "Rate my app" dialog'),
+                child: const Text('Launch "Rate my app" dialog'),
                 onPressed: () => _rateMyApp.showRateDialog(context).then((_) => setState(() {})), // We launch the default Rate my app dialog.
               ),
             ),
             RaisedButton(
-              child: Text('Launch "Rate my app" star dialog'),
-              onPressed: () => _rateMyApp.showStarRateDialog(context, onRatingChanged: (count) {
+              child: const Text('Launch "Rate my app" star dialog'),
+              onPressed: () => _rateMyApp.showStarRateDialog(context, actionsBuilder: (_, count) {
                 final Widget cancelButton = RateMyAppNoButton(
                   // We create a custom "Cancel" button using the RateMyAppNoButton class.
                   _rateMyApp,
@@ -106,7 +104,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
 
                 return [
                   FlatButton(
-                    child: Text('OK'),
+                    child: const Text('OK'),
                     onPressed: () async {
                       print(message);
                       Scaffold.of(context).showSnackBar(
@@ -128,7 +126,7 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
               }),
             ),
             RaisedButton(
-              child: Text('Reset'),
+              child: const Text('Reset'),
               onPressed: () => _rateMyApp.reset().then((_) => setState(() {})), // We reset all Rate my app conditions values.
             ),
           ],
@@ -147,18 +145,21 @@ class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
 class MaxDialogOpeningCondition extends DebuggableCondition {
   /// Maximum default dialog opening count (inclusive).
   final int maxDialogOpeningCount;
+
   /// Maximum star dialog opening count (inclusive).
   final int maxStarDialogOpeningCount;
+
   /// Current dialog opening count.
   int dialogOpeningCount;
+
   /// Current star dialog opening count.
   int starDialogOpeningCount;
 
   /// Creates a new max dialog opening condition instance.
   MaxDialogOpeningCondition(
     RateMyApp rateMyApp, {
-   this.maxDialogOpeningCount = 3,
-   this.maxStarDialogOpeningCount = 3,
+    this.maxDialogOpeningCount = 3,
+    this.maxStarDialogOpeningCount = 3,
   })  : assert(maxDialogOpeningCount != null),
         assert(maxStarDialogOpeningCount != null),
         super(rateMyApp);
@@ -186,12 +187,14 @@ class MaxDialogOpeningCondition extends DebuggableCondition {
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if(eventType == RateMyAppEventType.dialogOpen) { // If the default dialog has been opened, we update our default dialog counter.
+    if (eventType == RateMyAppEventType.dialogOpen) {
+      // If the default dialog has been opened, we update our default dialog counter.
       dialogOpeningCount++;
       return true; // Returning true allows to trigger a shared preferences save.
     }
 
-    if(eventType == RateMyAppEventType.starDialogOpen) { // If the star dialog has been opened, we update our star dialog counter.
+    if (eventType == RateMyAppEventType.starDialogOpen) {
+      // If the star dialog has been opened, we update our star dialog counter.
       starDialogOpeningCount++;
       return true;
     }

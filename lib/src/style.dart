@@ -23,6 +23,9 @@ class DialogStyle {
   /// The message padding.
   final TextStyle messageStyle;
 
+  /// The dialog shape.
+  final ShapeBorder dialogShape;
+
   /// Creates a new dialog style instance.
   const DialogStyle({
     this.titlePadding = const EdgeInsets.all(0),
@@ -32,6 +35,7 @@ class DialogStyle {
     this.messagePadding = const EdgeInsets.all(0),
     this.messageAlign,
     this.messageStyle,
+    this.dialogShape,
   });
 }
 
@@ -71,5 +75,6 @@ class StarRatingOptions {
     this.allowHalfRating = false,
     this.halfFilledIconData,
     this.filledIconData,
-  }) : assert(starsSize != null), assert(allowHalfRating != null);
+  })  : assert(starsSize != null),
+        assert(allowHalfRating != null);
 }

@@ -1,5 +1,5 @@
 group 'fr.skyost.rate_my_app'
-version '0.1'
+version '0.6.0'
 
 buildscript {
     repositories {

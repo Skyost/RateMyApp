@@ -1,0 +1,10 @@
+include: package:pedantic/analysis_options.yaml
+
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_single_quotes
+
+analyzer:
+  errors:
+    omit_local_variable_types: ignore

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pedantic/pedantic.dart';
 import 'package:rate_my_app/src/conditions.dart';
 import 'package:rate_my_app/src/dialogs.dart';
 import 'package:rate_my_app/src/style.dart';
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
 class RateMyApp {
   /// The plugin channel.
-  static const MethodChannel _channel = const MethodChannel('rate_my_app');
+  static const MethodChannel _channel = MethodChannel('rate_my_app');
 
   /// Prefix for preferences.
   String preferencesPrefix;
@@ -57,7 +58,7 @@ class RateMyApp {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     conditions.forEach((condition) => condition.readFromPreferences(preferences));
 
-    callEvent(RateMyAppEventType.initialized);
+    return callEvent(RateMyAppEventType.initialized);
   }
 
   /// Saves the plugin current data to the shared preferences.
@@ -67,7 +68,7 @@ class RateMyApp {
       await condition.saveToPreferences(preferences);
     }
 
-    callEvent(RateMyAppEventType.saved);
+    return callEvent(RateMyAppEventType.saved);
   }
 
   /// Resets the plugin data.
@@ -97,6 +98,7 @@ class RateMyApp {
     BuildContext context, {
     String title,
     String message,
+    DialogActionsBuilder actionsBuilder,
     String rateButton,
     String noButton,
     String laterButton,
@@ -106,21 +108,22 @@ class RateMyApp {
     VoidCallback onDismissed,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
-      callEvent(RateMyAppEventType.iOSRequestReview);
+      unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
       return _channel.invokeMethod('requestReview');
     }
 
-    callEvent(RateMyAppEventType.dialogOpen);
+    unawaited(callEvent(RateMyAppEventType.dialogOpen));
     return RateMyAppDialog.openDialog(
       context,
       this,
       title: title ?? 'Rate this app',
       message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+      actionsBuilder: actionsBuilder,
       rateButton: rateButton ?? 'RATE',
       noButton: noButton ?? 'NO THANKS',
       laterButton: laterButton ?? 'MAYBE LATER',
       listener: listener,
-      dialogStyle: dialogStyle ?? DialogStyle(),
+      dialogStyle: dialogStyle ?? const DialogStyle(),
       onDismissed: onDismissed,
     );
   }
@@ -130,32 +133,32 @@ class RateMyApp {
     BuildContext context, {
     String title,
     String message,
-    List<Widget> Function(double) onRatingChanged,
+    StarDialogActionsBuilder actionsBuilder,
     bool ignoreIOS = false,
     DialogStyle dialogStyle,
     StarRatingOptions starRatingOptions,
     VoidCallback onDismissed,
   }) async {
     if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
-      callEvent(RateMyAppEventType.iOSRequestReview);
+      unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
       return _channel.invokeMethod('requestReview');
     }
 
-    assert(onRatingChanged != null);
-    callEvent(RateMyAppEventType.starDialogOpen);
+    assert(actionsBuilder != null);
+    unawaited(callEvent(RateMyAppEventType.starDialogOpen));
     return RateMyAppStarDialog.openDialog(
       context,
       this,
       title: title ?? 'Rate this app',
       message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
-      onRatingChanged: onRatingChanged,
+      actionsBuilder: actionsBuilder,
       dialogStyle: dialogStyle ??
-          DialogStyle(
+          const DialogStyle(
             titleAlign: TextAlign.center,
             messageAlign: TextAlign.center,
             messagePadding: EdgeInsets.only(bottom: 20),
           ),
-      starRatingOptions: starRatingOptions ?? StarRatingOptions(),
+      starRatingOptions: starRatingOptions ?? const StarRatingOptions(),
       onDismissed: onDismissed,
     );
   }
