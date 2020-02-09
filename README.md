@@ -93,6 +93,7 @@ rateMyApp.init().then((_) {
       ignoreIOS: false, // Set to false if you want to show the native Apple app rating dialog on iOS.
       dialogStyle: DialogStyle(), // Custom dialog styles.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
+      // actionsBuilder: (_) => [], // This one allows you to use your own buttons. 
     );
     
     // Or if you prefer to show a star rating bar :
@@ -101,7 +102,7 @@ rateMyApp.init().then((_) {
       context,
       title: 'Rate this app', // The dialog title.
       message: 'You like this app ? Then take a little bit of your time to leave a rating :', // The dialog message.
-      onRatingChanged: (_, stars) { // Triggered when the user updates the star rating.
+      actionsBuilder: (_, stars) { // Triggered when the user updates the star rating.
         return [ // Return a list of actions (that will be shown at the bottom of the dialog).
           FlatButton(
             child: Text('OK'),
