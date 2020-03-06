@@ -1,3 +1,7 @@
+## 0.6.0+2
+
+* Fixed another problem with `pedantic`.
+
 ## 0.6.0+1
 
 * Fixed a problem with `pedantic`.
