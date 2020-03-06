@@ -1,3 +1,7 @@
+## 0.6.0+1
+
+* Fixed a problem with `pedantic`.
+
 ## 0.6.0
 
 * Added some styling options.
