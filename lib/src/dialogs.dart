@@ -5,7 +5,8 @@ import 'package:rate_my_app/src/style.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 /// A simple dialog button click listener.
-typedef RateMyAppDialogButtonClickListener = bool Function(RateMyAppDialogButton button);
+typedef RateMyAppDialogButtonClickListener = bool Function(
+    RateMyAppDialogButton button);
 
 /// Validates a state when called in a function.
 typedef Validator = bool Function();
@@ -14,7 +15,8 @@ typedef Validator = bool Function();
 typedef DialogActionsBuilder = List<Widget> Function(BuildContext context);
 
 /// Allows to dynamically build actions according to the specified rating.
-typedef StarDialogActionsBuilder = List<Widget> Function(BuildContext context, double stars);
+typedef StarDialogActionsBuilder = List<Widget> Function(
+    BuildContext context, double stars);
 
 /// A validator that always returns true.
 bool validatorTrue() => true;
@@ -108,7 +110,8 @@ class RateMyAppDialog extends StatelessWidget {
     DialogActionsBuilder actionsBuilder,
     VoidCallback onDismissed,
   }) async {
-    RateMyAppDialogButton clickedButton = await showDialog<RateMyAppDialogButton>(
+    RateMyAppDialogButton clickedButton =
+        await showDialog<RateMyAppDialogButton>(
       context: context,
       builder: (context) => RateMyAppDialog(
         rateMyApp,
@@ -135,17 +138,20 @@ class RateMyAppDialog extends StatelessWidget {
             RateMyAppRateButton(
               rateMyApp,
               text: rateButton,
-              validator: () => listener == null || listener(RateMyAppDialogButton.rate),
+              validator: () =>
+                  listener == null || listener(RateMyAppDialogButton.rate),
             ),
             RateMyAppLaterButton(
               rateMyApp,
               text: laterButton,
-              validator: () => listener == null || listener(RateMyAppDialogButton.later),
+              validator: () =>
+                  listener == null || listener(RateMyAppDialogButton.later),
             ),
             RateMyAppNoButton(
               rateMyApp,
               text: noButton,
-              validator: () => listener == null || listener(RateMyAppDialogButton.no),
+              validator: () =>
+                  listener == null || listener(RateMyAppDialogButton.no),
             ),
           ],
         ),
@@ -160,8 +166,8 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// The dialog's title.
   final String title;
 
-  /// The dialog's message.
-  final String message;
+  /// The dialog's header.
+  final Widget header;
 
   /// The rating changed callback.
   final StarDialogActionsBuilder actionsBuilder;
@@ -176,12 +182,12 @@ class RateMyAppStarDialog extends StatefulWidget {
   const RateMyAppStarDialog(
     this.rateMyApp, {
     @required this.title,
-    @required this.message,
+    @required this.header,
     this.actionsBuilder,
     @required this.dialogStyle,
     @required this.starRatingOptions,
   })  : assert(title != null),
-        assert(message != null),
+        assert(header != null),
         assert(dialogStyle != null),
         assert(starRatingOptions != null);
 
@@ -194,7 +200,7 @@ class RateMyAppStarDialog extends StatefulWidget {
     RateMyApp rateMyApp, {
     @required String title,
     TextAlign titleAlign,
-    @required String message,
+    @required Widget header,
     TextAlign messageAlign,
     StarDialogActionsBuilder actionsBuilder,
     @required DialogStyle dialogStyle,
@@ -206,7 +212,7 @@ class RateMyAppStarDialog extends StatefulWidget {
       builder: (context) => RateMyAppStarDialog(
         rateMyApp,
         title: title,
-        message: message,
+        header: header,
         actionsBuilder: actionsBuilder,
         dialogStyle: dialogStyle,
         starRatingOptions: starRatingOptions,
@@ -262,11 +268,7 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
             children: [
               Padding(
                 padding: widget.dialogStyle.messagePadding,
-                child: Text(
-                  widget.message,
-                  style: widget.dialogStyle.messageStyle,
-                  textAlign: widget.dialogStyle.messageAlign,
-                ),
+                child: widget.header,
               ),
               SmoothStarRating(
                 onRatingChanged: (rating) {
@@ -279,14 +281,16 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
                 allowHalfRating: widget.starRatingOptions.allowHalfRating,
                 halfFilledIconData: widget.starRatingOptions.halfFilledIconData,
                 filledIconData: widget.starRatingOptions.filledIconData,
-                rating: _currentRating == null ? 0.0 : _currentRating.toDouble(),
+                rating:
+                    _currentRating == null ? 0.0 : _currentRating.toDouble(),
               ),
             ],
           ),
         ),
         contentPadding: widget.dialogStyle.contentPadding,
         shape: widget.dialogStyle.dialogShape,
-        actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, _currentRating),
+        actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(
+            context, _currentRating),
       );
 }
 
@@ -371,8 +375,10 @@ class RateMyAppLaterButton extends _RateMyAppDialogButton {
         );
 
   @override
-  Future<void> onButtonClicked(BuildContext context) => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed).then((_) {
-        Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.later);
+  Future<void> onButtonClicked(BuildContext context) =>
+      rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed).then((_) {
+        Navigator.pop<RateMyAppDialogButton>(
+            context, RateMyAppDialogButton.later);
       });
 }
 
@@ -392,7 +398,8 @@ class RateMyAppNoButton extends _RateMyAppDialogButton {
         );
 
   @override
-  Future<void> onButtonClicked(BuildContext context) => rateMyApp.callEvent(RateMyAppEventType.noButtonPressed).then((_) {
+  Future<void> onButtonClicked(BuildContext context) =>
+      rateMyApp.callEvent(RateMyAppEventType.noButtonPressed).then((_) {
         Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.no);
       });
 }

@@ -56,7 +56,8 @@ class RateMyApp {
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    conditions.forEach((condition) => condition.readFromPreferences(preferences));
+    conditions
+        .forEach((condition) => condition.readFromPreferences(preferences));
 
     return callEvent(RateMyAppEventType.initialized);
   }
@@ -78,7 +79,10 @@ class RateMyApp {
   }
 
   /// Whether the dialog should be opened.
-  bool get shouldOpenDialog => conditions.firstWhere((condition) => !condition.isMet, orElse: () => null) == null;
+  bool get shouldOpenDialog =>
+      conditions.firstWhere((condition) => !condition.isMet,
+          orElse: () => null) ==
+      null;
 
   /// Returns the corresponding store identifier.
   String get storeIdentifier {
@@ -107,7 +111,9 @@ class RateMyApp {
     DialogStyle dialogStyle,
     VoidCallback onDismissed,
   }) async {
-    if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
+    if (!ignoreIOS &&
+        Platform.isIOS &&
+        await _channel.invokeMethod('canRequestReview')) {
       unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
       return _channel.invokeMethod('requestReview');
     }
@@ -117,7 +123,8 @@ class RateMyApp {
       context,
       this,
       title: title ?? 'Rate this app',
-      message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+      message: message ??
+          'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
       actionsBuilder: actionsBuilder,
       rateButton: rateButton ?? 'RATE',
       noButton: noButton ?? 'NO THANKS',
@@ -132,14 +139,16 @@ class RateMyApp {
   Future<void> showStarRateDialog(
     BuildContext context, {
     String title,
-    String message,
+    Widget header,
     StarDialogActionsBuilder actionsBuilder,
     bool ignoreIOS = false,
     DialogStyle dialogStyle,
     StarRatingOptions starRatingOptions,
     VoidCallback onDismissed,
   }) async {
-    if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
+    if (!ignoreIOS &&
+        Platform.isIOS &&
+        await _channel.invokeMethod('canRequestReview')) {
       unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
       return _channel.invokeMethod('requestReview');
     }
@@ -150,7 +159,12 @@ class RateMyApp {
       context,
       this,
       title: title ?? 'Rate this app',
-      message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
+      header: header ??
+          Text(
+            'You like this app ? Then take a little bit of your time to leave a rating :',
+            style: dialogStyle?.messageStyle,
+            textAlign: dialogStyle?.messageAlign,
+          ),
       actionsBuilder: actionsBuilder,
       dialogStyle: dialogStyle ??
           const DialogStyle(
@@ -171,7 +185,8 @@ class RateMyApp {
   /// Calls the specified event.
   Future<void> callEvent(RateMyAppEventType eventType) {
     bool saveSharedPreferences = false;
-    conditions.forEach((condition) => saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences);
+    conditions.forEach((condition) => saveSharedPreferences =
+        condition.onEventOccurred(eventType) || saveSharedPreferences);
     return saveSharedPreferences ? save() : null;
   }
 
