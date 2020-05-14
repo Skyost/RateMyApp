@@ -71,10 +71,10 @@ class StarRatingOptions {
     this.starsBorderColor = Colors.orangeAccent,
     this.starsSize = 40,
     this.starsSpacing = 0,
-    this.initialRating,
+    this.initialRating = 0.0,
     this.allowHalfRating = false,
-    this.halfFilledIconData,
-    this.filledIconData,
+    this.halfFilledIconData = Icons.star_half,
+    this.filledIconData = Icons.star,
   })  : assert(starsSize != null),
         assert(allowHalfRating != null);
 }

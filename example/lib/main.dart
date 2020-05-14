@@ -45,93 +45,102 @@ class _RateMyAppTestAppBody extends StatefulWidget {
 /// The body state of the main Rate my app test widget.
 class _RateMyAppTestAppBodyState extends State<_RateMyAppTestAppBody> {
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            for (Condition condition in _rateMyApp.conditions)
-              if (condition is DebuggableCondition) // Same here, we put all debuggable conditions in a Text widget.
-                _textCenter(condition.valuesAsString()),
-            _textCenter('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: RaisedButton(
-                child: const Text('Launch "Rate my app" dialog'),
-                onPressed: () => _rateMyApp.showRateDialog(context).then((_) => setState(() {})), // We launch the default Rate my app dialog.
-              ),
-            ),
-            RaisedButton(
-              child: const Text('Launch "Rate my app" star dialog'),
-              onPressed: () => _rateMyApp.showStarRateDialog(context, actionsBuilder: (_, count) {
-                final Widget cancelButton = RateMyAppNoButton(
-                  // We create a custom "Cancel" button using the RateMyAppNoButton class.
-                  _rateMyApp,
-                  text: 'CANCEL',
-                  callback: () => setState(() {}),
-                );
-                if (count == null || count == 0) {
-                  // If there is no rating (or a 0 star rating), we only have to return our cancel button.
-                  return [cancelButton];
-                }
-
-                // Otherwise we can do some little more things...
-                String message = 'You\'ve put ' + count.round().toString() + ' star(s). ';
-                Color color;
-                switch (count.round()) {
-                  case 1:
-                    message += 'Did this app hurt you physically ?';
-                    color = Colors.red;
-                    break;
-                  case 2:
-                    message += 'That\'s not really cool man.';
-                    color = Colors.orange;
-                    break;
-                  case 3:
-                    message += 'Well, it\'s average.';
-                    color = Colors.yellow;
-                    break;
-                  case 4:
-                    message += 'This is cool, like this app.';
-                    color = Colors.lime;
-                    break;
-                  case 5:
-                    message += 'Great ! <3';
-                    color = Colors.green;
-                    break;
-                }
-
-                return [
-                  FlatButton(
-                    child: const Text('OK'),
-                    onPressed: () async {
-                      print(message);
-                      Scaffold.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(message),
-                          backgroundColor: color,
-                        ),
-                      );
-
-                      // This allow to mimic a click on the default "Rate" button and thus update the conditions based on it ("Do not open again" condition for example) :
-                      await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
-                      Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
-
-                      setState(() {});
-                    },
-                  ),
-                  cancelButton,
-                ];
-              }),
-            ),
-            RaisedButton(
-              child: const Text('Reset'),
-              onPressed: () => _rateMyApp.reset().then((_) => setState(() {})), // We reset all Rate my app conditions values.
-            ),
-          ],
+  Widget build(BuildContext context) {
+    List<Widget> widgets = [
+      _textCenter('Are conditions met ? ' + (_rateMyApp.shouldOpenDialog ? 'Yes' : 'No')),
+      Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: RaisedButton(
+          child: const Text('Launch "Rate my app" dialog'),
+          onPressed: () => _rateMyApp.showRateDialog(context).then((_) => setState(() {})), // We launch the default Rate my app dialog.
         ),
-      );
+      ),
+      RaisedButton(
+        child: const Text('Launch "Rate my app" star dialog'),
+        onPressed: () => _rateMyApp.showStarRateDialog(context, actionsBuilder: (_, count) {
+          final Widget cancelButton = RateMyAppNoButton(
+            // We create a custom "Cancel" button using the RateMyAppNoButton class.
+            _rateMyApp,
+            text: 'CANCEL',
+            callback: () => setState(() {}),
+          );
+          if (count == null || count == 0) {
+            // If there is no rating (or a 0 star rating), we only have to return our cancel button.
+            return [cancelButton];
+          }
+
+          // Otherwise we can do some little more things...
+          String message = 'You\'ve put ' + count.round().toString() + ' star(s). ';
+          Color color;
+          switch (count.round()) {
+            case 1:
+              message += 'Did this app hurt you physically ?';
+              color = Colors.red;
+              break;
+            case 2:
+              message += 'That\'s not really cool man.';
+              color = Colors.orange;
+              break;
+            case 3:
+              message += 'Well, it\'s average.';
+              color = Colors.yellow;
+              break;
+            case 4:
+              message += 'This is cool, like this app.';
+              color = Colors.lime;
+              break;
+            case 5:
+              message += 'Great ! <3';
+              color = Colors.green;
+              break;
+          }
+
+          return [
+            FlatButton(
+              child: const Text('OK'),
+              onPressed: () async {
+                print(message);
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                    backgroundColor: color,
+                  ),
+                );
+
+                // This allow to mimic a click on the default "Rate" button and thus update the conditions based on it ("Do not open again" condition for example) :
+                await _rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+                Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+
+                setState(() {});
+              },
+            ),
+            cancelButton,
+          ];
+        }),
+      ),
+      RaisedButton(
+        child: const Text('Reset'),
+        onPressed: () => _rateMyApp.reset().then((_) => setState(() {})), // We reset all Rate my app conditions values.
+      ),
+    ];
+
+    for(int i = 0, j = 0; i < _rateMyApp.conditions.length; i++) {
+      Condition condition = _rateMyApp.conditions[i];
+      if(condition is DebuggableCondition) {
+        widgets.insert(j, _textCenter(condition.valuesAsString()));
+        j++;
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: widgets,
+      ),
+    );
+  }
 
   /// Returns a centered text.
   Text _textCenter(String content) => Text(
