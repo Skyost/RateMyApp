@@ -1,6 +1,8 @@
-## 0.6.0+4
+## 0.6.1
 
 * Added the ability to change the dialog default content.
+* Added a `RateMyAppBuilder`.
+* Improved example project.
 
 ## 0.6.0+3
 

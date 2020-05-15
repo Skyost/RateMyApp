@@ -4,18 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Represents a condition, which need to be met in order for the Rate my app dialog to open.
 abstract class Condition {
-  /// The Rate my app instance.
-  @protected
-  final RateMyApp rateMyApp;
-
-  /// Creates a new condition instance.
-  const Condition(this.rateMyApp) : assert(rateMyApp != null);
-
   /// Reads the condition values from the specified shared preferences.
-  void readFromPreferences(SharedPreferences preferences);
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix);
 
   /// Saves the condition values to the specified shared preferences.
-  Future<void> saveToPreferences(SharedPreferences preferences);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix);
 
   /// Resets the condition values.
   void reset();
@@ -26,21 +19,12 @@ abstract class Condition {
   /// Triggered when an even occurs in the plugin lifecycle.
   /// Return true to save the shared preferences, false otherwise.
   bool onEventOccurred(RateMyAppEventType eventType) => false;
-
-  /// Returns an iterable containing all conditions matching the specified type.
-  /// This can be particularly useful when you want to get a value of a condition added to a specified Rate my app instance.
-  static Iterable<Condition> getFromRateMyApp(RateMyApp rateMyApp, Type type) {
-    return rateMyApp.conditions.where((condition) => condition.runtimeType == type);
-  }
 }
 
 /// A condition that can easily be displayed thanks to the provided method.
 abstract class DebuggableCondition extends Condition {
-  /// Creates a new debuggable condition instance.
-  const DebuggableCondition(RateMyApp rateMyApp) : super(rateMyApp);
-
   /// Gets the condition values in a readable string.
-  String valuesAsString();
+  String get valuesAsString;
 }
 
 /// The minimum days condition.
@@ -55,22 +39,20 @@ class MinimumDaysCondition extends DebuggableCondition {
   DateTime baseLaunchDate;
 
   /// Creates a new minimum days condition instance.
-  MinimumDaysCondition(
-    RateMyApp rateMyApp, {
+  MinimumDaysCondition({
     @required this.minDays,
     @required this.remindDays,
   })  : assert(minDays != null),
-        assert(remindDays != null),
-        super(rateMyApp);
+        assert(remindDays != null);
 
   @override
-  void readFromPreferences(SharedPreferences preferences) {
-    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt(rateMyApp.preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch);
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt(preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch);
   }
 
   @override
-  Future<void> saveToPreferences(SharedPreferences preferences) {
-    return preferences.setInt(rateMyApp.preferencesPrefix + 'baseLaunchDate', baseLaunchDate.millisecondsSinceEpoch);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    return preferences.setInt(preferencesPrefix + 'baseLaunchDate', baseLaunchDate.millisecondsSinceEpoch);
   }
 
   @override
@@ -94,7 +76,7 @@ class MinimumDaysCondition extends DebuggableCondition {
   }
 
   @override
-  String valuesAsString() {
+  String get valuesAsString {
     return 'Minimum days : ' + minDays.toString() + '\nBase launch : ' + _dateToString(baseLaunchDate) + '\nRemind days : ' + remindDays.toString();
   }
 
@@ -114,22 +96,20 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
   int launches;
 
   /// Creates a new minimum app launches condition instance.
-  MinimumAppLaunchesCondition(
-    RateMyApp rateMyApp, {
+  MinimumAppLaunchesCondition({
     @required this.minLaunches,
     @required this.remindLaunches,
   })  : assert(minLaunches != null),
-        assert(remindLaunches != null),
-        super(rateMyApp);
+        assert(remindLaunches != null);
 
   @override
-  void readFromPreferences(SharedPreferences preferences) {
-    launches = preferences.getInt(rateMyApp.preferencesPrefix + 'launches') ?? 0;
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    launches = preferences.getInt(preferencesPrefix + 'launches') ?? 0;
   }
 
   @override
-  Future<void> saveToPreferences(SharedPreferences preferences) {
-    return preferences.setInt(rateMyApp.preferencesPrefix + 'launches', launches);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    return preferences.setInt(preferencesPrefix + 'launches', launches);
   }
 
   @override
@@ -154,7 +134,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
   }
 
   @override
-  String valuesAsString() {
+  String get valuesAsString {
     return 'Minimum launches : ' + minLaunches.toString() + '\nCurrent launches : ' + launches.toString() + '\nRemind launches : ' + remindLaunches.toString();
   }
 }
@@ -164,17 +144,14 @@ class DoNotOpenAgainCondition extends DebuggableCondition {
   /// Whether the dialog should not be opened again.
   bool doNotOpenAgain;
 
-  /// Creates a new do not open again condition instance.
-  DoNotOpenAgainCondition(RateMyApp rateMyApp) : super(rateMyApp);
-
   @override
-  void readFromPreferences(SharedPreferences preferences) {
-    doNotOpenAgain = preferences.getBool(rateMyApp.preferencesPrefix + 'doNotOpenAgain') ?? false;
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    doNotOpenAgain = preferences.getBool(preferencesPrefix + 'doNotOpenAgain') ?? false;
   }
 
   @override
-  Future<void> saveToPreferences(SharedPreferences preferences) {
-    return preferences.setBool(rateMyApp.preferencesPrefix + 'doNotOpenAgain', doNotOpenAgain);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    return preferences.setBool(preferencesPrefix + 'doNotOpenAgain', doNotOpenAgain);
   }
 
   @override
@@ -194,7 +171,7 @@ class DoNotOpenAgainCondition extends DebuggableCondition {
   }
 
   @override
-  String valuesAsString() {
+  String get valuesAsString {
     return 'Do not open again ? ' + (doNotOpenAgain ? 'Yes' : 'No');
   }
 }

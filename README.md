@@ -90,10 +90,11 @@ rateMyApp.init().then((_) {
         
         return true; // Return false if you want to cancel the click event.
       },
-      ignoreIOS: false, // Set to false if you want to show the native Apple app rating dialog on iOS.
+      ignoreIOS: false, // Set to false if you want to show the Apple's native app rating dialog on iOS.
       dialogStyle: DialogStyle(), // Custom dialog styles.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
-      // actionsBuilder: (_) => [], // This one allows you to use your own buttons. 
+      // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
+      // actionsBuilder: (context) => [], // This one allows you to use your own buttons. 
     );
     
     // Or if you prefer to show a star rating bar :
@@ -102,7 +103,8 @@ rateMyApp.init().then((_) {
       context,
       title: 'Rate this app', // The dialog title.
       message: 'You like this app ? Then take a little bit of your time to leave a rating :', // The dialog message.
-      actionsBuilder: (_, stars) { // Triggered when the user updates the star rating.
+      // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
+      actionsBuilder: (context, stars) { // Triggered when the user updates the star rating.
         return [ // Return a list of actions (that will be shown at the bottom of the dialog).
           FlatButton(
             child: Text('OK'),
@@ -134,6 +136,30 @@ You can also follow [the tutorial of Marcus Ng](https://youtu.be/gOiaSwp984s) on
 (for a replacement of `doNotOpenAgain`, see [Broadcasting events](#broadcasting-events)).
 
 ## Advanced
+
+### Where to initialize RateMyApp
+
+You should be careful on where you initialize _Rate My App_ in your project.
+But thankfully, there's a widget that helps you getting through all of this without any trouble : `RateMyAppBuilder`.
+Here's an example :
+
+```dart
+// This should be your top widget in order to be initialized exactly one time during the app lifecycle.
+RateMyAppBuilder(
+  builder: (context) => MaterialApp(
+    home: Scaffold(
+      appBar: AppBar(
+        title: const Text('Rate my app !'),
+      ),
+      body: Center(child: Text('This is my beautiful app !')),
+    ),
+  ),
+  onInitialized: (context, rateMyApp) {
+    // Called when Rate my app has been initialized.
+    // See the example project on Github for more info.
+  },
+);
+```
 
 ### Using custom identifiers
 

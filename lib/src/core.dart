@@ -14,16 +14,16 @@ class RateMyApp {
   static const MethodChannel _channel = MethodChannel('rate_my_app');
 
   /// Prefix for preferences.
-  String preferencesPrefix;
+  final String preferencesPrefix;
 
   /// The google play identifier.
-  String googlePlayIdentifier;
+  final String googlePlayIdentifier;
 
   /// The app store identifier.
-  String appStoreIdentifier;
+  final String appStoreIdentifier;
 
   /// All conditions that should be met to show the dialog.
-  List<Condition> conditions;
+  final List<Condition> conditions;
 
   /// Creates a new Rate my app instance.
   RateMyApp({
@@ -45,7 +45,7 @@ class RateMyApp {
   }
 
   /// Creates a new Rate my app instance with custom conditions.
-  RateMyApp.customConditions({
+  const RateMyApp.customConditions({
     this.preferencesPrefix = 'rateMyApp_',
     this.googlePlayIdentifier,
     this.appStoreIdentifier,
@@ -56,8 +56,7 @@ class RateMyApp {
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    conditions.forEach((condition) => condition.readFromPreferences(preferences));
-
+    conditions.forEach((condition) => condition.readFromPreferences(preferences, preferencesPrefix));
     return callEvent(RateMyAppEventType.initialized);
   }
 
@@ -65,7 +64,7 @@ class RateMyApp {
   Future<void> save() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     for (Condition condition in conditions) {
-      await condition.saveToPreferences(preferences);
+      await condition.saveToPreferences(preferences, preferencesPrefix);
     }
 
     return callEvent(RateMyAppEventType.saved);
@@ -198,16 +197,14 @@ class RateMyApp {
     int remindLaunches,
   }) {
     conditions.add(MinimumDaysCondition(
-      this,
       minDays: minDays ?? 7,
       remindDays: remindDays ?? 7,
     ));
     conditions.add(MinimumAppLaunchesCondition(
-      this,
       minLaunches: minLaunches ?? 10,
       remindLaunches: remindLaunches ?? 10,
     ));
-    conditions.add(DoNotOpenAgainCondition(this));
+    conditions.add(DoNotOpenAgainCondition());
   }
 }
 
