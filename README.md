@@ -144,7 +144,8 @@ But thankfully, there's a widget that helps you getting through all of this with
 Here's an example :
 
 ```dart
-// This should be your top widget in order to be initialized exactly one time during the app lifecycle.
+// The builder should be initialized exactly one time during the app lifecycle.
+// So place it where you want but it should respect that condition.
 RateMyAppBuilder(
   builder: (context) => MaterialApp(
     home: Scaffold(
@@ -160,6 +161,8 @@ RateMyAppBuilder(
   },
 );
 ```
+
+You can totally choose to not use it and to initialize _Rate my app_ in your `main()` method. This is up to you !
 
 ### Using custom identifiers
 
