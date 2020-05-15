@@ -1,3 +1,11 @@
+## 0.6.0+4
+
+* Added the ability to change the dialog default content.
+
+## 0.6.0+3
+
+* Fixed a bug with `smooth_star_rating`.
+
 ## 0.6.0+2
 
 * Fixed another problem with `pedantic`.

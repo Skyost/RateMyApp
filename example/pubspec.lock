@@ -38,7 +38,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.6.0+3"
+    version: "0.6.1"
   shared_preferences:
     dependency: transitive
     description:

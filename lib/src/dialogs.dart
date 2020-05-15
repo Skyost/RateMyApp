@@ -10,17 +10,14 @@ typedef RateMyAppDialogButtonClickListener = bool Function(RateMyAppDialogButton
 /// Validates a state when called in a function.
 typedef Validator = bool Function();
 
+/// Allows to change the default dialog content.
+typedef DialogContentBuilder = Widget Function(BuildContext context, Widget defaultContent);
+
 /// Allows to dynamically build actions.
 typedef DialogActionsBuilder = List<Widget> Function(BuildContext context);
 
 /// Allows to dynamically build actions according to the specified rating.
 typedef StarDialogActionsBuilder = List<Widget> Function(BuildContext context, double stars);
-
-/// A validator that always returns true.
-bool validatorTrue() => true;
-
-/// A validator that always returns false.
-bool validatorFalse() => true;
 
 /// The Android Rate my app dialog.
 class RateMyAppDialog extends StatelessWidget {
@@ -32,6 +29,9 @@ class RateMyAppDialog extends StatelessWidget {
 
   /// The dialog's message.
   final String message;
+
+  /// The content builder.
+  final DialogContentBuilder contentBuilder;
 
   /// The actions builder.
   final DialogActionsBuilder actionsBuilder;
@@ -56,6 +56,7 @@ class RateMyAppDialog extends StatelessWidget {
     this.rateMyApp, {
     @required this.title,
     @required this.message,
+    @required this.contentBuilder,
     this.actionsBuilder,
     @required this.rateButton,
     @required this.noButton,
@@ -70,84 +71,49 @@ class RateMyAppDialog extends StatelessWidget {
         assert(dialogStyle != null);
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
-        title: Padding(
-          padding: dialogStyle.titlePadding,
-          child: Text(
-            title,
-            style: dialogStyle.titleStyle,
-            textAlign: dialogStyle.titleAlign,
-          ),
+  Widget build(BuildContext context) {
+    Widget content = SingleChildScrollView(
+      child: Padding(
+        padding: dialogStyle.messagePadding,
+        child: Text(
+          message,
+          style: dialogStyle.messageStyle,
+          textAlign: dialogStyle.messageAlign,
         ),
-        content: SingleChildScrollView(
-          child: Padding(
-            padding: dialogStyle.messagePadding,
-            child: Text(
-              message,
-              style: dialogStyle.messageStyle,
-              textAlign: dialogStyle.messageAlign,
-            ),
-          ),
-        ),
-        contentPadding: dialogStyle.contentPadding,
-        shape: dialogStyle.dialogShape,
-        actions: (actionsBuilder ?? _defaultActionsBuilder)(context),
-      );
-
-  /// Opens the dialog.
-  static Future<void> openDialog(
-    BuildContext context,
-    RateMyApp rateMyApp, {
-    @required String title,
-    @required String message,
-    @required String rateButton,
-    @required String noButton,
-    @required String laterButton,
-    RateMyAppDialogButtonClickListener listener,
-    @required DialogStyle dialogStyle,
-    DialogActionsBuilder actionsBuilder,
-    VoidCallback onDismissed,
-  }) async {
-    RateMyAppDialogButton clickedButton = await showDialog<RateMyAppDialogButton>(
-      context: context,
-      builder: (context) => RateMyAppDialog(
-        rateMyApp,
-        title: title,
-        message: message,
-        actionsBuilder: actionsBuilder,
-        rateButton: rateButton,
-        noButton: noButton,
-        laterButton: laterButton,
-        listener: listener,
-        dialogStyle: dialogStyle,
       ),
     );
 
-    if (clickedButton == null && onDismissed != null) {
-      onDismissed();
-    }
+    return AlertDialog(
+      title: Padding(
+        padding: dialogStyle.titlePadding,
+        child: Text(
+          title,
+          style: dialogStyle.titleStyle,
+          textAlign: dialogStyle.titleAlign,
+        ),
+      ),
+      content: contentBuilder(context, content),
+      contentPadding: dialogStyle.contentPadding,
+      shape: dialogStyle.dialogShape,
+      actions: (actionsBuilder ?? _defaultActionsBuilder)(context),
+    );
   }
 
   List<Widget> _defaultActionsBuilder(BuildContext context) => [
-        Wrap(
-          alignment: WrapAlignment.end,
-          children: [
-            RateMyAppRateButton(
-              rateMyApp,
-              text: rateButton,
-              validator: () => listener == null || listener(RateMyAppDialogButton.rate),
-            ),
-            RateMyAppLaterButton(
-              rateMyApp,
-              text: laterButton,
-              validator: () => listener == null || listener(RateMyAppDialogButton.later),
-            ),
-            RateMyAppNoButton(
-              rateMyApp,
-              text: noButton,
-              validator: () => listener == null || listener(RateMyAppDialogButton.no),
-            ),
-          ],
+        RateMyAppRateButton(
+          rateMyApp,
+          text: rateButton,
+          validator: () => listener == null || listener(RateMyAppDialogButton.rate),
+        ),
+        RateMyAppLaterButton(
+          rateMyApp,
+          text: laterButton,
+          validator: () => listener == null || listener(RateMyAppDialogButton.later),
+        ),
+        RateMyAppNoButton(
+          rateMyApp,
+          text: noButton,
+          validator: () => listener == null || listener(RateMyAppDialogButton.no),
         ),
       ];
 }
@@ -163,6 +129,9 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// The dialog's message.
   final String message;
 
+  /// The content builder.
+  final DialogContentBuilder contentBuilder;
+
   /// The rating changed callback.
   final StarDialogActionsBuilder actionsBuilder;
 
@@ -177,6 +146,7 @@ class RateMyAppStarDialog extends StatefulWidget {
     this.rateMyApp, {
     @required this.title,
     @required this.message,
+    @required this.contentBuilder,
     this.actionsBuilder,
     @required this.dialogStyle,
     @required this.starRatingOptions,
@@ -187,36 +157,6 @@ class RateMyAppStarDialog extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => RateMyAppStarDialogState();
-
-  /// Opens the dialog.
-  static Future<void> openDialog(
-    BuildContext context,
-    RateMyApp rateMyApp, {
-    @required String title,
-    TextAlign titleAlign,
-    @required String message,
-    TextAlign messageAlign,
-    StarDialogActionsBuilder actionsBuilder,
-    @required DialogStyle dialogStyle,
-    @required StarRatingOptions starRatingOptions,
-    VoidCallback onDismissed,
-  }) async {
-    RateMyAppDialogButton clickedButton = await showDialog(
-      context: context,
-      builder: (context) => RateMyAppStarDialog(
-        rateMyApp,
-        title: title,
-        message: message,
-        actionsBuilder: actionsBuilder,
-        dialogStyle: dialogStyle,
-        starRatingOptions: starRatingOptions,
-      ),
-    );
-
-    if (clickedButton == null && onDismissed != null) {
-      onDismissed();
-    }
-  }
 
   /// Used when there is no onRatingChanged callback.
   List<Widget> _defaultOnRatingChanged(BuildContext context, double rating) => [
@@ -247,45 +187,49 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
   }
 
   @override
-  Widget build(BuildContext context) => AlertDialog(
-        title: Padding(
-          padding: widget.dialogStyle.titlePadding,
-          child: Text(
-            widget.title,
-            style: widget.dialogStyle.titleStyle,
-            textAlign: widget.dialogStyle.titleAlign,
+  Widget build(BuildContext context) {
+    Widget content = SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: widget.dialogStyle.messagePadding,
+            child: Text(
+              widget.message,
+              style: widget.dialogStyle.messageStyle,
+              textAlign: widget.dialogStyle.messageAlign,
+            ),
           ),
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: widget.dialogStyle.messagePadding,
-                child: Text(
-                  widget.message,
-                  style: widget.dialogStyle.messageStyle,
-                  textAlign: widget.dialogStyle.messageAlign,
-                ),
-              ),
-              SmoothStarRating(
-                onRated: (rating) => _currentRating = rating,
-                color: widget.starRatingOptions.starsFillColor,
-                borderColor: widget.starRatingOptions.starsBorderColor,
-                spacing: widget.starRatingOptions.starsSpacing,
-                size: widget.starRatingOptions.starsSize,
-                allowHalfRating: widget.starRatingOptions.allowHalfRating,
-                halfFilledIconData: widget.starRatingOptions.halfFilledIconData,
-                filledIconData: widget.starRatingOptions.filledIconData,
-                rating: _currentRating == null ? 0.0 : _currentRating.toDouble(),
-              ),
-            ],
+          SmoothStarRating(
+            onRated: (rating) => _currentRating = rating,
+            color: widget.starRatingOptions.starsFillColor,
+            borderColor: widget.starRatingOptions.starsBorderColor,
+            spacing: widget.starRatingOptions.starsSpacing,
+            size: widget.starRatingOptions.starsSize,
+            allowHalfRating: widget.starRatingOptions.allowHalfRating,
+            halfFilledIconData: widget.starRatingOptions.halfFilledIconData,
+            filledIconData: widget.starRatingOptions.filledIconData,
+            rating: _currentRating == null ? 0.0 : _currentRating.toDouble(),
           ),
+        ],
+      ),
+    );
+
+    return AlertDialog(
+      title: Padding(
+        padding: widget.dialogStyle.titlePadding,
+        child: Text(
+          widget.title,
+          style: widget.dialogStyle.titleStyle,
+          textAlign: widget.dialogStyle.titleAlign,
         ),
-        contentPadding: widget.dialogStyle.contentPadding,
-        shape: widget.dialogStyle.dialogShape,
-        actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, _currentRating),
-      );
+      ),
+      content: widget.contentBuilder(context, content),
+      contentPadding: widget.dialogStyle.contentPadding,
+      shape: widget.dialogStyle.dialogShape,
+      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, _currentRating),
+    );
+  }
 }
 
 /// A Rate my app dialog button with a text, a validator and a callback.
@@ -306,7 +250,7 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
   const _RateMyAppDialogButton(
     this.rateMyApp, {
     @required this.text,
-    this.validator = validatorTrue,
+    this.validator = _validatorTrue,
     this.callback,
   }) : assert(text != null);
 
@@ -319,14 +263,17 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
           }
 
           await onButtonClicked(context);
-
           if (callback != null) {
             callback();
           }
         },
       );
 
+  /// Triggered when a button has been clicked.
   Future<void> onButtonClicked(BuildContext context);
+
+  /// A validator that always return true.
+  static bool _validatorTrue() => true;
 }
 
 /// The Rate my app "rate" button widget.

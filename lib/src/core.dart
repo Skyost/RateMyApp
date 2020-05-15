@@ -98,6 +98,7 @@ class RateMyApp {
     BuildContext context, {
     String title,
     String message,
+    DialogContentBuilder contentBuilder,
     DialogActionsBuilder actionsBuilder,
     String rateButton,
     String noButton,
@@ -113,19 +114,25 @@ class RateMyApp {
     }
 
     unawaited(callEvent(RateMyAppEventType.dialogOpen));
-    return RateMyAppDialog.openDialog(
-      context,
-      this,
-      title: title ?? 'Rate this app',
-      message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
-      actionsBuilder: actionsBuilder,
-      rateButton: rateButton ?? 'RATE',
-      noButton: noButton ?? 'NO THANKS',
-      laterButton: laterButton ?? 'MAYBE LATER',
-      listener: listener,
-      dialogStyle: dialogStyle ?? const DialogStyle(),
-      onDismissed: onDismissed,
+    RateMyAppDialogButton clickedButton = await showDialog<RateMyAppDialogButton>(
+      context: context,
+      builder: (context) => RateMyAppDialog(
+        this,
+        title: title ?? 'Rate this app',
+        message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+        contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
+        actionsBuilder: actionsBuilder,
+        rateButton: rateButton ?? 'RATE',
+        noButton: noButton ?? 'NO THANKS',
+        laterButton: laterButton ?? 'MAYBE LATER',
+        listener: listener,
+        dialogStyle: dialogStyle ?? const DialogStyle(),
+      ),
     );
+
+    if (clickedButton == null && onDismissed != null) {
+      onDismissed();
+    }
   }
 
   /// Shows the star rate dialog.
@@ -133,6 +140,7 @@ class RateMyApp {
     BuildContext context, {
     String title,
     String message,
+    DialogContentBuilder contentBuilder,
     StarDialogActionsBuilder actionsBuilder,
     bool ignoreIOS = false,
     DialogStyle dialogStyle,
@@ -146,21 +154,28 @@ class RateMyApp {
 
     assert(actionsBuilder != null);
     unawaited(callEvent(RateMyAppEventType.starDialogOpen));
-    return RateMyAppStarDialog.openDialog(
-      context,
-      this,
-      title: title ?? 'Rate this app',
-      message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
-      actionsBuilder: actionsBuilder,
-      dialogStyle: dialogStyle ??
-          const DialogStyle(
-            titleAlign: TextAlign.center,
-            messageAlign: TextAlign.center,
-            messagePadding: EdgeInsets.only(bottom: 20),
-          ),
-      starRatingOptions: starRatingOptions ?? const StarRatingOptions(),
-      onDismissed: onDismissed,
+
+    RateMyAppDialogButton clickedButton = await showDialog(
+      context: context,
+      builder: (context) => RateMyAppStarDialog(
+        this,
+        title: title ?? 'Rate this app',
+        message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
+        contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
+        actionsBuilder: actionsBuilder,
+        dialogStyle: dialogStyle ??
+            const DialogStyle(
+              titleAlign: TextAlign.center,
+              messageAlign: TextAlign.center,
+              messagePadding: EdgeInsets.only(bottom: 20),
+            ),
+        starRatingOptions: starRatingOptions ?? const StarRatingOptions(),
+      ),
     );
+
+    if (clickedButton == null && onDismissed != null) {
+      onDismissed();
+    }
   }
 
   /// Launches the corresponding store.
