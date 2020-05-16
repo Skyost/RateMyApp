@@ -141,7 +141,7 @@ You can also follow [the tutorial of Marcus Ng](https://youtu.be/gOiaSwp984s) on
 
 ## Advanced
 
-### Where to initialize RateMyApp
+### Where to initialize _Rate My App_
 
 You should be careful on where you initialize _Rate My App_ in your project.
 But thankfully, there's a widget that helps you getting through all of this without any trouble : `RateMyAppBuilder`.

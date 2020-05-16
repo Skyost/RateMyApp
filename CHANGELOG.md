@@ -1,3 +1,7 @@
+## 0.6.1+2
+
+* Updated README.
+
 ## 0.6.1+1
 
 * Various improvements.
