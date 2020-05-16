@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/Skyost/rate_my_app/raw/master/logo.svg" height="300">
+    <img src="https://github.com/Skyost/rate_my_app/raw/master/logo.svg" height="200">
 </div>
 
 # Rate my app !
