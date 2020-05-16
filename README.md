@@ -45,13 +45,13 @@ If you prefer, you can call `showStarRateDialog` which will show a dialog contai
 <details>
     <summary>On Android</summary>
     <img src="https://github.com/Skyost/rate_my_app/raw/master/images/android.png" height="500">
-    <em><pre>showRateDialog</pre> method.</em>
+    <br><em><code>showRateDialog</code> method.</em>
 </details>
 
 <details>
     <summary>On iOS</summary>
     <img src="https://github.com/Skyost/rate_my_app/raw/master/images/ios_10_3.png" height="500">
-    <em><pre>showRateDialog</pre> and <pre>showStarRateDialog</pre> methods with <pre>ignoreIOS</pre> set to <pre>false</pre>.</em>
+    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreIOS</code> set to <code>false</code>.</em>
 </details>
 
 ## Example
