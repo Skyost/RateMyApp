@@ -183,10 +183,12 @@ class RateMyApp {
       });
 
   /// Calls the specified event.
-  Future<void> callEvent(RateMyAppEventType eventType) {
+  Future<void> callEvent(RateMyAppEventType eventType) async {
     bool saveSharedPreferences = false;
     conditions.forEach((condition) => saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences);
-    return saveSharedPreferences ? save() : null;
+    if (saveSharedPreferences) {
+	    await save();
+	  }
   }
 
   /// Adds the default conditions to the current conditions list.

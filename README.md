@@ -1,3 +1,7 @@
+<center>
+    <img src="https://github.com/Skyost/rate_my_app/raw/master/logo.svg" height="300">
+</center>
+
 # Rate my app !
 
 This plugin allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).

@@ -1,3 +1,8 @@
+## 0.6.1+1
+
+* Various improvements.
+* Updated Dart & Flutter requirements.
+
 ## 0.6.1
 
 * Added the ability to change the dialog default content.
