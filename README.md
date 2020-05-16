@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/Skyost/rate_my_app/raw/master/logo.svg" height="200">
+    <img src="https://github.com/Skyost/rate_my_app/raw/master/images/logo.svg" height="200">
 </div>
 
 # Rate my app !
@@ -42,17 +42,17 @@ If you prefer, you can call `showStarRateDialog` which will show a dialog contai
 
 ## Screenshots
 
-### On Android
+<details>
+    <summary>On Android</summary>
+    <img src="https://github.com/Skyost/rate_my_app/raw/master/images/android.png" height="500">
+    <em><pre>showRateDialog</pre> method.</em>
+</details>
 
-<img src="https://github.com/Skyost/rate_my_app/raw/master/screenshots/android.png" height="500">
-
-_`showRateDialog` method._
-
-### On iOS
-
-<img src="https://github.com/Skyost/rate_my_app/raw/master/screenshots/ios_10_3.png" height="500">
-
-_`showRateDialog` and `showStarRateDialog` method with `ignoreIOS` set to `false`._
+<details>
+    <summary>On iOS</summary>
+    <img src="https://github.com/Skyost/rate_my_app/raw/master/images/ios_10_3.png" height="500">
+    <em><pre>showRateDialog</pre> and <pre>showStarRateDialog</pre> methods with <pre>ignoreIOS</pre> set to <pre>false</pre>.</em>
+</details>
 
 ## Example
 
