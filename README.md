@@ -150,6 +150,7 @@ Here's an example :
 ```dart
 // The builder should be initialized exactly one time during the app lifecycle.
 // So place it where you want but it should respect that condition.
+
 RateMyAppBuilder(
   builder: (context) => MaterialApp(
     home: Scaffold(
