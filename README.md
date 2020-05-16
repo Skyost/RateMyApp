@@ -1,6 +1,6 @@
-<center>
+<div align="center">
     <img src="https://github.com/Skyost/rate_my_app/raw/master/logo.svg" height="300">
-</center>
+</div>
 
 # Rate my app !
 
