@@ -1,3 +1,7 @@
+## 0.6.1+3
+
+* Preparing for `1.0.0` release of `shared_preferences` (see https://github.com/flutter/flutter/wiki/Package-migration-to-1.0.0).
+
 ## 0.6.1+2
 
 * Updated README.
