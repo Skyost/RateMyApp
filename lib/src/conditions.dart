@@ -65,10 +65,8 @@ class MinimumDaysCondition extends DebuggableCondition {
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if (eventType == RateMyAppEventType.laterButtonPressed) {
-      baseLaunchDate = baseLaunchDate.add(Duration(
-        days: remindDays,
-      ));
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
+      baseLaunchDate = baseLaunchDate.add(Duration(days: remindDays));
       return true;
     }
 
@@ -125,7 +123,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
       return true;
     }
 
-    if (eventType == RateMyAppEventType.laterButtonPressed) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
       launches -= remindLaunches;
       return true;
     }
