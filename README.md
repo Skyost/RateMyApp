@@ -194,7 +194,7 @@ You can easily create your custom conditions ! All you have to do is to extend t
 * `onEventOccurred` When an event occurs in the plugin lifecycle. This is usually here that you can update your condition values.
 Please note that you're not obligated to override this one (although this is recommended).
 
-You can have an easy example of it by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/rate_my_app/tree/master/lib/src/conditions.dart#L163).
+You can have an easy example of it by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/rate_my_app/tree/master/lib/src/conditions.dart#L169).
 
 Then you can add your custom condition to _Rate my app_ by using the constructor `customConditions` (or by calling `rateMyApp.conditions.add` before initialization).
 
@@ -203,7 +203,7 @@ Then you can add your custom condition to _Rate my app_ by using the constructor
 As said in the previous section, the `shouldOpenDialog` method depends on conditions.
 
 For example, when you click on the _No_ button,
-[this event](https://github.com/Skyost/rate_my_app/tree/master/lib/src/core.dart#L216) will be triggered
+[this event](https://github.com/Skyost/rate_my_app/tree/master/lib/src/core.dart#L237) will be triggered
 and the condition `DoNotOpenAgainCondition` will react to it and will stop being met and thus the `shouldOpenDialog` will return `false`.
 
 You may want to broadcast events in order to mimic the behaviour of the _No_ button for example.
@@ -216,7 +216,7 @@ Here are what events default conditions are listening to :
 * `DoNotOpenAgainCondition` : _Rate_ button press, _No_ button press.
 
 For example, starting from version 0.5.0, the getter/setter `doNotOpenAgain` has been removed.
-You must trigger the `DoNotOpenAgainCondition` either by calling a _Rate_ button press event or a _No_ button press event (see [Example on Github](https://github.com/Skyost/rate_my_app/tree/master/example/lib/main.dart#L120)).
+You must trigger the `DoNotOpenAgainCondition` either by calling a _Rate_ button press event or a _No_ button press event (see [Example on Github](https://github.com/Skyost/RateMyApp/blob/master/example/lib/content.dart#L141)).
 
 ## Contributions
 

@@ -32,11 +32,11 @@ class MinimumDaysCondition extends DebuggableCondition {
   /// Minimum days before being able to show the dialog.
   final int minDays;
 
-  /// Days to add to the base date when the user clicks on "Maybe later" (not for the star rating dialog).
+  /// Days to add to the base date when the user clicks on "Maybe later".
   final int remindDays;
 
-  /// The base launch date.
-  DateTime baseLaunchDate;
+  /// The minimum date required to meet this condition.
+  DateTime minimumDate;
 
   /// Creates a new minimum days condition instance.
   MinimumDaysCondition({
@@ -47,26 +47,26 @@ class MinimumDaysCondition extends DebuggableCondition {
 
   @override
   void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
-    baseLaunchDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt(preferencesPrefix + 'baseLaunchDate') ?? DateTime.now().millisecondsSinceEpoch);
+    minimumDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt(preferencesPrefix + 'minimumDate') ?? _now().millisecondsSinceEpoch);
   }
 
   @override
   Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
-    return preferences.setInt(preferencesPrefix + 'baseLaunchDate', baseLaunchDate.millisecondsSinceEpoch);
+    return preferences.setInt(preferencesPrefix + 'minimumDate', minimumDate.millisecondsSinceEpoch);
   }
 
   @override
-  void reset() => baseLaunchDate = DateTime.now();
+  void reset() => minimumDate = _now();
 
   @override
   bool get isMet {
-    return (DateTime.now().millisecondsSinceEpoch - baseLaunchDate.millisecondsSinceEpoch) / (1000 * 60 * 60 * 24) >= minDays;
+    return DateTime.now().isAfter(minimumDate);
   }
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
     if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
-      baseLaunchDate = baseLaunchDate.add(Duration(days: remindDays));
+      minimumDate = _now(Duration(days: remindDays));
       return true;
     }
 
@@ -75,11 +75,17 @@ class MinimumDaysCondition extends DebuggableCondition {
 
   @override
   String get valuesAsString {
-    return 'Minimum days : ' + minDays.toString() + '\nBase launch : ' + _dateToString(baseLaunchDate) + '\nRemind days : ' + remindDays.toString();
+    return 'Minimum days : $minDays\nRemind days : $remindDays\nMinimum valid date : ${_dateToString(minimumDate)}';
   }
 
   /// Returns a formatted date string.
-  String _dateToString(DateTime date) => date.day.toString().padLeft(2, '0') + '/' + date.month.toString().padLeft(2, '0') + '/' + date.year.toString();
+  String _dateToString(DateTime date) => '${_addZeroIfNeeded(date.day)}/${_addZeroIfNeeded(date.month)}/${date.year} ${_addZeroIfNeeded(date.hour)}:${_addZeroIfNeeded(date.minute)}';
+
+  /// Adds a zero to a given number if needed.
+  String _addZeroIfNeeded(int number) => number.toString().padLeft(2, '0');
+
+  /// Returns the current date with the minimum days added.
+  DateTime _now([Duration toAdd]) => DateTime.now().add(toAdd ?? Duration(days: minDays));
 }
 
 /// The minimum app launches condition.
@@ -87,7 +93,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
   /// Minimum launches before being able to show the dialog.
   final int minLaunches;
 
-  /// Launches to subtract to the number of launches when the user clicks on "Maybe later" (not for the star rating dialog).
+  /// Launches to subtract to the number of launches when the user clicks on "Maybe later".
   final int remindLaunches;
 
   /// Number of app launches.
@@ -133,7 +139,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
 
   @override
   String get valuesAsString {
-    return 'Minimum launches : ' + minLaunches.toString() + '\nCurrent launches : ' + launches.toString() + '\nRemind launches : ' + remindLaunches.toString();
+    return 'Minimum launches : $minLaunches\nRemind launches : $remindLaunches\nCurrent launches : $launches';
   }
 }
 

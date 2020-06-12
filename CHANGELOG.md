@@ -1,3 +1,8 @@
+## 0.6.1+4
+
+* Fixed an issue regarding `MinimumDaysCondition` (see #57).
+* Fixed an issue with the iOS native dialog (see #56).
+
 ## 0.6.1+3
 
 * Preparing for `1.0.0` release of `shared_preferences` (see https://github.com/flutter/flutter/wiki/Package-migration-to-1.0.0).
