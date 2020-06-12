@@ -38,7 +38,7 @@ Then you should call `showRateDialog` which is going to show a native rating dia
 
 If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar that will allow you to take custom actions based on the rating
 (for example if the user puts less than 3 stars then open your app bugs report page or something like this and if he puts more ask him to rate your app on the store page).
-
+Still, you have to be careful with these practises (see [this paragraph](https://appradar.com/blog/ask-users-leave-review-in-app-stores#fraudulent-methods-to-gain-more-app-store-reviews) on App Radar).
 
 ## Screenshots
 
