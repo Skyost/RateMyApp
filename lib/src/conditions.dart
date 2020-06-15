@@ -59,9 +59,7 @@ class MinimumDaysCondition extends DebuggableCondition {
   void reset() => minimumDate = _now();
 
   @override
-  bool get isMet {
-    return DateTime.now().isAfter(minimumDate);
-  }
+  bool get isMet => DateTime.now().isAfter(minimumDate);
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {

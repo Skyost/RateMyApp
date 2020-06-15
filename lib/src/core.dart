@@ -57,7 +57,7 @@ class RateMyApp {
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     conditions.forEach((condition) => condition.readFromPreferences(preferences, preferencesPrefix));
-    return callEvent(RateMyAppEventType.initialized);
+    await callEvent(RateMyAppEventType.initialized);
   }
 
   /// Saves the plugin current data to the shared preferences.
@@ -67,7 +67,7 @@ class RateMyApp {
       await condition.saveToPreferences(preferences, preferencesPrefix);
     }
 
-    return callEvent(RateMyAppEventType.saved);
+    await callEvent(RateMyAppEventType.saved);
   }
 
   /// Resets the plugin data.
@@ -178,17 +178,15 @@ class RateMyApp {
   }
 
   /// Launches the corresponding store.
-  Future<void> launchStore() => RateMyApp._channel.invokeMethod('launchStore', {
-        'appId': storeIdentifier,
-      });
+  Future<void> launchStore() => RateMyApp._channel.invokeMethod('launchStore', {'appId': storeIdentifier});
 
   /// Calls the specified event.
   Future<void> callEvent(RateMyAppEventType eventType) async {
     bool saveSharedPreferences = false;
     conditions.forEach((condition) => saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences);
     if (saveSharedPreferences) {
-	    await save();
-	  }
+      await save();
+    }
   }
 
   /// Adds the default conditions to the current conditions list.

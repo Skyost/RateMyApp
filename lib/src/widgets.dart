@@ -16,12 +16,11 @@ class RateMyAppBuilder extends StatefulWidget {
   final RateMyAppInitializedCallback onInitialized;
 
   /// Creates a new rate my app builder instance.
-  RateMyAppBuilder({
+  const RateMyAppBuilder({
     @required this.builder,
-    RateMyApp rateMyApp,
+    this.rateMyApp,
     this.onInitialized,
-  })  : rateMyApp = rateMyApp ?? RateMyApp(),
-        assert(builder != null);
+  }) : assert(builder != null);
 
   @override
   State<StatefulWidget> createState() => _RateMyAppBuilderState();
@@ -29,19 +28,30 @@ class RateMyAppBuilder extends StatefulWidget {
 
 /// The rate my app builder state.
 class _RateMyAppBuilderState extends State<RateMyAppBuilder> {
+  /// The current Rate my app instance.
+  RateMyApp rateMyApp;
+
   @override
   void initState() {
     super.initState();
+
+    rateMyApp = widget.rateMyApp ?? RateMyApp();
     initRateMyApp();
   }
 
   /// Allows to init rate my app. Should be called one time per app launch.
   Future<void> initRateMyApp() async {
-    await widget.rateMyApp.init();
+    await rateMyApp.init();
+
+    for (Condition condition in rateMyApp.conditions) {
+      if (condition is MinimumDaysCondition) {
+        print(condition.minimumDate);
+      }
+    }
 
     if (widget.onInitialized != null && mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        widget.onInitialized(context, widget.rateMyApp);
+        widget.onInitialized(context, rateMyApp);
       });
     }
   }

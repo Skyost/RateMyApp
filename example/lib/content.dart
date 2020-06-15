@@ -26,13 +26,7 @@ class _ContentWidgetState extends State<ContentWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      refresh();
-      
-      if(mounted && widget.rateMyApp.shouldOpenDialog) {
-        widget.rateMyApp.showRateDialog(context);
-      }
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
   }
 
   @override
