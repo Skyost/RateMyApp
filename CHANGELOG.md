@@ -1,3 +1,7 @@
+## 0.6.1+5
+
+* Fixed a bug with the builder.
+
 ## 0.6.1+4
 
 * Fixed an issue regarding `MinimumDaysCondition` (see #57).
