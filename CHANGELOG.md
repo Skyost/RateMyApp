@@ -1,3 +1,7 @@
+## 0.6.1+6
+
+* Removed a debug message.
+
 ## 0.6.1+5
 
 * Fixed a bug with the builder.

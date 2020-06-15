@@ -43,12 +43,6 @@ class _RateMyAppBuilderState extends State<RateMyAppBuilder> {
   Future<void> initRateMyApp() async {
     await rateMyApp.init();
 
-    for (Condition condition in rateMyApp.conditions) {
-      if (condition is MinimumDaysCondition) {
-        print(condition.minimumDate);
-      }
-    }
-
     if (widget.onInitialized != null && mounted) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.onInitialized(context, rateMyApp);
