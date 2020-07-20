@@ -92,6 +92,23 @@ class RateMyApp {
     return null;
   }
 
+  /// checks if the native rate dialog is available
+  ///
+  /// Only works for ios
+  Future<bool> canShowNativeIosRateDialog() {
+    assert(Platform.isIOS);
+    return _channel.invokeMethod('canRequestReview');
+  }
+
+  /// shows the native rate dialog
+  ///
+  /// Only works for ios
+  Future<void> showNativeIosRateDialog() {
+    assert(Platform.isIOS);
+    unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
+    return _channel.invokeMethod('requestReview');
+  }
+
   /// Shows the rate dialog.
   Future<void> showRateDialog(
     BuildContext context, {
@@ -107,9 +124,8 @@ class RateMyApp {
     DialogStyle dialogStyle,
     VoidCallback onDismissed,
   }) async {
-    if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
-      unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
-      return _channel.invokeMethod('requestReview');
+    if (!ignoreIOS && Platform.isIOS && await canShowNativeIosRateDialog()) {
+      return showNativeIosRateDialog();
     }
 
     unawaited(callEvent(RateMyAppEventType.dialogOpen));
@@ -146,9 +162,8 @@ class RateMyApp {
     StarRatingOptions starRatingOptions,
     VoidCallback onDismissed,
   }) async {
-    if (!ignoreIOS && Platform.isIOS && await _channel.invokeMethod('canRequestReview')) {
-      unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
-      return _channel.invokeMethod('requestReview');
+    if (!ignoreIOS && Platform.isIOS && await canShowNativeIosRateDialog()) {
+      return showNativeIosRateDialog();
     }
 
     assert(actionsBuilder != null);
