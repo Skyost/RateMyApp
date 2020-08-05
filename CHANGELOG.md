@@ -1,3 +1,7 @@
+## 0.6.1+7
+
+* Updated README and ran `dartfmt` on the _lib_ folder.
+
 ## 0.6.1+6
 
 * Removed a debug message.

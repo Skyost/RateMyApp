@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
 /// Should be called once Rate my app has been initialized.
-typedef RateMyAppInitializedCallback = Function(BuildContext context, RateMyApp rateMyApp);
+typedef RateMyAppInitializedCallback = Function(
+    BuildContext context, RateMyApp rateMyApp);
 
 /// Allows to build a widget and initialize Rate my app.
 class RateMyAppBuilder extends StatefulWidget {
