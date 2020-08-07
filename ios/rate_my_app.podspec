@@ -4,14 +4,14 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'rate_my_app'
-  s.version          = '0.0.1'
-  s.summary          = 'A new flutter plugin project.'
+  s.version          = '0.7.0'
+  s.summary          = 'Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).'
   s.description      = <<-DESC
-A new flutter plugin project.
+Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/Skyost/RateMyApp'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Skyost' => 'me@skyost.eu' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'

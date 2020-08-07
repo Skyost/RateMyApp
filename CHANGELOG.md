@@ -1,3 +1,8 @@
+## 0.7.0
+
+* Added support for the new [Google Play In-App Review API](https://developer.android.com/guide/playcore/in-app-review/).
+* Various useful methods and getters added (like `isNativeReviewDialogSupported` or `launchNativeReviewDialog()`).
+
 ## 0.6.1+7
 
 * Updated README and ran `dartfmt` on the _lib_ folder.

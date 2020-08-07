@@ -1,0 +1,28 @@
+PODS:
+  - Flutter (1.0.0)
+  - rate_my_app (0.7.0):
+    - Flutter
+  - shared_preferences (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - rate_my_app (from `.symlinks/plugins/rate_my_app/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  rate_my_app:
+    :path: ".symlinks/plugins/rate_my_app/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  rate_my_app: a41f92c7b827e72b4b1afeca1075bf99c4d75587
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.9.3
