@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://github.com/Skyost/rate_my_app/raw/master/images/logo.svg" height="200">
+    <img src="https://github.com/Skyost/RateMyApp/raw/master/images/logo.svg" height="200">
 </div>
 
 # Rate my app !
@@ -44,14 +44,14 @@ Still, you have to be careful with these practises (see [this paragraph](https:/
 
 <details>
     <summary>On Android</summary>
-    <img src="https://github.com/Skyost/rate_my_app/raw/master/images/android.png" height="500">
-    <br><em><code>showRateDialog</code> method.</em>
+    <img src="https://github.com/Skyost/RateMyApp/raw/master/images/android.png" height="500">
+    <br><em><code>showRateDialog</code> method with <code>ignoreNative</code> set to <code>true</code>.</em>
 </details>
 
 <details>
     <summary>On iOS</summary>
-    <img src="https://github.com/Skyost/rate_my_app/raw/master/images/ios_10_3.png" height="500">
-    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreIOS</code> set to <code>false</code>.</em>
+    <img src="https://github.com/Skyost/RateMyApp/raw/master/images/ios_10_3.png" height="500">
+    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreNative</code> set to <code>false</code>.</em>
 </details>
 
 ## Example
@@ -94,7 +94,7 @@ rateMyApp.init().then((_) {
         
         return true; // Return false if you want to cancel the click event.
       },
-      ignoreIOS: false, // Set to false if you want to show the Apple's native app rating dialog on iOS.
+      ignoreNative: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
       dialogStyle: DialogStyle(), // Custom dialog styles.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
       // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
@@ -122,7 +122,7 @@ rateMyApp.init().then((_) {
           ),
         ];
       },
-      ignoreIOS: false, // Set to false if you want to show the native Apple app rating dialog on iOS.
+      ignoreNative: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
       dialogStyle: DialogStyle( // Custom dialog styles.
         titleAlign: TextAlign.center,
         messageAlign: TextAlign.center,
@@ -135,7 +135,7 @@ rateMyApp.init().then((_) {
 });
 ```
 
-If you want a more complete example, please check [this one](https://github.com/Skyost/rate_my_app/tree/master/example/) on Github.    
+If you want a more complete example, please check [this one](https://github.com/Skyost/RateMyApp/tree/master/example/) on Github.    
 You can also follow [the tutorial of Marcus Ng](https://youtu.be/gOiaSwp984s) on YouTube
 (for a replacement of `doNotOpenAgain`, see [Broadcasting events](#broadcasting-events)).
 
@@ -194,7 +194,7 @@ You can easily create your custom conditions ! All you have to do is to extend t
 * `onEventOccurred` When an event occurs in the plugin lifecycle. This is usually here that you can update your condition values.
 Please note that you're not obligated to override this one (although this is recommended).
 
-You can have an easy example of it by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/rate_my_app/tree/master/lib/src/conditions.dart#L169).
+You can have an easy example of it by checking the source code of [`DoNotOpenAgainCondition`](https://github.com/Skyost/RateMyApp/tree/master/lib/src/conditions.dart#L169).
 
 Then you can add your custom condition to _Rate my app_ by using the constructor `customConditions` (or by calling `rateMyApp.conditions.add` before initialization).
 
@@ -203,7 +203,7 @@ Then you can add your custom condition to _Rate my app_ by using the constructor
 As said in the previous section, the `shouldOpenDialog` method depends on conditions.
 
 For example, when you click on the _No_ button,
-[this event](https://github.com/Skyost/rate_my_app/tree/master/lib/src/core.dart#L237) will be triggered
+[this event](https://github.com/Skyost/RateMyApp/tree/master/lib/src/core.dart#L237) will be triggered
 and the condition `DoNotOpenAgainCondition` will react to it and will stop being met and thus the `shouldOpenDialog` will return `false`.
 
 You may want to broadcast events in order to mimic the behaviour of the _No_ button for example.
@@ -222,8 +222,8 @@ You must trigger the `DoNotOpenAgainCondition` either by calling a _Rate_ button
 
 You have a lot of options to contribute to this project ! You can :
 
-* [Fork it](https://github.com/Skyost/rate_my_app/fork) on Github.
-* [Submit](https://github.com/Skyost/rate_my_app/issues/new/choose) a feature request or a bug report.
+* [Fork it](https://github.com/Skyost/RateMyApp/fork) on Github.
+* [Submit](https://github.com/Skyost/RateMyApp/issues/new/choose) a feature request or a bug report.
 * [Donate](https://paypal.me/Skyost) to the developer.
 * [Watch a little ad](https://www.clipeee.com/creator/skyost) on Clipeee.
 

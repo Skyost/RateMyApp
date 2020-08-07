@@ -1,50 +1,15 @@
 #import "RateMyAppPlugin.h"
-#import <StoreKit/StoreKit.h>
+#if __has_include(<rate_my_app/rate_my_app-Swift.h>)
+#import <rate_my_app/rate_my_app-Swift.h>
+#else
+// Support project import fallback if the generated compatibility header
+// is not copied when this plugin is created as a library.
+// https://forums.swift.org/t/swift-static-libraries-dont-copy-generated-objective-c-header/19816
+#import "rate_my_app-Swift.h"
+#endif
 
 @implementation RateMyAppPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"rate_my_app"
-            binaryMessenger:[registrar messenger]];
-  RateMyAppPlugin* instance = [[RateMyAppPlugin alloc] init];
-  [registrar addMethodCallDelegate:instance channel:channel];
+  [SwiftRateMyAppPlugin registerWithRegistrar:registrar];
 }
-
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([call.method isEqualToString:@"requestReview"]) {
-    [SKStoreReviewController requestReview];
-    result(nil);
-  }
-  else if([call.method isEqualToString:@"canRequestReview"]) {
-    if (@available(iOS 10.3, *)) {
-      result([NSNumber numberWithBool:YES]);
-    }
-    else {
-      result([NSNumber numberWithBool:NO]);
-    }
-  }
-  else if([call.method isEqualToString:@"launchStore"]) {
-    NSString *appId = call.arguments[@"appId"];
-
-    if (appId == (NSString *)[NSNull null]) {
-        result([FlutterError errorWithCode:@"ERROR" message:@"App id cannot be null" details:nil]);
-    }
-    else if ([appId length] == 0) {
-        result([FlutterError errorWithCode:@"ERROR" message:@"Empty app id" details:nil]);
-    }
-    else {
-      NSString *iTunesLink = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@?action=write-review", appId];
-      NSURL* itunesURL = [NSURL URLWithString:iTunesLink];
-      if ([[UIApplication sharedApplication] canOpenURL:itunesURL]) {
-        [[UIApplication sharedApplication] openURL:itunesURL];
-      }
-    }
-
-    result(nil);
-  }
-  else {
-    result(FlutterMethodNotImplemented);
-  }
-}
-
 @end
