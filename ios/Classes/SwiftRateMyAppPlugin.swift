@@ -10,7 +10,7 @@ public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    let arguments: [String: Any?] = call.arguments as! [String: Any?]
+    let arguments: [String: Any?] = (call.arguments ?? [:]) as! [String: Any?]
     switch call.method {
     case "launchNativeReviewDialog":
         if #available(iOS 10.3, *) {
