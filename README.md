@@ -141,8 +141,8 @@ Below is the minimal code example. This will be for the basic minimal working of
 ```dart
   RateMyApp rateMyApp = RateMyApp(
     preferencesPrefix: 'rateMyApp_',
-    minDays: 1,         # show rate popup after app is installed for at least 1 day
-    minLaunches: 5,     # show rate popup after 5 launches of app after minDays is passed
+    minDays: 0,         // show rate popup on first day of install
+    minLaunches: 5,     // show rate popup after 5 launches of app after minDays is passed
     remindDays: 3,
     remindLaunches: 10,
     googlePlayIdentifier: 'fr.skyost.example',
@@ -154,7 +154,7 @@ Below is the minimal code example. This will be for the basic minimal working of
     super.initState();
 
     rateMyApp.init().then((_) {
-      if (rateMyApp.shouldOpenDialog) {
+      if (rateMyApp.shouldOpenDialog) {  
         rateMyApp.showRateDialog(
           context,
           title: 'Rate this app?', // The dialog title.
