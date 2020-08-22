@@ -94,7 +94,7 @@ rateMyApp.init().then((_) {
         
         return true; // Return false if you want to cancel the click event.
       },
-      ignoreNative: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+      ignoreNativeDialog: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
       dialogStyle: DialogStyle(), // Custom dialog styles.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
       // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
@@ -122,7 +122,7 @@ rateMyApp.init().then((_) {
           ),
         ];
       },
-      ignoreNative: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+      ignoreNativeDialog: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
       dialogStyle: DialogStyle( // Custom dialog styles.
         titleAlign: TextAlign.center,
         messageAlign: TextAlign.center,
@@ -134,6 +134,47 @@ rateMyApp.init().then((_) {
   }
 });
 ```
+
+## Minimal Example
+
+Below is the minimal code example. This will be for the basic minimal working of this plugin. The below will launch a simple message popup after the defined minimal days/minimal launches along with the default buttons : Rate, Later and Cancel with their default behavior
+```dart
+  RateMyApp rateMyApp = RateMyApp(
+    preferencesPrefix: 'rateMyApp_',
+    minDays: 0,         // show rate popup on first day of install
+    minLaunches: 5,     // show rate popup after 5 launches of app after minDays is passed
+    remindDays: 3,
+    remindLaunches: 10,
+    googlePlayIdentifier: 'fr.skyost.example',
+    appStoreIdentifier: '1491556149',
+  );
+
+  @override
+  void initState() {
+    super.initState();
+
+    rateMyApp.init().then((_) {
+      if (rateMyApp.shouldOpenDialog) {  
+        rateMyApp.showRateDialog(
+          context,
+          title: 'Rate this app?', // The dialog title.
+          message: 'If you find this app useful, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.', // The dialog message.
+          rateButton: 'RATE', // The dialog "rate" button text.
+          noButton: 'NO THANKS', // The dialog "no" button text.
+          laterButton: 'MAYBE LATER', // The dialog "later" button text.
+          ignoreNativeDialog: true, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+          dialogStyle: DialogStyle(), // Custom dialog styles.
+          onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
+          // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
+          // actionsBuilder: (context) => [], // This one allows you to use your own buttons.
+        );
+      }
+    });
+
+  }
+```
+  
+
 
 If you want a more complete example, please check [this one](https://github.com/Skyost/RateMyApp/tree/master/example/) on Github.    
 You can also follow [the tutorial of Marcus Ng](https://youtu.be/gOiaSwp984s) on YouTube
