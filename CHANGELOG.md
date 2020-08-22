@@ -1,3 +1,8 @@
+## 0.7.0+1
+
+* Added some extra debugging info on Android.
+* Improved README (thanks [farazk86](https://github.com/Skyost/RateMyApp/pull/68)).
+
 ## 0.7.0
 
 * Added support for the new [Google Play In-App Review API](https://developer.android.com/guide/playcore/in-app-review/).

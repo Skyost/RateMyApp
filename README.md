@@ -143,6 +143,8 @@ Below is the minimal code example. This will be for the basic minimal working of
 The below will launch a simple message popup after the defined minimal days/minimal launches along with the default buttons :
 _Rate_, _Maybe later_ and _Cancel_, with their default behavior.
 
+Place it in your main widget :
+
 ```dart
 RateMyApp rateMyApp = RateMyApp(
   preferencesPrefix: 'rateMyApp_',
