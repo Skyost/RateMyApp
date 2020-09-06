@@ -96,7 +96,7 @@ rateMyApp.init().then((_) {
         
         return true; // Return false if you want to cancel the click event.
       },
-      ignoreNativeDialog: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+      ignoreNativeDialog: Platform.isAndroid, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
       dialogStyle: DialogStyle(), // Custom dialog styles.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
       // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
@@ -124,7 +124,7 @@ rateMyApp.init().then((_) {
           ),
         ];
       },
-      ignoreNativeDialog: false, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
+      ignoreNativeDialog: Platform.isAndroid, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
       dialogStyle: DialogStyle( // Custom dialog styles.
         titleAlign: TextAlign.center,
         messageAlign: TextAlign.center,
@@ -143,7 +143,7 @@ Below is the minimal code example. This will be for the basic minimal working of
 The below will launch a simple message popup after the defined minimal days/minimal launches along with the default buttons :
 _Rate_, _Maybe later_ and _Cancel_, with their default behavior.
 
-Place it in your main widget :
+Place this in your main widget state :
 
 ```dart
 RateMyApp rateMyApp = RateMyApp(
