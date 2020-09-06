@@ -1,3 +1,8 @@
+## 0.7.1
+
+* Disabled Android native review dialog by default.
+* Various fixes on Android platforms (thanks [in_app_review](https://github.com/britannio/in_app_review)).
+
 ## 0.7.0+1
 
 * Added some extra debugging info on Android.

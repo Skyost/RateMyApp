@@ -155,7 +155,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.7.0+1"
+    version: "0.7.1"
   shared_preferences:
     dependency: transitive
     description:

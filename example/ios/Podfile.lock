@@ -1,6 +1,6 @@
 PODS:
   - Flutter (1.0.0)
-  - rate_my_app (0.7.0):
+  - rate_my_app (0.7.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
