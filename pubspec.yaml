@@ -1,6 +1,6 @@
 name: rate_my_app
 description: Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
-version: 0.7.1 # Remember to also change the version in "ios/bonsoir.podspec", "macos/bonsoir.podspec", and "android/build.gradle".
+version: 0.7.1+1 # Remember to also change the version in "ios/bonsoir.podspec", "macos/bonsoir.podspec", and "android/build.gradle".
 homepage: https://github.com/Skyost/RateMyApp
 
 environment:
