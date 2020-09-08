@@ -45,23 +45,17 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        if (activity == null) {
-            result.error("activity_is_null", "Activity is null.", null)
-            return
-        }
-
-        val activity: Activity = this.activity!!
         when (call.method) {
             "launchNativeReviewDialog" -> requestReview(result)
             "isNativeDialogSupported" -> {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || !isPlayStoreInstalled(activity)) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || !isPlayStoreInstalled()) {
                     result.success(false)
                 } else {
                     cacheReviewInfo(result)
                 }
             }
             "launchStore" -> {
-                goToPlayStore(activity, if (call.hasArgument("appId")) call.argument<String>("appId")!! else activity.applicationContext.packageName)
+                goToPlayStore(call.argument<String>("appId")!!)
                 result.success(true)
             }
             else -> result.notImplemented()
@@ -162,14 +156,12 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Returns whether the Play Store is installed on the current device.
      *
-     * @param activity The activity.
-     *
      * @return Whether the Play Store is installed on the current device.
      */
 
-    private fun isPlayStoreInstalled(activity: Activity): Boolean {
+    private fun isPlayStoreInstalled(): Boolean {
         return try {
-            activity.packageManager.getPackageInfo("com.android.vending", 0)
+            activity!!.packageManager.getPackageInfo("com.android.vending", 0)
             true
         } catch (ex: PackageManager.NameNotFoundException) {
             false
@@ -179,15 +171,19 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /**
      * Launches a Play Store instance.
      *
-     * @param activity The activity.
      * @param applicationId The application ID.
      */
 
-    private fun goToPlayStore(activity: Activity, applicationId: String) {
+    private fun goToPlayStore(applicationId: String?) {
+        if (context == null) {
+            return
+        }
+
+        val id: String = applicationId ?: context!!.applicationContext.packageName;
         try {
-            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$applicationId")))
+            context!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$id")))
         } catch (ex: android.content.ActivityNotFoundException) {
-            activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$applicationId")))
+            context!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$id")))
         }
     }
 }
