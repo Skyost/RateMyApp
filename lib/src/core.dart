@@ -201,7 +201,7 @@ class RateMyApp {
 
   /// Launches the corresponding store.
   Future<void> launchStore() => RateMyApp._channel
-      .invokeMethod('launchStore', {'appId': storeIdentifier});
+      .invokeMethod('launchStore', storeIdentifier == null ? null : {'appId': storeIdentifier});
 
   /// Calls the specified event.
   Future<void> callEvent(RateMyAppEventType eventType) async {
