@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.NonNull
 import com.google.android.play.core.review.ReviewInfo
@@ -54,10 +53,7 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     cacheReviewInfo(result)
                 }
             }
-            "launchStore" -> {
-                goToPlayStore(call.argument<String>("appId")!!)
-                result.success(true)
-            }
+            "launchStore" -> result.success(goToPlayStore(call.argument<String>("appId")!!))
             else -> result.notImplemented()
         }
     }
@@ -172,18 +168,29 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      * Launches a Play Store instance.
      *
      * @param applicationId The application ID.
+     *
+     * @return 0 if everything is okay, 1 if the Play Store has not been opened, but the URL has been launched and 2 if it's not possible to open any of them.
      */
 
-    private fun goToPlayStore(applicationId: String?) {
+    private fun goToPlayStore(applicationId: String?): Int {
         if (context == null) {
-            return
+            return 2
         }
 
         val id: String = applicationId ?: context!!.applicationContext.packageName;
-        try {
-            context!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$id")))
-        } catch (ex: android.content.ActivityNotFoundException) {
-            context!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$id")))
+
+        val marketIntent = Intent(Intent.ACTION_VIEW, "market://details?id=$id")
+        if (marketIntent.resolveActivity(context!!.packageManager) != null) {
+            context!!.startActivity(marketIntent)
+            return 0
         }
+
+        val browserIntent = Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$id")
+        if (browserIntent.resolveActivity(context!!.packageManager) != null) {
+            context!!.startActivity(browserIntent)
+            return 1
+        }
+
+        return 2
     }
 }

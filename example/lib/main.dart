@@ -29,7 +29,6 @@ class _RateMyAppTestAppState extends State<_RateMyAppTestApp> {
             title: const Text('Rate my app !'),
           ),
           body: RateMyAppBuilder(
-            rateMyApp: RateMyApp(),
             builder: builder,
             onInitialized: (context, rateMyApp) {
               setState(() => builder = (context) => ContentWidget(rateMyApp: rateMyApp));
