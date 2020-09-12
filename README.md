@@ -13,7 +13,9 @@ _Rate my app_ is really inspired by [Android-Rate](https://github.com/hotchemi/A
 
 ### Installation
 
-To target an iOS version before _10.3_, add this in your `Info.plist` :
+If you're building your app for Android, you need to migrate your app to the [Android Embedding V2](https://github.com/flutter/flutter/wiki/Upgrading-pre-1.12-Android-projects).
+
+On iOS, if you want to target a version before _10.3_, add this in your `Info.plist` :
 
 ```xml
 <key>LSApplicationQueriesSchemes</key>

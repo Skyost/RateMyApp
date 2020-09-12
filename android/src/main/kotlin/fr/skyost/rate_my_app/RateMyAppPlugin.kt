@@ -24,14 +24,6 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
  * A lot of thanks to https://github.com/britannio/in_app_review and its author (This class is a lot inspired by it).
  */
 public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
-    companion object {
-        @JvmStatic
-        fun registerWith(registrar: Registrar) {
-            val channel = MethodChannel(registrar.messenger(), "rate_my_app")
-            channel.setMethodCallHandler(RateMyAppPlugin())
-        }
-    }
-
     private var activity: Activity? = null
     private var context: Context? = null
     private lateinit var channel: MethodChannel
