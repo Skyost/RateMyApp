@@ -166,21 +166,21 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      */
 
     private fun goToPlayStore(applicationId: String?): Int {
-        if (context == null) {
+        if (activity == null) {
             return 2
         }
 
-        val id: String = applicationId ?: context!!.applicationContext.packageName
+        val id: String = applicationId ?: activity!!.applicationContext.packageName
 
         val marketIntent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$id"))
-        if (marketIntent.resolveActivity(context!!.packageManager) != null) {
-            context!!.startActivity(marketIntent)
+        if (marketIntent.resolveActivity(activity!!.packageManager) != null) {
+            activity!!.startActivity(marketIntent)
             return 0
         }
 
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$id"))
-        if (browserIntent.resolveActivity(context!!.packageManager) != null) {
-            context!!.startActivity(browserIntent)
+        if (browserIntent.resolveActivity(activity!!.packageManager) != null) {
+            activity!!.startActivity(browserIntent)
             return 1
         }
 
