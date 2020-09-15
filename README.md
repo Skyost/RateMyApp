@@ -13,7 +13,8 @@ _Rate my app_ is really inspired by [Android-Rate](https://github.com/hotchemi/A
 
 ### Installation
 
-If you're building your app for Android, you need to migrate your app to the [Android Embedding V2](https://github.com/flutter/flutter/wiki/Upgrading-pre-1.12-Android-projects).
+If you're building your app for Android, be sure that your app is upgraded to the [Android Embedding V2](https://github.com/flutter/flutter/wiki/Upgrading-pre-1.12-Android-projects)
+(if you've created your project with a Flutter version ≥ 1.12, you should be okay).
 
 On iOS, if you want to target a version before _10.3_, add this in your `Info.plist` :
 

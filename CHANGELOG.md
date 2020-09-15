@@ -1,3 +1,8 @@
+## 0.7.2
+
+* Changed how the plugin handles store openings.
+* Various fixes and updates.
+
 ## 0.7.1+1
 
 * Various fixes.
