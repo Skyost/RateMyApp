@@ -56,7 +56,8 @@ class RateMyApp {
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    conditions.forEach((condition) => condition.readFromPreferences(preferences, preferencesPrefix));
+    conditions.forEach((condition) =>
+        condition.readFromPreferences(preferences, preferencesPrefix));
     await callEvent(RateMyAppEventType.initialized);
   }
 
@@ -77,7 +78,10 @@ class RateMyApp {
   }
 
   /// Whether the dialog should be opened.
-  bool get shouldOpenDialog => conditions.firstWhere((condition) => !condition.isMet, orElse: () => null) == null;
+  bool get shouldOpenDialog =>
+      conditions.firstWhere((condition) => !condition.isMet,
+          orElse: () => null) ==
+      null;
 
   /// Returns the corresponding store identifier.
   String get storeIdentifier {
@@ -93,11 +97,13 @@ class RateMyApp {
   }
 
   /// Returns whether native review dialog is supported.
-  Future<bool> get isNativeReviewDialogSupported => _channel.invokeMethod<bool>('isNativeDialogSupported');
+  Future<bool> get isNativeReviewDialogSupported =>
+      _channel.invokeMethod<bool>('isNativeDialogSupported');
 
   /// Launches the native review dialog.
   /// You should check for [isNativeReviewDialogSupported] before running the method.
-  Future<void> launchNativeReviewDialog() => _channel.invokeMethod('launchNativeReviewDialog');
+  Future<void> launchNativeReviewDialog() =>
+      _channel.invokeMethod('launchNativeReviewDialog');
 
   /// Shows the rate dialog.
   Future<void> showRateDialog(
@@ -122,13 +128,16 @@ class RateMyApp {
     }
 
     unawaited(callEvent(RateMyAppEventType.dialogOpen));
-    RateMyAppDialogButton clickedButton = await showDialog<RateMyAppDialogButton>(
+    RateMyAppDialogButton clickedButton =
+        await showDialog<RateMyAppDialogButton>(
       context: context,
       builder: (context) => RateMyAppDialog(
         this,
         title: title ?? 'Rate this app',
-        message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
-        contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
+        message: message ??
+            'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+        contentBuilder:
+            contentBuilder ?? ((context, defaultContent) => defaultContent),
         actionsBuilder: actionsBuilder,
         rateButton: rateButton ?? 'RATE',
         noButton: noButton ?? 'NO THANKS',
@@ -170,8 +179,10 @@ class RateMyApp {
       builder: (context) => RateMyAppStarDialog(
         this,
         title: title ?? 'Rate this app',
-        message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
-        contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
+        message: message ??
+            'You like this app ? Then take a little bit of your time to leave a rating :',
+        contentBuilder:
+            contentBuilder ?? ((context, defaultContent) => defaultContent),
         actionsBuilder: actionsBuilder,
         dialogStyle: dialogStyle ??
             const DialogStyle(
@@ -190,8 +201,9 @@ class RateMyApp {
 
   /// Launches the corresponding store.
   Future<LaunchStoreResult> launchStore() async {
-    int result = await _channel.invokeMethod('launchStore', storeIdentifier == null ? null : {'appId': storeIdentifier});
-    switch(result) {
+    int result = await _channel.invokeMethod('launchStore',
+        storeIdentifier == null ? null : {'appId': storeIdentifier});
+    switch (result) {
       case 0:
         return LaunchStoreResult.storeOpened;
       case 1:
@@ -204,7 +216,8 @@ class RateMyApp {
   /// Calls the specified event.
   Future<void> callEvent(RateMyAppEventType eventType) async {
     bool saveSharedPreferences = false;
-    conditions.forEach((condition) => saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences);
+    conditions.forEach((condition) => saveSharedPreferences =
+        condition.onEventOccurred(eventType) || saveSharedPreferences);
     if (saveSharedPreferences) {
       await save();
     }
