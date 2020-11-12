@@ -59,7 +59,8 @@ class MinimumDaysCondition extends DebuggableCondition {
   Future<void> saveToPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
     return preferences.setInt(
-        preferencesPrefix + 'minimumDate', minimumDate.millisecondsSinceEpoch);
+        preferencesPrefix + 'minimumDate', minimumDate?.millisecondsSinceEpoch 
+          ?? DateTime.now().add(Duration(days: remindDays)).microsecondsSinceEpoch);
   }
 
   @override
