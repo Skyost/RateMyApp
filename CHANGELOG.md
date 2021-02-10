@@ -1,3 +1,6 @@
+## 1.0.0
+* Null safety migration
+
 ## 0.7.2
 
 * Changed how the plugin handles store openings.
