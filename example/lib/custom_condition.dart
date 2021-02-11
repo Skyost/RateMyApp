@@ -25,17 +25,23 @@ class MaxDialogOpeningCondition extends DebuggableCondition {
         assert(maxStarDialogOpeningCount != null);
 
   @override
-  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
+  void readFromPreferences(
+      SharedPreferences preferences, String preferencesPrefix) {
     // Here we can read the values (or we set their default values).
-    dialogOpeningCount = preferences.getInt(preferencesPrefix + 'dialogOpeningCount') ?? 0;
-    starDialogOpeningCount = preferences.getInt(preferencesPrefix + 'starDialogOpeningCount') ?? 0;
+    dialogOpeningCount =
+        preferences.getInt(preferencesPrefix + 'dialogOpeningCount') ?? 0;
+    starDialogOpeningCount =
+        preferences.getInt(preferencesPrefix + 'starDialogOpeningCount') ?? 0;
   }
 
   @override
-  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) async {
+  Future<void> saveToPreferences(
+      SharedPreferences preferences, String preferencesPrefix) async {
     // Here we save our current values.
-    await preferences.setInt(preferencesPrefix + 'dialogOpeningCount', dialogOpeningCount);
-    return preferences.setInt(preferencesPrefix + 'starDialogOpeningCount', starDialogOpeningCount);
+    await preferences.setInt(
+        preferencesPrefix + 'dialogOpeningCount', dialogOpeningCount);
+    return preferences.setInt(
+        preferencesPrefix + 'starDialogOpeningCount', starDialogOpeningCount);
   }
 
   @override
@@ -65,12 +71,20 @@ class MaxDialogOpeningCondition extends DebuggableCondition {
   @override
   String get valuesAsString {
     // Allows to easily debug this condition.
-    return 'Dialog opening count : ' + dialogOpeningCount.toString() + '\nMax dialog opening count : ' + maxDialogOpeningCount.toString() + 'Star dialog opening count : ' + starDialogOpeningCount.toString() + '\nMax star dialog opening count : ' + maxStarDialogOpeningCount.toString();
+    return 'Dialog opening count : ' +
+        dialogOpeningCount.toString() +
+        '\nMax dialog opening count : ' +
+        maxDialogOpeningCount.toString() +
+        'Star dialog opening count : ' +
+        starDialogOpeningCount.toString() +
+        '\nMax star dialog opening count : ' +
+        maxStarDialogOpeningCount.toString();
   }
 
   @override
   bool get isMet {
     // This allows to check whether this condition is met in its current state.
-    return dialogOpeningCount <= maxDialogOpeningCount && starDialogOpeningCount <= maxStarDialogOpeningCount;
+    return dialogOpeningCount <= maxDialogOpeningCount &&
+        starDialogOpeningCount <= maxStarDialogOpeningCount;
   }
 }
