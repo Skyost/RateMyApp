@@ -1,5 +1,6 @@
 ## 1.0.0
-* Null safety migration
+* Null safety migration.
+* Updated for Flutter v2.0.0.
 
 ## 0.7.2
 

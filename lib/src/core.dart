@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
@@ -78,8 +77,14 @@ class RateMyApp {
   }
 
   /// Whether the dialog should be opened.
-  bool get shouldOpenDialog =>
-      conditions.firstWhereOrNull((condition) => !condition.isMet) == null;
+  bool get shouldOpenDialog {
+    for (Condition condition in conditions) {
+      if (!condition.isMet) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   /// Returns the corresponding store identifier.
   String? get storeIdentifier {

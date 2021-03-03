@@ -42,17 +42,16 @@ class _ContentWidgetState extends State<ContentWidget> {
                 'Are conditions met ? ' + (shouldOpenDialog ? 'Yes' : 'No')),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: RaisedButton(
-                child: const Text('Launch "Rate my app" dialog'),
+              child: ElevatedButton(
                 onPressed: () async {
                   await widget.rateMyApp.showRateDialog(
                       context); // We launch the default Rate my app dialog.
                   refresh();
                 },
+                child: const Text('Launch "Rate my app" dialog'),
               ),
             ),
-            RaisedButton(
-              child: const Text('Launch "Rate my app" star dialog'),
+            ElevatedButton(
               onPressed: () async {
                 await widget.rateMyApp.showStarRateDialog(context,
                     actionsBuilder: (_, stars) => starRateDialogActionsBuilder(
@@ -60,14 +59,15 @@ class _ContentWidgetState extends State<ContentWidget> {
                         stars)); // We launch the Rate my app dialog with stars.
                 refresh();
               },
+              child: const Text('Launch "Rate my app" star dialog'),
             ),
-            RaisedButton(
-              child: const Text('Reset'),
+            ElevatedButton(
               onPressed: () async {
                 await widget.rateMyApp
                     .reset(); // We reset all Rate my app conditions values.
                 refresh();
               },
+              child: const Text('Reset'),
             ),
           ],
         ),
@@ -128,12 +128,10 @@ class _ContentWidgetState extends State<ContentWidget> {
     }
 
     return [
-      FlatButton(
-        child:
-            Text(MaterialLocalizations.of(context).okButtonLabel.toUpperCase()),
+      TextButton(
         onPressed: () async {
           print(message);
-          Scaffold.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(message),
               backgroundColor: color,
@@ -147,6 +145,8 @@ class _ContentWidgetState extends State<ContentWidget> {
               context, RateMyAppDialogButton.rate);
           refresh();
         },
+        child:
+            Text(MaterialLocalizations.of(context).okButtonLabel.toUpperCase()),
       ),
       cancelButton,
     ];
