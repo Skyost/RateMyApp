@@ -26,6 +26,7 @@ On iOS, if you want to target a version before _10.3_, add this in your `Info.pl
 ```
 
 By the way, it's important to note that your bundle identifier (in your `Info.plist`) must match the App ID on iTunes Connect and the package identifier (in your `build.gradle`) must match your App ID on Google Play.
+Oh, and your project [must use Swift](https://github.com/Skyost/RateMyApp/issues/90).
 
 If for any reason it doesn't match please go to the _[Using custom identifiers](#using-custom-identifiers)_ section.
 
