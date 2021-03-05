@@ -1,3 +1,9 @@
+## 1.0.0+2
+* Fixed some problems with the Dart analyzer.
+
+## 1.0.0+1
+* Fixed some problems with the `pubspec.yaml` file.
+
 ## 1.0.0
 * Null safety migration.
 * Updated for Flutter v2.0.0.
