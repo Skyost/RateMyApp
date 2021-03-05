@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:rate_my_app/src/core.dart';
+import 'package:rate_my_app/src/smooth_star_rating.dart';
 import 'package:rate_my_app/src/style.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 /// A simple dialog button click listener.
 typedef RateMyAppDialogButtonClickListener = bool Function(
@@ -200,7 +200,7 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
             ),
           ),
           SmoothStarRating(
-            onRated: (rating) {
+            onRatingChanged: (rating) {
               setState(() => _currentRating = rating);
             },
             color: widget.starRatingOptions.starsFillColor,
