@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 /// Allows to tweak the plugin dialogs.
 class DialogStyle {
@@ -41,39 +42,64 @@ class DialogStyle {
 
 /// Just a little class that allows to customize some rating bar options.
 class StarRatingOptions {
-  /// The fill color of the stars.
-  final Color starsFillColor;
+  /// The rating widget.
+  final RatingWidget? ratingWidget;
 
-  /// The border color for the stars.
-  final Color starsBorderColor;
-
-  /// The stars size.
-  final double starsSize;
-
-  /// The space between two stars.
-  final double starsSpacing;
+  /// The item builder.
+  /// Will override the [ratingWidget] setting if specified.
+  final IndexedWidgetBuilder? itemBuilder;
 
   /// The initial rating.
   final double initialRating;
 
+  /// The minimum rating.
+  final double minRating;
+
   /// Whether we allow half-stars ratings.
   final bool allowHalfRating;
 
-  /// The half filled icon.
-  final IconData halfFilledIconData;
+  /// The items padding.
+  final EdgeInsetsGeometry itemPadding;
 
-  /// The filled icon.
-  final IconData filledIconData;
+  /// The items size.
+  final double itemSize;
+
+  /// The item count.
+  final int itemCount;
+
+  /// Whether the items should glow.
+  final bool glow;
+
+  /// The items glow radius.
+  final double glowRadius;
+
+  /// The items glow color.
+  final Color glowColor;
+
+  /// The direction.
+  final Axis direction;
+
+  /// If set to `true`, this will disable the drag feature (and also the half rating feature).
+  final bool tapOnlyMode;
+
+  /// How items should be disposed in the main axis.
+  final WrapAlignment wrapAlignment;
 
   /// Creates a new star rating options instance.
   const StarRatingOptions({
-    this.starsFillColor = Colors.orangeAccent,
-    this.starsBorderColor = Colors.orangeAccent,
-    this.starsSize = 40,
-    this.starsSpacing = 0,
-    this.initialRating = 0.0,
+    this.ratingWidget,
+    this.itemBuilder,
+    this.initialRating = 0,
+    this.minRating = 0,
     this.allowHalfRating = false,
-    this.halfFilledIconData = Icons.star_half,
-    this.filledIconData = Icons.star,
+    this.itemPadding = const EdgeInsets.symmetric(horizontal: 2),
+    this.itemSize = 40,
+    this.itemCount = 5,
+    this.glow = false,
+    this.glowRadius = 2,
+    this.glowColor = Colors.orangeAccent,
+    this.direction = Axis.horizontal,
+    this.tapOnlyMode = false,
+    this.wrapAlignment = WrapAlignment.start,
   });
 }

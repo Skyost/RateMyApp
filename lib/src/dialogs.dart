@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:rate_my_app/src/core.dart';
-import 'package:rate_my_app/src/smooth_star_rating.dart';
 import 'package:rate_my_app/src/style.dart';
 
 /// A simple dialog button click listener.
@@ -154,7 +154,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => RateMyAppStarDialogState();
+  State<StatefulWidget> createState() => _RateMyAppStarDialogState();
 
   /// Used when there is no onRatingChanged callback.
   List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) =>
@@ -175,14 +175,14 @@ class RateMyAppStarDialog extends StatefulWidget {
 }
 
 /// The Rate my app star dialog state.
-class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
+class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
   /// The current rating.
-  double? _currentRating;
+  late double currentRating;
 
   @override
   void initState() {
     super.initState();
-    _currentRating = widget.starRatingOptions.initialRating;
+    currentRating = widget.starRatingOptions.initialRating;
   }
 
   @override
@@ -199,19 +199,7 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
               textAlign: widget.dialogStyle.messageAlign,
             ),
           ),
-          SmoothStarRating(
-            onRatingChanged: (rating) {
-              setState(() => _currentRating = rating);
-            },
-            color: widget.starRatingOptions.starsFillColor,
-            borderColor: widget.starRatingOptions.starsBorderColor,
-            spacing: widget.starRatingOptions.starsSpacing,
-            size: widget.starRatingOptions.starsSize,
-            allowHalfRating: widget.starRatingOptions.allowHalfRating,
-            halfFilledIconData: widget.starRatingOptions.halfFilledIconData,
-            filledIconData: widget.starRatingOptions.filledIconData,
-            rating: _currentRating == null ? 0.0 : _currentRating!.toDouble(),
-          ),
+          createRatingBar(),
         ],
       ),
     );
@@ -229,9 +217,67 @@ class RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       contentPadding: widget.dialogStyle.contentPadding,
       shape: widget.dialogStyle.dialogShape,
       actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(
-          context, _currentRating),
+          context, currentRating),
     );
   }
+
+  /// Creates the rating bar.
+  RatingBar createRatingBar() {
+    if (widget.starRatingOptions.itemBuilder == null) {
+      return RatingBar(
+        onRatingUpdate: (rating) {
+          setState(() => currentRating = rating);
+        },
+        ratingWidget: widget.starRatingOptions.ratingWidget ??
+            createDefaultRatingWidget(),
+        initialRating: widget.starRatingOptions.initialRating,
+        minRating: widget.starRatingOptions.minRating,
+        allowHalfRating: widget.starRatingOptions.allowHalfRating,
+        itemPadding: widget.starRatingOptions.itemPadding,
+        itemSize: widget.starRatingOptions.itemSize,
+        itemCount: widget.starRatingOptions.itemCount,
+        glow: widget.starRatingOptions.glow,
+        glowRadius: widget.starRatingOptions.glowRadius,
+        tapOnlyMode: widget.starRatingOptions.tapOnlyMode,
+        wrapAlignment: widget.starRatingOptions.wrapAlignment,
+      );
+    }
+    return RatingBar.builder(
+      onRatingUpdate: (rating) {
+        setState(() => currentRating = rating);
+      },
+      itemBuilder: widget.starRatingOptions.itemBuilder!,
+      initialRating: widget.starRatingOptions.initialRating,
+      minRating: widget.starRatingOptions.minRating,
+      allowHalfRating: widget.starRatingOptions.allowHalfRating,
+      itemPadding: widget.starRatingOptions.itemPadding,
+      itemSize: widget.starRatingOptions.itemSize,
+      itemCount: widget.starRatingOptions.itemCount,
+      glow: widget.starRatingOptions.glow,
+      glowRadius: widget.starRatingOptions.glowRadius,
+      tapOnlyMode: widget.starRatingOptions.tapOnlyMode,
+      wrapAlignment: widget.starRatingOptions.wrapAlignment,
+    );
+  }
+
+  /// Creates the default rating widget.
+  RatingWidget createDefaultRatingWidget() => RatingWidget(
+        full: Icon(
+          Icons.star,
+          color: Colors.orangeAccent,
+          size: widget.starRatingOptions.itemSize,
+        ),
+        half: Icon(
+          Icons.star_half,
+          color: Colors.orangeAccent,
+          size: widget.starRatingOptions.itemSize,
+        ),
+        empty: Icon(
+          Icons.star_border,
+          color: Colors.orangeAccent,
+          size: widget.starRatingOptions.itemSize,
+        ),
+      );
 }
 
 /// A Rate my app dialog button with a text, a validator and a callback.

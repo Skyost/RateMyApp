@@ -101,13 +101,13 @@ rateMyApp.init().then((_) {
         return true; // Return false if you want to cancel the click event.
       },
       ignoreNativeDialog: Platform.isAndroid, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
-      dialogStyle: DialogStyle(), // Custom dialog styles.
+      dialogStyle: const DialogStyle(), // Custom dialog styles.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
       // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
       // actionsBuilder: (context) => [], // This one allows you to use your own buttons. 
     );
     
-    // Or if you prefer to show a star rating bar :
+    // Or if you prefer to show a star rating bar (powered by `flutter_rating_bar`) :
     
     rateMyApp.showStarRateDialog(
       context,
@@ -129,12 +129,12 @@ rateMyApp.init().then((_) {
         ];
       },
       ignoreNativeDialog: Platform.isAndroid, // Set to false if you want to show the Apple's native app rating dialog on iOS or Google's native app rating dialog (depends on the current Platform).
-      dialogStyle: DialogStyle( // Custom dialog styles.
+      dialogStyle: const DialogStyle( // Custom dialog styles.
         titleAlign: TextAlign.center,
         messageAlign: TextAlign.center,
         messagePadding: EdgeInsets.only(bottom: 20),
       ),
-      starRatingOptions: StarRatingOptions(), // Custom star bar rating options.
+      starRatingOptions: const StarRatingOptions(), // Custom star bar rating options.
       onDismissed: () => rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed), // Called when the user dismissed the dialog (either by taping outside or by pressing the "back" button).
     );
   }
@@ -160,7 +160,7 @@ RateMyApp rateMyApp = RateMyApp(
 void initState() {
   super.initState();
 
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
+  WidgetsBinding.instance?.addPostFrameCallback((_) async {
     await rateMyApp.init();
     if (mounted && rateMyApp.shouldOpenDialog) {  
       rateMyApp.showRateDialog(context);
@@ -266,4 +266,5 @@ You have a lot of options to contribute to this project ! You can :
 This library depends on some other libraries :
 
 * [shared_preferences](https://pub.dev/packages/shared_preferences)
-* [smooth_star_rating](https://pub.dev/packages/smooth_star_rating)
+* [flutter_rating_bar](https://pub.dev/packages/flutter_rating_bar)
+* [pedantic](https://pub.dev/packages/pedantic)

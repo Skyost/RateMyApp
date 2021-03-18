@@ -1,3 +1,6 @@
+## 1.1.0
+* Added support for `flutter_rating_bar`.
+
 ## 1.0.0+2
 * Fixed some problems with the Dart analyzer.
 
