@@ -125,7 +125,7 @@ class RateMyApp {
   }) async {
     ignoreNativeDialog ??= Platform.isAndroid;
     if (!ignoreNativeDialog &&
-        await (isNativeReviewDialogSupported as FutureOr<bool>)) {
+        ((await isNativeReviewDialogSupported) ?? false)) {
       unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
       await launchNativeReviewDialog();
       return;
@@ -170,7 +170,7 @@ class RateMyApp {
   }) async {
     ignoreNativeDialog ??= Platform.isAndroid;
     if (!ignoreNativeDialog &&
-        await (isNativeReviewDialogSupported as FutureOr<bool>)) {
+        ((await isNativeReviewDialogSupported) ?? false)) {
       unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
       await launchNativeReviewDialog();
       return;
@@ -206,7 +206,7 @@ class RateMyApp {
 
   /// Launches the corresponding store.
   Future<LaunchStoreResult> launchStore() async {
-    int? result = await _channel.invokeMethod('launchStore',
+    int? result = await _channel.invokeMethod<int>('launchStore',
         storeIdentifier == null ? null : {'appId': storeIdentifier});
     switch (result) {
       case 0:

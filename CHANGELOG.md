@@ -1,3 +1,6 @@
+## 1.1.0+1
+* Fixed bugs with some `invokeMethod` calls.
+
 ## 1.1.0
 * Added support for `flutter_rating_bar`.
 
