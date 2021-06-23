@@ -40,10 +40,19 @@ class DialogStyle {
   });
 }
 
+// In order to allow the user to use this rating widget class, we have to expose it through our package
+class RatingWidgetLocal extends RatingWidget {
+  RatingWidgetLocal({
+    required Widget full,
+    required Widget half,
+    required Widget empty,
+  }) : super(empty: empty, full: full, half: half);
+}
+
 /// Just a little class that allows to customize some rating bar options.
 class StarRatingOptions {
   /// The rating widget.
-  final RatingWidget? ratingWidget;
+  final RatingWidgetLocal? ratingWidget;
 
   /// The item builder.
   /// Will override the [ratingWidget] setting if specified.
@@ -66,6 +75,9 @@ class StarRatingOptions {
 
   /// The item count.
   final int itemCount;
+
+  // Item Color
+  final Color itemColor;
 
   /// Whether the items should glow.
   final bool glow;
@@ -95,6 +107,7 @@ class StarRatingOptions {
     this.itemPadding = const EdgeInsets.symmetric(horizontal: 2),
     this.itemSize = 40,
     this.itemCount = 5,
+    this.itemColor = Colors.orangeAccent,
     this.glow = false,
     this.glowRadius = 2,
     this.glowColor = Colors.orangeAccent,

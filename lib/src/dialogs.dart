@@ -264,17 +264,17 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
   RatingWidget createDefaultRatingWidget() => RatingWidget(
         full: Icon(
           Icons.star,
-          color: Colors.orangeAccent,
+          color: widget.starRatingOptions.itemColor,
           size: widget.starRatingOptions.itemSize,
         ),
         half: Icon(
           Icons.star_half,
-          color: Colors.orangeAccent,
+          color: widget.starRatingOptions.itemColor,
           size: widget.starRatingOptions.itemSize,
         ),
         empty: Icon(
           Icons.star_border,
-          color: Colors.orangeAccent,
+          color: widget.starRatingOptions.itemColor,
           size: widget.starRatingOptions.itemSize,
         ),
       );
