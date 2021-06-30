@@ -79,6 +79,9 @@ class StarRatingOptions {
   // Item Color
   final Color itemColor;
 
+  // Border color of the default Rating Widget. If not specified, defaults to itemColor
+  final Color? borderColor;
+
   /// Whether the items should glow.
   final bool glow;
 
@@ -108,6 +111,7 @@ class StarRatingOptions {
     this.itemSize = 40,
     this.itemCount = 5,
     this.itemColor = Colors.orangeAccent,
+    this.borderColor,
     this.glow = false,
     this.glowRadius = 2,
     this.glowColor = Colors.orangeAccent,

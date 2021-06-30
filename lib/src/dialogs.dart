@@ -5,22 +5,19 @@ import 'package:rate_my_app/src/core.dart';
 import 'package:rate_my_app/src/style.dart';
 
 /// A simple dialog button click listener.
-typedef RateMyAppDialogButtonClickListener = bool Function(
-    RateMyAppDialogButton button);
+typedef RateMyAppDialogButtonClickListener = bool Function(RateMyAppDialogButton button);
 
 /// Validates a state when called in a function.
 typedef Validator = bool Function();
 
 /// Allows to change the default dialog content.
-typedef DialogContentBuilder = Widget Function(
-    BuildContext context, Widget defaultContent);
+typedef DialogContentBuilder = Widget Function(BuildContext context, Widget defaultContent);
 
 /// Allows to dynamically build actions.
 typedef DialogActionsBuilder = List<Widget> Function(BuildContext context);
 
 /// Allows to dynamically build actions according to the specified rating.
-typedef StarDialogActionsBuilder = List<Widget> Function(
-    BuildContext context, double? stars);
+typedef StarDialogActionsBuilder = List<Widget> Function(BuildContext context, double? stars);
 
 /// The Android Rate my app dialog.
 class RateMyAppDialog extends StatelessWidget {
@@ -101,20 +98,17 @@ class RateMyAppDialog extends StatelessWidget {
         RateMyAppRateButton(
           rateMyApp,
           text: rateButton,
-          validator: () =>
-              listener == null || listener!(RateMyAppDialogButton.rate),
+          validator: () => listener == null || listener!(RateMyAppDialogButton.rate),
         ),
         RateMyAppLaterButton(
           rateMyApp,
           text: laterButton,
-          validator: () =>
-              listener == null || listener!(RateMyAppDialogButton.later),
+          validator: () => listener == null || listener!(RateMyAppDialogButton.later),
         ),
         RateMyAppNoButton(
           rateMyApp,
           text: noButton,
-          validator: () =>
-              listener == null || listener!(RateMyAppDialogButton.no),
+          validator: () => listener == null || listener!(RateMyAppDialogButton.no),
         ),
       ];
 }
@@ -157,8 +151,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _RateMyAppStarDialogState();
 
   /// Used when there is no onRatingChanged callback.
-  List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) =>
-      [
+  List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) => [
         RateMyAppRateButton(
           rateMyApp,
           text: 'RATE',
@@ -216,8 +209,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       content: widget.contentBuilder(context, content),
       contentPadding: widget.dialogStyle.contentPadding,
       shape: widget.dialogStyle.dialogShape,
-      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(
-          context, currentRating),
+      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, currentRating),
     );
   }
 
@@ -228,8 +220,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
         onRatingUpdate: (rating) {
           setState(() => currentRating = rating);
         },
-        ratingWidget: widget.starRatingOptions.ratingWidget ??
-            createDefaultRatingWidget(),
+        ratingWidget: widget.starRatingOptions.ratingWidget ?? createDefaultRatingWidget(),
         initialRating: widget.starRatingOptions.initialRating,
         minRating: widget.starRatingOptions.minRating,
         allowHalfRating: widget.starRatingOptions.allowHalfRating,
@@ -262,19 +253,49 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
 
   /// Creates the default rating widget.
   RatingWidget createDefaultRatingWidget() => RatingWidget(
-        full: Icon(
-          Icons.star,
-          color: widget.starRatingOptions.itemColor,
-          size: widget.starRatingOptions.itemSize,
-        ),
-        half: Icon(
-          Icons.star_half,
-          color: widget.starRatingOptions.itemColor,
-          size: widget.starRatingOptions.itemSize,
-        ),
+        full: widget.starRatingOptions.borderColor != null
+            ? Stack(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: widget.starRatingOptions.itemColor,
+                    size: widget.starRatingOptions.itemSize,
+                  ),
+                  Icon(
+                    Icons.star_border,
+                    color: widget.starRatingOptions.borderColor,
+                    size: widget.starRatingOptions.itemSize,
+                  ),
+                ],
+              )
+            : Icon(
+                Icons.star,
+                color: widget.starRatingOptions.itemColor,
+                size: widget.starRatingOptions.itemSize,
+              ),
+        half: widget.starRatingOptions.borderColor != null
+            ? Stack(
+                children: [
+                  Icon(
+                    Icons.star_half,
+                    color: widget.starRatingOptions.itemColor,
+                    size: widget.starRatingOptions.itemSize,
+                  ),
+                  Icon(
+                    Icons.star_border,
+                    color: widget.starRatingOptions.borderColor,
+                    size: widget.starRatingOptions.itemSize,
+                  ),
+                ],
+              )
+            : Icon(
+                Icons.star_half,
+                color: widget.starRatingOptions.itemColor,
+                size: widget.starRatingOptions.itemSize,
+              ),
         empty: Icon(
           Icons.star_border,
-          color: widget.starRatingOptions.itemColor,
+          color: widget.starRatingOptions.borderColor ?? widget.starRatingOptions.itemColor,
           size: widget.starRatingOptions.itemSize,
         ),
       );
