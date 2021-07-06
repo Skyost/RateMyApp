@@ -41,6 +41,8 @@ class DialogStyle {
 }
 
 // In order to allow the user to use this rating widget class, we have to expose it through our package
+
+/// Local exposure of the Rating Widget class. Use this to customize the Rating Widget if you don't want to use [StartRatingOptions.itemBuilder].
 class RatingWidgetLocal extends RatingWidget {
   RatingWidgetLocal({
     required Widget full,
@@ -76,10 +78,10 @@ class StarRatingOptions {
   /// The item count.
   final int itemCount;
 
-  // Item Color
+  /// Item Color
   final Color itemColor;
 
-  // Border color of the default Rating Widget. If not specified, defaults to itemColor
+  /// Border color of the default Rating Widget. Defaults to [itemColor]
   final Color? borderColor;
 
   /// Whether the items should glow.
@@ -119,4 +121,70 @@ class StarRatingOptions {
     this.tapOnlyMode = false,
     this.wrapAlignment = WrapAlignment.start,
   });
+}
+
+class DialogTransition {
+  /// Curve for the animation
+  final Curve curve;
+
+  /// Transition Duration
+  final Duration transitionDuration;
+
+  /// Choose transition type to use the predefined transitions without much hassle
+  final TransitionType transitionType;
+
+  /// Custom transition
+  final Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder;
+
+  /// Starting offset for slide transition: Only use with [TransitionType.slide]
+  final Offset? startOffset;
+
+  /// Alignment for scale transition: Only use with [TransitionType.scale] or [TransitionType.scaleAndFade]
+  final Alignment? alignment;
+
+  DialogTransition(
+      {this.curve = Curves.linear,
+      TransitionType? transition,
+      this.transitionDuration = const Duration(milliseconds: 280),
+      this.customTransitionBuilder,
+      this.startOffset,
+      this.alignment})
+      : transitionType = customTransitionBuilder != null ? TransitionType.custom : transition ?? TransitionType.none {
+    assert(transitionType != TransitionType.slide && startOffset != null,
+        'Start Offset value only valid with TransitionType.slide');
+    assert(transitionType != TransitionType.scale && transitionType != TransitionType.scaleAndFade && alignment != null,
+        'Alignment Property is only valid with TransitionType.scale or TransitionType.scaleAndFade');
+  }
+
+  /// Default dialog transitions
+  const DialogTransition.def()
+      : curve = Curves.linear,
+        customTransitionBuilder = null,
+        startOffset = null,
+        alignment = null,
+        transitionType = TransitionType.none,
+        transitionDuration = Duration.zero;
+}
+
+enum TransitionType {
+  /// Scales in the dialog from given alignment from[DialogTransition.alignment] (default: Center)
+  scale,
+
+  /// Fade Transition
+  fade,
+
+  /// Scales and fades in the dialog from given alignment from[DialogTransition.alignment] (default: Center)
+  scaleAndFade,
+
+  /// Ratates the dialog
+  rotation,
+
+  /// Slide the dialog into view from right. Change [DialogTransition.startOffset] property to change the starting point
+  slide,
+
+  /// No Transition, use [showDialog()] instead of [showGeneralDialog()]
+  none,
+
+  /// When the user defines a custom transitionBuilder
+  custom,
 }

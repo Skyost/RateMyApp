@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pedantic/pedantic.dart';
@@ -121,17 +120,8 @@ class RateMyApp {
     VoidCallback? onDismissed,
     bool? barrierDismissible,
     String? barrierLabel,
-    Curve? curve,
-    Duration transitionDuration = const Duration(milliseconds: 260),
-    TransitionType transitionType = TransitionType.none,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder,
-    Offset? startOffset,
-    Alignment? alignment,
+    DialogTransition dialogTransition = const DialogTransition.def(),
   }) async {
-    assert(transitionType != TransitionType.slide && startOffset != null,
-        'Start Offset value only valid with TransitionType.slide');
-    assert(transitionType != TransitionType.scale && transitionType != TransitionType.scaleAndFade && alignment != null,
-        'Alignment Property is only valid with TransitionType.scale or TransitionType.scaleAndFade');
     ignoreNativeDialog ??= Platform.isAndroid;
     if (!ignoreNativeDialog && ((await isNativeReviewDialogSupported) ?? false)) {
       unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
@@ -153,26 +143,21 @@ class RateMyApp {
       dialogStyle: dialogStyle ?? const DialogStyle(),
     );
 
-    if (customTransitionBuilder != null) transitionType = TransitionType.custom;
-
     unawaited(callEvent(RateMyAppEventType.dialogOpen));
 
     // Using showDialog() when TransitionType.none to get rid of the default fading animation of showGeneralDialog()
-    RateMyAppDialogButton? clickedButton = await (transitionType == TransitionType.none
+    RateMyAppDialogButton? clickedButton = await (dialogTransition.transitionType == TransitionType.none
         ? showDialog<RateMyAppDialogButton>(context: context, builder: (context) => rateMyAppDialog)
         : showGeneralDialog<RateMyAppDialogButton>(
             context: context,
             barrierLabel: barrierLabel ?? '',
-            transitionDuration: transitionDuration,
+            transitionDuration: dialogTransition.transitionDuration,
             barrierDismissible: barrierDismissible ?? Platform.isAndroid,
-            transitionBuilder: customTransitionBuilder ??
+            transitionBuilder: dialogTransition.customTransitionBuilder ??
                 (context, animation1, animation2, child) => buildAnimations(
                       animation: animation1,
                       child: child,
-                      transitionType: transitionType,
-                      curve: curve,
-                      offset: startOffset,
-                      alignment: alignment,
+                      dialogTransition: dialogTransition,
                     ),
             pageBuilder: (context, animation1, animation2) => rateMyAppDialog));
 
@@ -194,19 +179,8 @@ class RateMyApp {
     VoidCallback? onDismissed,
     bool? barrierDismissible,
     String? barrierLabel,
-    Curve? curve,
-    Duration transitionDuration = const Duration(milliseconds: 300),
-    TransitionType transitionType = TransitionType.none,
-    Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder,
-    Offset? startOffset,
-    Alignment? alignment,
+    DialogTransition dialogTransition = const DialogTransition.def(),
   }) async {
-    assert(
-      transitionType != TransitionType.slide && startOffset != null,
-    );
-    assert(transitionType != TransitionType.scale && transitionType != TransitionType.scaleAndFade && alignment != null,
-        'Alignment Property is only valid with TransitionType.scale or TransitionType.scaleAndFade');
-
     ignoreNativeDialog ??= Platform.isAndroid;
     if (!ignoreNativeDialog && ((await isNativeReviewDialogSupported) ?? false)) {
       unawaited(callEvent(RateMyAppEventType.iOSRequestReview));
@@ -216,8 +190,6 @@ class RateMyApp {
 
     assert(actionsBuilder != null, 'You should provide an actions builder.');
     unawaited(callEvent(RateMyAppEventType.starDialogOpen));
-
-    if (customTransitionBuilder != null) transitionType = TransitionType.custom;
 
     var starRateDialog = RateMyAppStarDialog(
       this,
@@ -234,22 +206,19 @@ class RateMyApp {
       starRatingOptions: starRatingOptions ?? const StarRatingOptions(),
     );
 
-    // Using showDialog() when TransitionType.none to get rid of the default fading animation of showGeneralDialog()
-    RateMyAppDialogButton? clickedButton = await (transitionType == TransitionType.none
+    // Using [showDialog()] when [TransitionType.none] to get rid of the default fading animation of [showGeneralDialog()]
+    RateMyAppDialogButton? clickedButton = await (dialogTransition.transitionType == TransitionType.none
         ? showDialog(context: context, builder: (context) => starRateDialog)
         : showGeneralDialog(
             context: context,
-            transitionDuration: transitionDuration,
+            transitionDuration: dialogTransition.transitionDuration,
             barrierLabel: barrierLabel ?? '',
             barrierDismissible: barrierDismissible ?? Platform.isAndroid,
-            transitionBuilder: customTransitionBuilder ??
+            transitionBuilder: dialogTransition.customTransitionBuilder ??
                 (context, animation1, animation2, child) => buildAnimations(
                       animation: animation1,
                       child: child,
-                      transitionType: transitionType,
-                      curve: curve,
-                      offset: startOffset,
-                      alignment: alignment,
+                      dialogTransition: dialogTransition,
                     ),
             pageBuilder: (context, animation1, animation2) => starRateDialog));
 
@@ -300,76 +269,46 @@ class RateMyApp {
     conditions.add(DoNotOpenAgainCondition());
   }
 
-  Widget buildAnimations(
-      {required Animation<double> animation,
-      required Widget child,
-      required TransitionType transitionType,
-      Axis? axis,
-      Curve? curve,
-      Offset? offset,
-      Alignment? alignment}) {
-    curve ??= Curves.linear;
-    switch (transitionType) {
+  Widget buildAnimations({
+    required Animation<double> animation,
+    required Widget child,
+    required DialogTransition dialogTransition,
+  }) {
+    switch (dialogTransition.transitionType) {
       case TransitionType.fade:
         return FadeTransition(
-          opacity: CurvedAnimation(curve: curve, parent: animation),
+          opacity: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: child,
         );
       case TransitionType.rotation:
         return RotationTransition(
-          turns: CurvedAnimation(curve: curve, parent: animation),
+          turns: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: child,
         );
       case TransitionType.scale:
         return ScaleTransition(
-          alignment: alignment ?? Alignment.center,
-          scale: CurvedAnimation(curve: curve, parent: animation),
+          alignment: dialogTransition.alignment ?? Alignment.center,
+          scale: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: child,
         );
       case TransitionType.scaleAndFade:
         return FadeTransition(
-          opacity: CurvedAnimation(curve: curve, parent: animation),
+          opacity: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: ScaleTransition(
-            scale: CurvedAnimation(curve: curve, parent: animation),
+            scale: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
             child: child,
           ),
         );
       case TransitionType.slide:
         return SlideTransition(
-          position: Tween<Offset>(begin: offset ?? const Offset(1, 0), end: Offset.zero).animate(
-            CurvedAnimation(parent: animation, curve: curve),
+          position: Tween<Offset>(begin: dialogTransition.startOffset ?? const Offset(1, 0), end: Offset.zero).animate(
+            CurvedAnimation(parent: animation, curve: dialogTransition.curve),
           ),
         );
-      // These code never runs
-      case TransitionType.none:
-        return child;
-      case TransitionType.custom:
+      default:
         return child;
     }
   }
-}
-
-enum TransitionType {
-  // Scales the dialog from given alignment(Center)
-  scale,
-
-  // Fade Transition
-  fade,
-
-  // Scales and fades in the dialog from given alignment(Center)
-  scaleAndFade,
-
-  // Ratates the dialog
-  rotation,
-
-  // Slide the dialog into view from right. Change [startOffset] property to change the beginning point
-  slide,
-
-  // No Transition, use showDialog() instead of showGeneralDialog()
-  none,
-
-  // When the user defines a custom transitionBuilder
-  custom,
 }
 
 /// Represents all events that can occur during the Rate my app lifecycle.
