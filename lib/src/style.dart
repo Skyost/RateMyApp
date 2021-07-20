@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart'
+    as flutter_rating_bar;
 
 /// Allows to tweak the plugin dialogs.
 class DialogStyle {
@@ -43,8 +44,8 @@ class DialogStyle {
 // In order to allow the user to use this rating widget class, we have to expose it through our package
 
 /// Local exposure of the Rating Widget class. Use this to customize the Rating Widget if you don't want to use [StartRatingOptions.itemBuilder].
-class RatingWidgetLocal extends RatingWidget {
-  RatingWidgetLocal({
+class RatingWidget extends flutter_rating_bar.RatingWidget {
+  RatingWidget({
     required Widget full,
     required Widget half,
     required Widget empty,
@@ -54,7 +55,7 @@ class RatingWidgetLocal extends RatingWidget {
 /// Just a little class that allows to customize some rating bar options.
 class StarRatingOptions {
   /// The rating widget.
-  final RatingWidgetLocal? ratingWidget;
+  final flutter_rating_bar.RatingWidget? ratingWidget;
 
   /// The item builder.
   /// Will override the [ratingWidget] setting if specified.
@@ -123,68 +124,59 @@ class StarRatingOptions {
   });
 }
 
+/// Allows to control dialogs transitions.
 class DialogTransition {
-  /// Curve for the animation
+  /// Curve for the animation.
   final Curve curve;
 
-  /// Transition Duration
+  /// Transition duration.
   final Duration transitionDuration;
 
-  /// Choose transition type to use the predefined transitions without much hassle
+  /// Choose transition type to use the predefined transitions without much hassle.
   final TransitionType transitionType;
 
   /// Custom transition
-  final Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder;
+  final Widget Function(
+          BuildContext, Animation<double>, Animation<double>, Widget)?
+      customTransitionBuilder;
 
-  /// Starting offset for slide transition: Only use with [TransitionType.slide]
+  /// Starting offset for slide transition : only used with [TransitionType.slide].
   final Offset? startOffset;
 
-  /// Alignment for scale transition: Only use with [TransitionType.scale] or [TransitionType.scaleAndFade]
+  /// Alignment for scale transition : only used with [TransitionType.scale] and [TransitionType.scaleAndFade].
   final Alignment? alignment;
 
-  DialogTransition(
-      {this.curve = Curves.linear,
-      TransitionType? transition,
-      this.transitionDuration = const Duration(milliseconds: 280),
-      this.customTransitionBuilder,
-      this.startOffset,
-      this.alignment})
-      : transitionType = customTransitionBuilder != null ? TransitionType.custom : transition ?? TransitionType.none {
-    assert(transitionType != TransitionType.slide && startOffset != null,
-        'Start Offset value only valid with TransitionType.slide');
-    assert(transitionType != TransitionType.scale && transitionType != TransitionType.scaleAndFade && alignment != null,
-        'Alignment Property is only valid with TransitionType.scale or TransitionType.scaleAndFade');
-  }
-
-  /// Default dialog transitions
-  const DialogTransition.def()
-      : curve = Curves.linear,
-        customTransitionBuilder = null,
-        startOffset = null,
-        alignment = null,
-        transitionType = TransitionType.none,
-        transitionDuration = Duration.zero;
+  const DialogTransition({
+    this.curve = Curves.linear,
+    TransitionType transitionType = TransitionType.none,
+    this.transitionDuration = Duration.zero,
+    this.customTransitionBuilder,
+    this.startOffset,
+    this.alignment,
+  }) : transitionType = customTransitionBuilder == null
+            ? transitionType
+            : TransitionType.custom;
 }
 
 enum TransitionType {
-  /// Scales in the dialog from given alignment from[DialogTransition.alignment] (default: Center)
+  /// Scales in the dialog from given alignment from [DialogTransition.alignment] (default: Center).
   scale,
 
-  /// Fade Transition
+  /// Fade Transition.
   fade,
 
-  /// Scales and fades in the dialog from given alignment from[DialogTransition.alignment] (default: Center)
+  /// Scales and fades in the dialog from given alignment from [DialogTransition.alignment] (default: Center).
   scaleAndFade,
 
-  /// Ratates the dialog
+  /// Rotates the dialog.
   rotation,
 
-  /// Slide the dialog into view from right. Change [DialogTransition.startOffset] property to change the starting point
+  /// Slide the dialog into view from right. Change [DialogTransition.startOffset] property to change the starting point.
   slide,
 
-  /// No Transition, use [showDialog()] instead of [showGeneralDialog()]
+  /// No Transition, use [showDialog()] instead of [showGeneralDialog()].
   none,
 
-  /// When the user defines a custom transitionBuilder
+  /// When the user defines a custom transitionBuilder.
   custom,
 }

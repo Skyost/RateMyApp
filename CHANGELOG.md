@@ -1,3 +1,7 @@
+## 1.1.1
+* Added support for dialogs transitions (thanks [Sadeesha-Sath](https://github.com/Sadeesha-Sath)).
+* Added custom item and item color customization for rate dialogs (thanks [Sadeesha-Sath](https://github.com/Sadeesha-Sath)). 
+
 ## 1.1.0+1
 * Fixed bugs with some `invokeMethod` calls.
 
