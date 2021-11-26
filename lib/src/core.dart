@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:rate_my_app/src/conditions.dart';
 import 'package:rate_my_app/src/dialogs.dart';
 import 'package:rate_my_app/src/style.dart';
@@ -55,8 +54,9 @@ class RateMyApp {
   /// Initializes the plugin (loads base launch date, app launches and whether the dialog should not be opened again).
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    conditions.forEach((condition) =>
-        condition.readFromPreferences(preferences, preferencesPrefix));
+    for (Condition condition in conditions) {
+      condition.readFromPreferences(preferences, preferencesPrefix);
+    }
     await callEvent(RateMyAppEventType.initialized);
   }
 
@@ -72,7 +72,9 @@ class RateMyApp {
 
   /// Resets the plugin data.
   Future<void> reset() async {
-    conditions.forEach((condition) => condition.reset());
+    for (Condition condition in conditions) {
+      condition.reset();
+    }
     await save();
   }
 
@@ -258,8 +260,9 @@ class RateMyApp {
   /// Calls the specified event.
   Future<void> callEvent(RateMyAppEventType eventType) async {
     bool saveSharedPreferences = false;
-    conditions.forEach((condition) => saveSharedPreferences =
-        condition.onEventOccurred(eventType) || saveSharedPreferences);
+    for (Condition condition in conditions) {
+      saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences;
+    }
     if (saveSharedPreferences) {
       await save();
     }

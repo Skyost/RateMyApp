@@ -1,3 +1,6 @@
+## 1.1.1+1
+* Switched from `pedantic` to `flutter_lints`.
+
 ## 1.1.1
 * Added support for dialogs transitions (thanks [Sadeesha-Sath](https://github.com/Sadeesha-Sath)).
 * Added custom item and item color customization for rate dialogs (thanks [Sadeesha-Sath](https://github.com/Sadeesha-Sath)). 
