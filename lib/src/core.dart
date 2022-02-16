@@ -261,7 +261,8 @@ class RateMyApp {
   Future<void> callEvent(RateMyAppEventType eventType) async {
     bool saveSharedPreferences = false;
     for (Condition condition in conditions) {
-      saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences;
+      saveSharedPreferences =
+          condition.onEventOccurred(eventType) || saveSharedPreferences;
     }
     if (saveSharedPreferences) {
       await save();

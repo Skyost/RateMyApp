@@ -1,3 +1,6 @@
+## 1.1.2
+* Upgraded Kotlin version to 1.6.10.
+
 ## 1.1.1+1
 * Switched from `pedantic` to `flutter_lints`.
 
