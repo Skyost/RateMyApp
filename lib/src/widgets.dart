@@ -46,7 +46,7 @@ class _RateMyAppBuilderState extends State<RateMyAppBuilder> {
   Future<void> initRateMyApp() async {
     await rateMyApp.init();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         widget.onInitialized(context, rateMyApp);
       }
