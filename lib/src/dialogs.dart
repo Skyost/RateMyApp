@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart'
     as flutter_rating_bar;
 import 'package:rate_my_app/rate_my_app.dart';
-import 'package:rate_my_app/src/core.dart';
-import 'package:rate_my_app/src/style.dart';
 
 /// A simple dialog button click listener.
 typedef RateMyAppDialogButtonClickListener = bool Function(

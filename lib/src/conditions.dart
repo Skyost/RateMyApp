@@ -49,7 +49,7 @@ class MinimumDaysCondition extends DebuggableCondition {
   void readFromPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
     minimumDate = DateTime.fromMillisecondsSinceEpoch(
-        preferences.getInt(preferencesPrefix + 'minimumDate') ??
+        preferences.getInt('${preferencesPrefix}minimumDate') ??
             _now().millisecondsSinceEpoch);
   }
 
@@ -57,7 +57,7 @@ class MinimumDaysCondition extends DebuggableCondition {
   Future<void> saveToPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
     return preferences.setInt(
-        preferencesPrefix + 'minimumDate', minimumDate.millisecondsSinceEpoch);
+        '${preferencesPrefix}minimumDate', minimumDate.millisecondsSinceEpoch);
   }
 
   @override
@@ -114,13 +114,13 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
   @override
   void readFromPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
-    launches = preferences.getInt(preferencesPrefix + 'launches') ?? 0;
+    launches = preferences.getInt('${preferencesPrefix}launches') ?? 0;
   }
 
   @override
   Future<void> saveToPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
-    return preferences.setInt(preferencesPrefix + 'launches', launches);
+    return preferences.setInt('${preferencesPrefix}launches', launches);
   }
 
   @override
@@ -160,14 +160,14 @@ class DoNotOpenAgainCondition extends DebuggableCondition {
   void readFromPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
     doNotOpenAgain =
-        preferences.getBool(preferencesPrefix + 'doNotOpenAgain') ?? false;
+        preferences.getBool('${preferencesPrefix}doNotOpenAgain') ?? false;
   }
 
   @override
   Future<void> saveToPreferences(
       SharedPreferences preferences, String preferencesPrefix) {
     return preferences.setBool(
-        preferencesPrefix + 'doNotOpenAgain', doNotOpenAgain);
+        '${preferencesPrefix}doNotOpenAgain', doNotOpenAgain);
   }
 
   @override
@@ -189,6 +189,6 @@ class DoNotOpenAgainCondition extends DebuggableCondition {
 
   @override
   String get valuesAsString {
-    return 'Do not open again ? ' + (doNotOpenAgain ? 'Yes' : 'No');
+    return 'Do not open again ? ${doNotOpenAgain ? 'Yes' : 'No'}';
   }
 }
