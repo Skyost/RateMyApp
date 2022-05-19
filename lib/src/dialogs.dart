@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart'
     as flutter_rating_bar;
 import 'package:rate_my_app/rate_my_app.dart';
-import 'package:rate_my_app/src/core.dart';
-import 'package:rate_my_app/src/style.dart';
 
 /// A simple dialog button click listener.
 typedef RateMyAppDialogButtonClickListener = bool Function(
@@ -58,6 +56,7 @@ class RateMyAppDialog extends StatelessWidget {
   /// Creates a new Rate my app dialog.
   const RateMyAppDialog(
     this.rateMyApp, {
+    Key? key,
     required this.title,
     required this.message,
     required this.contentBuilder,
@@ -67,7 +66,7 @@ class RateMyAppDialog extends StatelessWidget {
     required this.laterButton,
     this.listener,
     required this.dialogStyle,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,13 +145,14 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// Creates a new Rate my app star dialog.
   const RateMyAppStarDialog(
     this.rateMyApp, {
+    Key? key,
     required this.title,
     required this.message,
     required this.contentBuilder,
     this.actionsBuilder,
     required this.dialogStyle,
     required this.starRatingOptions,
-  });
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _RateMyAppStarDialogState();

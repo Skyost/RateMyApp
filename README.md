@@ -160,7 +160,7 @@ RateMyApp rateMyApp = RateMyApp(
 void initState() {
   super.initState();
 
-  WidgetsBinding.instance?.addPostFrameCallback((_) async {
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
     await rateMyApp.init();
     if (mounted && rateMyApp.shouldOpenDialog) {  
       rateMyApp.showRateDialog(context);

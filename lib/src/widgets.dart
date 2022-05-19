@@ -20,10 +20,11 @@ class RateMyAppBuilder extends StatefulWidget {
 
   /// Creates a new rate my app builder instance.
   const RateMyAppBuilder({
+    Key? key,
     required this.onInitialized,
     required this.builder,
     this.rateMyApp,
-  });
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _RateMyAppBuilderState();
@@ -46,7 +47,7 @@ class _RateMyAppBuilderState extends State<RateMyAppBuilder> {
   Future<void> initRateMyApp() async {
     await rateMyApp.init();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         widget.onInitialized(context, rateMyApp);
       }
