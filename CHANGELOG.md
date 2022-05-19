@@ -1,3 +1,6 @@
+## 1.1.3
+* Various updates for Flutter 3 (thanks [daadu](https://github.com/daadu) and [lohanbodevan](https://github.com/lohanbodevan)).
+
 ## 1.1.2
 * Upgraded Kotlin version to 1.6.10.
 
