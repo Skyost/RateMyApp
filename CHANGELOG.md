@@ -1,3 +1,6 @@
+## 1.1.4
+* Migrated from `PlayCore` to  `PlayReview`.
+
 ## 1.1.3
 * Various updates for Flutter 3 (thanks [daadu](https://github.com/daadu) and [lohanbodevan](https://github.com/lohanbodevan)).
 

@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart'
-    as flutter_rating_bar;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' as flutter_rating_bar;
 import 'package:rate_my_app/rate_my_app.dart';
 
 /// A simple dialog button click listener.
-typedef RateMyAppDialogButtonClickListener = bool Function(
-    RateMyAppDialogButton button);
+typedef RateMyAppDialogButtonClickListener = bool Function(RateMyAppDialogButton button);
 
 /// Validates a state when called in a function.
 typedef Validator = bool Function();
 
 /// Allows to change the default dialog content.
-typedef DialogContentBuilder = Widget Function(
-    BuildContext context, Widget defaultContent);
+typedef DialogContentBuilder = Widget Function(BuildContext context, Widget defaultContent);
 
 /// Allows to dynamically build actions.
 typedef DialogActionsBuilder = List<Widget> Function(BuildContext context);
 
 /// Allows to dynamically build actions according to the specified rating.
-typedef StarDialogActionsBuilder = List<Widget> Function(
-    BuildContext context, double? stars);
+typedef StarDialogActionsBuilder = List<Widget> Function(BuildContext context, double? stars);
 
 /// The Android Rate my app dialog.
 class RateMyAppDialog extends StatelessWidget {
@@ -101,20 +97,17 @@ class RateMyAppDialog extends StatelessWidget {
         RateMyAppRateButton(
           rateMyApp,
           text: rateButton,
-          validator: () =>
-              listener == null || listener!(RateMyAppDialogButton.rate),
+          validator: () => listener == null || listener!(RateMyAppDialogButton.rate),
         ),
         RateMyAppLaterButton(
           rateMyApp,
           text: laterButton,
-          validator: () =>
-              listener == null || listener!(RateMyAppDialogButton.later),
+          validator: () => listener == null || listener!(RateMyAppDialogButton.later),
         ),
         RateMyAppNoButton(
           rateMyApp,
           text: noButton,
-          validator: () =>
-              listener == null || listener!(RateMyAppDialogButton.no),
+          validator: () => listener == null || listener!(RateMyAppDialogButton.no),
         ),
       ];
 }
@@ -158,8 +151,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   State<StatefulWidget> createState() => _RateMyAppStarDialogState();
 
   /// Used when there is no onRatingChanged callback.
-  List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) =>
-      [
+  List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) => [
         RateMyAppRateButton(
           rateMyApp,
           text: 'RATE',
@@ -217,8 +209,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       content: widget.contentBuilder(context, content),
       contentPadding: widget.dialogStyle.contentPadding,
       shape: widget.dialogStyle.dialogShape,
-      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(
-          context, currentRating),
+      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, currentRating),
     );
   }
 
@@ -229,8 +220,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
         onRatingUpdate: (rating) {
           setState(() => currentRating = rating);
         },
-        ratingWidget: widget.starRatingOptions.ratingWidget ??
-            createDefaultRatingWidget(),
+        ratingWidget: widget.starRatingOptions.ratingWidget ?? createDefaultRatingWidget(),
         initialRating: widget.starRatingOptions.initialRating,
         minRating: widget.starRatingOptions.minRating,
         allowHalfRating: widget.starRatingOptions.allowHalfRating,
@@ -305,8 +295,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
               ),
         empty: Icon(
           Icons.star_border,
-          color: widget.starRatingOptions.borderColor ??
-              widget.starRatingOptions.itemColor,
+          color: widget.starRatingOptions.borderColor ?? widget.starRatingOptions.itemColor,
           size: widget.starRatingOptions.itemSize,
         ),
       );
@@ -374,7 +363,9 @@ class RateMyAppRateButton extends _RateMyAppDialogButton {
   @override
   Future<void> onButtonClicked(BuildContext context) async {
     await rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
-    Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+    if (context.mounted) {
+      Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+    }
     await rateMyApp.launchStore();
   }
 }
@@ -397,7 +388,9 @@ class RateMyAppLaterButton extends _RateMyAppDialogButton {
   @override
   Future<void> onButtonClicked(BuildContext context) async {
     await rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed);
-    Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.later);
+    if (context.mounted) {
+      Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.later);
+    }
   }
 }
 
@@ -419,7 +412,9 @@ class RateMyAppNoButton extends _RateMyAppDialogButton {
   @override
   Future<void> onButtonClicked(BuildContext context) async {
     await rateMyApp.callEvent(RateMyAppEventType.noButtonPressed);
-    Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.no);
+    if (context.mounted) {
+      Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.no);
+    }
   }
 }
 

@@ -8,7 +8,7 @@ class ContentWidget extends StatefulWidget {
 
   /// Creates a new content widget instance.
   const ContentWidget({
-    @required this.rateMyApp,
+    required this.rateMyApp,
   });
 
   @override
@@ -38,14 +38,12 @@ class _ContentWidgetState extends State<ContentWidget> {
           children: [
             for (DebuggableCondition condition in debuggableConditions) //
               textCenter(condition.valuesAsString),
-            textCenter(
-                'Are conditions met ? ' + (shouldOpenDialog ? 'Yes' : 'No')),
+            textCenter('Are conditions met ? ' + (shouldOpenDialog ? 'Yes' : 'No')),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: ElevatedButton(
                 onPressed: () async {
-                  await widget.rateMyApp.showRateDialog(
-                      context); // We launch the default Rate my app dialog.
+                  await widget.rateMyApp.showRateDialog(context); // We launch the default Rate my app dialog.
                   refresh();
                 },
                 child: const Text('Launch "Rate my app" dialog'),
@@ -53,18 +51,14 @@ class _ContentWidgetState extends State<ContentWidget> {
             ),
             ElevatedButton(
               onPressed: () async {
-                await widget.rateMyApp.showStarRateDialog(context,
-                    actionsBuilder: (_, stars) => starRateDialogActionsBuilder(
-                        context,
-                        stars)); // We launch the Rate my app dialog with stars.
+                await widget.rateMyApp.showStarRateDialog(context, actionsBuilder: (_, stars) => starRateDialogActionsBuilder(context, stars)); // We launch the Rate my app dialog with stars.
                 refresh();
               },
               child: const Text('Launch "Rate my app" star dialog'),
             ),
             ElevatedButton(
               onPressed: () async {
-                await widget.rateMyApp
-                    .reset(); // We reset all Rate my app conditions values.
+                await widget.rateMyApp.reset(); // We reset all Rate my app conditions values.
                 refresh();
               },
               child: const Text('Reset'),
@@ -82,14 +76,12 @@ class _ContentWidgetState extends State<ContentWidget> {
   /// Allows to refresh the widget state.
   void refresh() {
     setState(() {
-      debuggableConditions =
-          widget.rateMyApp.conditions.whereType<DebuggableCondition>().toList();
+      debuggableConditions = widget.rateMyApp.conditions.whereType<DebuggableCondition>().toList();
       shouldOpenDialog = widget.rateMyApp.shouldOpenDialog;
     });
   }
 
-  List<Widget> starRateDialogActionsBuilder(
-      BuildContext context, double stars) {
+  List<Widget> starRateDialogActionsBuilder(BuildContext context, double? stars) {
     final Widget cancelButton = RateMyAppNoButton(
       // We create a custom "Cancel" button using the RateMyAppNoButton class.
       widget.rateMyApp,
@@ -103,7 +95,7 @@ class _ContentWidgetState extends State<ContentWidget> {
 
     // Otherwise we can do some little more things...
     String message = 'You put ' + stars.round().toString() + ' star(s). ';
-    Color color;
+    Color color = Colors.black;
     switch (stars.round()) {
       case 1:
         message += 'Did this app hurt you physically ?';
@@ -139,14 +131,11 @@ class _ContentWidgetState extends State<ContentWidget> {
           );
 
           // This allow to mimic a click on the default "Rate" button and thus update the conditions based on it ("Do not open again" condition for example) :
-          await widget.rateMyApp
-              .callEvent(RateMyAppEventType.rateButtonPressed);
-          Navigator.pop<RateMyAppDialogButton>(
-              context, RateMyAppDialogButton.rate);
+          await widget.rateMyApp.callEvent(RateMyAppEventType.rateButtonPressed);
+          Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
           refresh();
         },
-        child:
-            Text(MaterialLocalizations.of(context).okButtonLabel.toUpperCase()),
+        child: Text(MaterialLocalizations.of(context).okButtonLabel.toUpperCase()),
       ),
       cancelButton,
     ];

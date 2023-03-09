@@ -4,12 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Represents a condition, which need to be met in order for the Rate my app dialog to open.
 abstract class Condition {
   /// Reads the condition values from the specified shared preferences.
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix);
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix);
 
   /// Saves the condition values to the specified shared preferences.
-  Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix);
 
   /// Resets the condition values.
   void reset();
@@ -46,18 +44,13 @@ class MinimumDaysCondition extends DebuggableCondition {
   });
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
-    minimumDate = DateTime.fromMillisecondsSinceEpoch(
-        preferences.getInt('${preferencesPrefix}minimumDate') ??
-            _now().millisecondsSinceEpoch);
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    minimumDate = DateTime.fromMillisecondsSinceEpoch(preferences.getInt('${preferencesPrefix}minimumDate') ?? _now().millisecondsSinceEpoch);
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
-    return preferences.setInt(
-        '${preferencesPrefix}minimumDate', minimumDate.millisecondsSinceEpoch);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    return preferences.setInt('${preferencesPrefix}minimumDate', minimumDate.millisecondsSinceEpoch);
   }
 
   @override
@@ -68,8 +61,7 @@ class MinimumDaysCondition extends DebuggableCondition {
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if (eventType == RateMyAppEventType.laterButtonPressed ||
-        eventType == RateMyAppEventType.iOSRequestReview) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
       minimumDate = _now(Duration(days: remindDays));
       return true;
     }
@@ -83,15 +75,13 @@ class MinimumDaysCondition extends DebuggableCondition {
   }
 
   /// Returns a formatted date string.
-  String _dateToString(DateTime date) =>
-      '${_addZeroIfNeeded(date.day)}/${_addZeroIfNeeded(date.month)}/${date.year} ${_addZeroIfNeeded(date.hour)}:${_addZeroIfNeeded(date.minute)}';
+  String _dateToString(DateTime date) => '${_addZeroIfNeeded(date.day)}/${_addZeroIfNeeded(date.month)}/${date.year} ${_addZeroIfNeeded(date.hour)}:${_addZeroIfNeeded(date.minute)}';
 
   /// Adds a zero to a given number if needed.
   String _addZeroIfNeeded(int number) => number.toString().padLeft(2, '0');
 
   /// Returns the current date with the minimum days added.
-  DateTime _now([Duration? toAdd]) =>
-      DateTime.now().add(toAdd ?? Duration(days: minDays));
+  DateTime _now([Duration? toAdd]) => DateTime.now().add(toAdd ?? Duration(days: minDays));
 }
 
 /// The minimum app launches condition.
@@ -112,14 +102,12 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
   });
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
     launches = preferences.getInt('${preferencesPrefix}launches') ?? 0;
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
     return preferences.setInt('${preferencesPrefix}launches', launches);
   }
 
@@ -136,8 +124,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
       return true;
     }
 
-    if (eventType == RateMyAppEventType.laterButtonPressed ||
-        eventType == RateMyAppEventType.iOSRequestReview) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
       launches -= remindLaunches;
       return true;
     }
@@ -157,17 +144,13 @@ class DoNotOpenAgainCondition extends DebuggableCondition {
   late bool doNotOpenAgain;
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
-    doNotOpenAgain =
-        preferences.getBool('${preferencesPrefix}doNotOpenAgain') ?? false;
+  void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    doNotOpenAgain = preferences.getBool('${preferencesPrefix}doNotOpenAgain') ?? false;
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
-    return preferences.setBool(
-        '${preferencesPrefix}doNotOpenAgain', doNotOpenAgain);
+  Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) {
+    return preferences.setBool('${preferencesPrefix}doNotOpenAgain', doNotOpenAgain);
   }
 
   @override
@@ -178,8 +161,7 @@ class DoNotOpenAgainCondition extends DebuggableCondition {
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if (eventType == RateMyAppEventType.rateButtonPressed ||
-        eventType == RateMyAppEventType.noButtonPressed) {
+    if (eventType == RateMyAppEventType.rateButtonPressed || eventType == RateMyAppEventType.noButtonPressed) {
       doNotOpenAgain = true;
       return true;
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart'
-    as flutter_rating_bar;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' as flutter_rating_bar;
 
 /// Allows to tweak the plugin dialogs.
 class DialogStyle {
@@ -136,9 +135,7 @@ class DialogTransition {
   final TransitionType transitionType;
 
   /// Custom transition
-  final Widget Function(
-          BuildContext, Animation<double>, Animation<double>, Widget)?
-      customTransitionBuilder;
+  final Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder;
 
   /// Starting offset for slide transition : only used with [TransitionType.slide].
   final Offset? startOffset;
@@ -153,9 +150,7 @@ class DialogTransition {
     this.customTransitionBuilder,
     this.startOffset,
     this.alignment,
-  }) : transitionType = customTransitionBuilder == null
-            ? transitionType
-            : TransitionType.custom;
+  }) : transitionType = customTransitionBuilder == null ? transitionType : TransitionType.custom;
 }
 
 enum TransitionType {
