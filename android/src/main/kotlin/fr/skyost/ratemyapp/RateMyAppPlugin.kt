@@ -1,4 +1,4 @@
-package fr.skyost.rate_my_app
+package fr.skyost.ratemyapp
 
 import android.app.Activity
 import android.content.Context

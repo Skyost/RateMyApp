@@ -1,5 +1,5 @@
-group 'fr.skyost.rate_my_app'
-version '1.1.4'
+group 'fr.skyost.ratemyapp'
+version '2.0.0'
 
 buildscript {
     ext.kotlin_version = '1.8.0'
@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:8.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -27,11 +27,17 @@ apply plugin: 'kotlin-android'
 android {
     compileSdkVersion 31
 
+    namespace 'fr.skyost.ratemyapp'
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-    defaultConfig {
-        minSdkVersion 16
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
     lintOptions {
         disable 'InvalidPackage'

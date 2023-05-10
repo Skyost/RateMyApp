@@ -1,4 +1,4 @@
-package fr.skyost.rate_my_app.rate_my_app_example
+package fr.skyost.ratemyapp.example
 
 import io.flutter.embedding.android.FlutterActivity
 

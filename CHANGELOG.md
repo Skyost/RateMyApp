@@ -1,3 +1,6 @@
+## 2.0.0
+* Added support of namespace property to support Android Gradle Plugin (AGP) 8. Projects with AGP < 4.2 are not supported anymore. It is highly recommended to update at least to AGP 7.0 or newer.
+
 ## 1.1.4
 * Migrated from `PlayCore` to  `PlayReview`.
 
