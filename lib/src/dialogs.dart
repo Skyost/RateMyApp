@@ -25,6 +25,9 @@ class RateMyAppDialog extends StatelessWidget {
   /// The dialog's title.
   final String title;
 
+  /// Image parameter
+  final Widget? image;
+
   /// The dialog's message.
   final String message;
 
@@ -54,6 +57,7 @@ class RateMyAppDialog extends StatelessWidget {
     this.rateMyApp, {
     Key? key,
     required this.title,
+    this.image,
     required this.message,
     required this.contentBuilder,
     this.actionsBuilder,
@@ -77,6 +81,13 @@ class RateMyAppDialog extends StatelessWidget {
       ),
     );
 
+    // Add the image to the content if it's provided
+    List<Widget> dialogContent = [];
+    if (image != null) {
+      dialogContent.add(image!);
+    }
+    dialogContent.add(content);
+
     return AlertDialog(
       title: Padding(
         padding: dialogStyle.titlePadding,
@@ -86,7 +97,7 @@ class RateMyAppDialog extends StatelessWidget {
           textAlign: dialogStyle.titleAlign,
         ),
       ),
-      content: contentBuilder(context, content),
+      content: contentBuilder(context, Column(children: dialogContent)),
       contentPadding: dialogStyle.contentPadding,
       shape: dialogStyle.dialogShape,
       actions: (actionsBuilder ?? _defaultActionsBuilder)(context),
@@ -120,6 +131,9 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// The dialog's title.
   final String title;
 
+  /// Image parameter
+  final Widget? image;
+
   /// The dialog's message.
   final String message;
 
@@ -140,6 +154,7 @@ class RateMyAppStarDialog extends StatefulWidget {
     this.rateMyApp, {
     Key? key,
     required this.title,
+    this.image,
     required this.message,
     required this.contentBuilder,
     this.actionsBuilder,
@@ -197,6 +212,13 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       ),
     );
 
+        // Add the image to the content if it's provided
+    List<Widget> dialogContent = [];
+    if (widget.image != null) {
+      dialogContent.add(widget.image!);
+    }
+    dialogContent.add(content);
+
     return AlertDialog(
       title: Padding(
         padding: widget.dialogStyle.titlePadding,
@@ -206,7 +228,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
           textAlign: widget.dialogStyle.titleAlign,
         ),
       ),
-      content: widget.contentBuilder(context, content),
+      content: widget.contentBuilder(context, Column(children: dialogContent)),
       contentPadding: widget.dialogStyle.contentPadding,
       shape: widget.dialogStyle.dialogShape,
       actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, currentRating),
