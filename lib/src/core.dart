@@ -112,7 +112,7 @@ class RateMyApp {
   Future<void> showRateDialog(
     BuildContext context, {
     String? title,
-    Widget? dialogImage,
+    String? imagePath,
     String? message,
     DialogContentBuilder? contentBuilder,
     DialogActionsBuilder? actionsBuilder,
@@ -137,8 +137,9 @@ class RateMyApp {
     RateMyAppDialog rateMyAppDialog = RateMyAppDialog(
       this,
       title: title ?? 'Rate this app',
-      image: dialogImage,
-      message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+      image: imagePath,
+      message: message ??
+          'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
       contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
       actionsBuilder: actionsBuilder,
       rateButton: rateButton ?? 'RATE',
@@ -179,7 +180,7 @@ class RateMyApp {
   Future<void> showStarRateDialog(
     BuildContext context, {
     String? title,
-    Widget? dialogImage,
+    String? imagePath,
     String? message,
     DialogContentBuilder? contentBuilder,
     StarDialogActionsBuilder? actionsBuilder,
@@ -204,7 +205,7 @@ class RateMyApp {
     RateMyAppStarDialog starRateDialog = RateMyAppStarDialog(
       this,
       title: title ?? 'Rate this app',
-      image: dialogImage,
+      image: imagePath,
       message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
       contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
       actionsBuilder: actionsBuilder,
@@ -223,19 +224,18 @@ class RateMyApp {
       clickedButton = dialogTransition.transitionType == TransitionType.none
           ? await showDialog(context: context, builder: (context) => starRateDialog)
           : await showGeneralDialog(
-        context: context,
-        transitionDuration: dialogTransition.transitionDuration,
-        barrierLabel: barrierLabel ?? '',
-        barrierDismissible: barrierDismissible ?? Platform.isAndroid,
-        transitionBuilder: dialogTransition.customTransitionBuilder ??
-                (context, animation1, animation2, child) =>
-                buildAnimations(
-                  animation: animation1,
-                  child: child,
-                  dialogTransition: dialogTransition,
-                ),
-        pageBuilder: (context, animation1, animation2) => starRateDialog,
-      );
+              context: context,
+              transitionDuration: dialogTransition.transitionDuration,
+              barrierLabel: barrierLabel ?? '',
+              barrierDismissible: barrierDismissible ?? Platform.isAndroid,
+              transitionBuilder: dialogTransition.customTransitionBuilder ??
+                  (context, animation1, animation2, child) => buildAnimations(
+                        animation: animation1,
+                        child: child,
+                        dialogTransition: dialogTransition,
+                      ),
+              pageBuilder: (context, animation1, animation2) => starRateDialog,
+            );
     }
 
     if (clickedButton == null && onDismissed != null) {
@@ -245,7 +245,8 @@ class RateMyApp {
 
   /// Launches the corresponding store.
   Future<LaunchStoreResult> launchStore() async {
-    int? result = await _channel.invokeMethod<int>('launchStore', storeIdentifier == null ? null : {'appId': storeIdentifier});
+    int? result =
+        await _channel.invokeMethod<int>('launchStore', storeIdentifier == null ? null : {'appId': storeIdentifier});
     switch (result) {
       case 0:
         return LaunchStoreResult.storeOpened;
