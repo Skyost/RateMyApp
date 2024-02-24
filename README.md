@@ -81,6 +81,7 @@ rateMyApp.init().then((_) {
     rateMyApp.showRateDialog(
       context,
       title: 'Rate this app', // The dialog title.
+      imagePath: 'assets/include_in_app/images/rate_us_image.png',
       message: 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.', // The dialog message.
       rateButton: 'RATE', // The dialog "rate" button text.
       noButton: 'NO THANKS', // The dialog "no" button text.
