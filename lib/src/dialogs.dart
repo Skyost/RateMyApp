@@ -26,7 +26,7 @@ class RateMyAppDialog extends StatelessWidget {
   final String title;
 
   /// Image parameter
-  final Widget? image;
+  final String? image;
 
   /// The dialog's message.
   final String message;
@@ -84,7 +84,15 @@ class RateMyAppDialog extends StatelessWidget {
     // Add the image to the content if it's provided
     List<Widget> dialogContent = [];
     if (image != null) {
-      dialogContent.add(image!);
+      dialogContent.add(
+        Column(
+          children: [
+            Image.asset(
+              image!,
+            ),
+          ],
+        ),
+      );
     }
     dialogContent.add(content);
 
@@ -97,7 +105,7 @@ class RateMyAppDialog extends StatelessWidget {
           textAlign: dialogStyle.titleAlign,
         ),
       ),
-      content: contentBuilder(context, Column(children: dialogContent)),
+      content: contentBuilder(context, Column(mainAxisSize: MainAxisSize.min, children: dialogContent)),
       contentPadding: dialogStyle.contentPadding,
       shape: dialogStyle.dialogShape,
       actions: (actionsBuilder ?? _defaultActionsBuilder)(context),
@@ -132,7 +140,7 @@ class RateMyAppStarDialog extends StatefulWidget {
   final String title;
 
   /// Image parameter
-  final Widget? image;
+  final String? image;
 
   /// The dialog's message.
   final String message;
@@ -212,10 +220,18 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       ),
     );
 
-        // Add the image to the content if it's provided
+    // Add the image to the content if it's provided
     List<Widget> dialogContent = [];
     if (widget.image != null) {
-      dialogContent.add(widget.image!);
+      dialogContent.add(
+        Column(
+          children: [
+            Image.asset(
+              widget.image!,
+            ),
+          ],
+        ),
+      );
     }
     dialogContent.add(content);
 
@@ -228,7 +244,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
           textAlign: widget.dialogStyle.titleAlign,
         ),
       ),
-      content: widget.contentBuilder(context, Column(children: dialogContent)),
+      content: widget.contentBuilder(context, Column(mainAxisSize: MainAxisSize.min, children: dialogContent)),
       contentPadding: widget.dialogStyle.contentPadding,
       shape: widget.dialogStyle.dialogShape,
       actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, currentRating),
