@@ -228,7 +228,7 @@ class RateMyApp {
         barrierLabel: barrierLabel ?? '',
         barrierDismissible: barrierDismissible ?? Platform.isAndroid,
         transitionBuilder: dialogTransition.customTransitionBuilder ??
-                (context, animation1, animation2, child) => 
+                (context, animation1, animation2, child) =>
                 buildAnimations(
                   animation: animation1,
                   child: child,
