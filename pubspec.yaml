@@ -5,6 +5,7 @@ homepage: https://github.com/Skyost/RateMyApp
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
+  flutter: '>=3.10.0 <4.0.0'
 
 dependencies:
   shared_preferences: '>=2.0.0 <3.0.0'
