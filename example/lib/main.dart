@@ -30,6 +30,10 @@ class _RateMyAppTestAppState extends State<_RateMyAppTestApp> {
             title: const Text('Rate my app !'),
           ),
           body: RateMyAppBuilder(
+            rateMyApp: RateMyApp(
+              googlePlayIdentifier: 'app.openauthenticator',
+              appStoreIdentifier: '6479272927',
+            ),
             builder: builder,
             onInitialized: (context, rateMyApp) {
               setState(() => builder = (context) => ContentWidget(rateMyApp: rateMyApp));
