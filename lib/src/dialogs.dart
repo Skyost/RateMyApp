@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart' as flutter_rating_bar;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart'
+    as flutter_rating_bar;
 import 'package:rate_my_app/rate_my_app.dart';
 
 /// A simple dialog button click listener.
-typedef RateMyAppDialogButtonClickListener = bool Function(RateMyAppDialogButton button);
+typedef RateMyAppDialogButtonClickListener = bool Function(
+    RateMyAppDialogButton button);
 
 /// Validates a state when called in a function.
 typedef Validator = bool Function();
 
 /// Allows to change the default dialog content.
-typedef DialogContentBuilder = Widget Function(BuildContext context, Widget defaultContent);
+typedef DialogContentBuilder = Widget Function(
+    BuildContext context, Widget defaultContent);
 
 /// Allows to dynamically build actions.
 typedef DialogActionsBuilder = List<Widget> Function(BuildContext context);
 
 /// Allows to dynamically build actions according to the specified rating.
-typedef StarDialogActionsBuilder = List<Widget> Function(BuildContext context, double? stars);
+typedef StarDialogActionsBuilder = List<Widget> Function(
+    BuildContext context, double? stars);
 
 /// The Android Rate my app dialog.
 class RateMyAppDialog extends StatelessWidget {
@@ -52,7 +56,7 @@ class RateMyAppDialog extends StatelessWidget {
   /// Creates a new Rate my app dialog.
   const RateMyAppDialog(
     this.rateMyApp, {
-    Key? key,
+    super.key,
     required this.title,
     required this.message,
     required this.contentBuilder,
@@ -62,7 +66,7 @@ class RateMyAppDialog extends StatelessWidget {
     required this.laterButton,
     this.listener,
     required this.dialogStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -97,17 +101,20 @@ class RateMyAppDialog extends StatelessWidget {
         RateMyAppRateButton(
           rateMyApp,
           text: rateButton,
-          validator: () => listener == null || listener!(RateMyAppDialogButton.rate),
+          validator: () =>
+              listener == null || listener!(RateMyAppDialogButton.rate),
         ),
         RateMyAppLaterButton(
           rateMyApp,
           text: laterButton,
-          validator: () => listener == null || listener!(RateMyAppDialogButton.later),
+          validator: () =>
+              listener == null || listener!(RateMyAppDialogButton.later),
         ),
         RateMyAppNoButton(
           rateMyApp,
           text: noButton,
-          validator: () => listener == null || listener!(RateMyAppDialogButton.no),
+          validator: () =>
+              listener == null || listener!(RateMyAppDialogButton.no),
         ),
       ];
 }
@@ -138,20 +145,21 @@ class RateMyAppStarDialog extends StatefulWidget {
   /// Creates a new Rate my app star dialog.
   const RateMyAppStarDialog(
     this.rateMyApp, {
-    Key? key,
+    super.key,
     required this.title,
     required this.message,
     required this.contentBuilder,
     this.actionsBuilder,
     required this.dialogStyle,
     required this.starRatingOptions,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _RateMyAppStarDialogState();
 
   /// Used when there is no onRatingChanged callback.
-  List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) => [
+  List<Widget> _defaultOnRatingChanged(BuildContext context, double? rating) =>
+      [
         RateMyAppRateButton(
           rateMyApp,
           text: 'RATE',
@@ -209,7 +217,8 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       content: widget.contentBuilder(context, content),
       contentPadding: widget.dialogStyle.contentPadding,
       shape: widget.dialogStyle.dialogShape,
-      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(context, currentRating),
+      actions: (widget.actionsBuilder ?? widget._defaultOnRatingChanged)(
+          context, currentRating),
     );
   }
 
@@ -220,7 +229,8 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
         onRatingUpdate: (rating) {
           setState(() => currentRating = rating);
         },
-        ratingWidget: widget.starRatingOptions.ratingWidget ?? createDefaultRatingWidget(),
+        ratingWidget: widget.starRatingOptions.ratingWidget ??
+            createDefaultRatingWidget(),
         initialRating: widget.starRatingOptions.initialRating,
         minRating: widget.starRatingOptions.minRating,
         allowHalfRating: widget.starRatingOptions.allowHalfRating,
@@ -295,7 +305,8 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
               ),
         empty: Icon(
           Icons.star_border,
-          color: widget.starRatingOptions.borderColor ?? widget.starRatingOptions.itemColor,
+          color: widget.starRatingOptions.borderColor ??
+              widget.starRatingOptions.itemColor,
           size: widget.starRatingOptions.itemSize,
         ),
       );
@@ -318,6 +329,7 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
   /// Creates a new Rate my app button widget instance.
   const _RateMyAppDialogButton(
     this.rateMyApp, {
+    super.key,
     required this.text,
     this.validator = _validatorTrue,
     this.callback,
@@ -349,16 +361,12 @@ abstract class _RateMyAppDialogButton extends StatelessWidget {
 class RateMyAppRateButton extends _RateMyAppDialogButton {
   /// Creates a new Rate my app "rate" button widget instance.
   const RateMyAppRateButton(
-    RateMyApp rateMyApp, {
-    required String text,
-    Validator? validator,
-    VoidCallback? callback,
-  }) : super(
-          rateMyApp,
-          text: text,
-          validator: validator,
-          callback: callback,
-        );
+    super.rateMyApp, {
+    super.key,
+    required super.text,
+    super.validator = null,
+    super.callback,
+  });
 
   @override
   Future<void> onButtonClicked(BuildContext context) async {
@@ -374,22 +382,19 @@ class RateMyAppRateButton extends _RateMyAppDialogButton {
 class RateMyAppLaterButton extends _RateMyAppDialogButton {
   /// Creates a new Rate my app "later" button widget instance.
   const RateMyAppLaterButton(
-    RateMyApp rateMyApp, {
-    required String text,
-    Validator? validator,
-    VoidCallback? callback,
-  }) : super(
-          rateMyApp,
-          text: text,
-          validator: validator,
-          callback: callback,
-        );
+    super.rateMyApp, {
+    super.key,
+    required super.text,
+    super.validator = null,
+    super.callback,
+  });
 
   @override
   Future<void> onButtonClicked(BuildContext context) async {
     await rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed);
     if (context.mounted) {
-      Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.later);
+      Navigator.pop<RateMyAppDialogButton>(
+          context, RateMyAppDialogButton.later);
     }
   }
 }
@@ -398,16 +403,12 @@ class RateMyAppLaterButton extends _RateMyAppDialogButton {
 class RateMyAppNoButton extends _RateMyAppDialogButton {
   /// Creates a new Rate my app "no" button widget instance.
   const RateMyAppNoButton(
-    RateMyApp rateMyApp, {
-    required String text,
-    Validator? validator,
-    VoidCallback? callback,
-  }) : super(
-          rateMyApp,
-          text: text,
-          validator: validator,
-          callback: callback,
-        );
+    super.rateMyApp, {
+    super.key,
+    required super.text,
+    super.validator = null,
+    super.callback,
+  });
 
   @override
   Future<void> onButtonClicked(BuildContext context) async {

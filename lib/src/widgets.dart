@@ -20,11 +20,11 @@ class RateMyAppBuilder extends StatefulWidget {
 
   /// Creates a new rate my app builder instance.
   const RateMyAppBuilder({
-    Key? key,
+    super.key,
     required this.onInitialized,
     required this.builder,
     this.rateMyApp,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _RateMyAppBuilderState();

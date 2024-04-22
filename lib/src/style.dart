@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart' as flutter_rating_bar;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart'
+    as flutter_rating_bar;
 
 /// Allows to tweak the plugin dialogs.
 class DialogStyle {
@@ -44,11 +45,12 @@ class DialogStyle {
 
 /// Local exposure of the Rating Widget class. Use this to customize the Rating Widget if you don't want to use [StartRatingOptions.itemBuilder].
 class RatingWidget extends flutter_rating_bar.RatingWidget {
+  /// Creates a new rating widget instance.
   RatingWidget({
-    required Widget full,
-    required Widget half,
-    required Widget empty,
-  }) : super(empty: empty, full: full, half: half);
+    required super.full,
+    required super.half,
+    required super.empty,
+  });
 }
 
 /// Just a little class that allows to customize some rating bar options.
@@ -135,7 +137,9 @@ class DialogTransition {
   final TransitionType transitionType;
 
   /// Custom transition
-  final Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder;
+  final Widget Function(
+          BuildContext, Animation<double>, Animation<double>, Widget)?
+      customTransitionBuilder;
 
   /// Starting offset for slide transition : only used with [TransitionType.slide].
   final Offset? startOffset;
@@ -150,7 +154,9 @@ class DialogTransition {
     this.customTransitionBuilder,
     this.startOffset,
     this.alignment,
-  }) : transitionType = customTransitionBuilder == null ? transitionType : TransitionType.custom;
+  }) : transitionType = customTransitionBuilder == null
+            ? transitionType
+            : TransitionType.custom;
 }
 
 enum TransitionType {

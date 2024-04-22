@@ -248,8 +248,5 @@ You have a lot of options to contribute to this project ! You can :
 
 ## Dependencies
 
-This library depends on some other libraries :
-
-* [shared_preferences](https://pub.dev/packages/shared_preferences)
-* [flutter_rating_bar](https://pub.dev/packages/flutter_rating_bar)
-* [pedantic](https://pub.dev/packages/pedantic)
+This library depends on `shared_preferences` (to store its state) and `flutter_rating_bar` (for
+`showRateDialog`).
