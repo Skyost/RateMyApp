@@ -8,3 +8,4 @@ pub_publish.bat
 .pub/
 
 build/
+pubspec.lock

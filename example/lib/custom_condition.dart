@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Here's an example of a custom condition.
 /// Will not be met if the dialog has been opened too many times.
 /// Add it using : `rateMyApp.conditions.add(MaxDialogOpeningCondition(_rateMyApp));`.
-class MaxDialogOpeningCondition extends DebuggableCondition {
+class MaxDialogOpeningCondition with Condition, DebuggableCondition {
   /// Maximum default dialog opening count (inclusive).
   final int maxDialogOpeningCount;
 

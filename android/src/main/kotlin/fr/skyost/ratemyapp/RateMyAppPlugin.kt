@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.annotation.NonNull
 import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
@@ -29,13 +28,13 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     private var reviewInfo: ReviewInfo? = null
 
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "rate_my_app")
         channel.setMethodCallHandler(this)
         context = flutterPluginBinding.applicationContext
     }
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "launchNativeReviewDialog" -> requestReview(result)
             "isNativeDialogSupported" -> {
@@ -50,7 +49,7 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
         context = null
     }
@@ -76,7 +75,6 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      *
      * @param result The method channel result object.
      */
-
     private fun cacheReviewInfo(result: Result) {
         if (context == null) {
             result.error("context_is_null", "Android context not available.", null)
@@ -99,7 +97,6 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      *
      * @param result The method channel result object.
      */
-
     private fun requestReview(result: Result) {
         if (context == null) {
             result.error("context_is_null", "Android context not available.", null)
@@ -130,7 +127,6 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      * @param manager The review manager.
      * @param reviewInfo The review info object.
      */
-
     private fun launchReviewFlow(result: Result, manager: ReviewManager, reviewInfo: ReviewInfo) {
         val flow = manager.launchReviewFlow(activity!!, reviewInfo)
         flow.addOnCompleteListener { task ->
@@ -146,7 +142,6 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      *
      * @return Whether the Play Store is installed on the current device.
      */
-
     private fun isPlayStoreInstalled(): Boolean {
         return try {
             activity!!.packageManager.getPackageInfo("com.android.vending", 0)
@@ -163,7 +158,6 @@ public class RateMyAppPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      *
      * @return 0 if everything is okay, 1 if the Play Store has not been opened, but the URL has been launched and 2 if it's not possible to open any of them.
      */
-
     private fun goToPlayStore(applicationId: String?): Int {
         if (activity == null) {
             return 2

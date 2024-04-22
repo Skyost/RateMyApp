@@ -128,7 +128,7 @@ class RateMyApp {
   }) async {
     ignoreNativeDialog ??= Platform.isAndroid;
     if (!ignoreNativeDialog && ((await isNativeReviewDialogSupported) ?? false)) {
-      callEvent(RateMyAppEventType.iOSRequestReview);
+      callEvent(RateMyAppEventType.requestReview);
       await launchNativeReviewDialog();
       return;
     }
@@ -190,7 +190,7 @@ class RateMyApp {
   }) async {
     ignoreNativeDialog ??= Platform.isAndroid;
     if (!ignoreNativeDialog && ((await isNativeReviewDialogSupported) ?? false)) {
-      callEvent(RateMyAppEventType.iOSRequestReview);
+      callEvent(RateMyAppEventType.requestReview);
       await launchNativeReviewDialog();
       return;
     }
@@ -332,8 +332,8 @@ enum RateMyAppEventType {
   /// When Rate my app is saved.
   saved,
 
-  /// When a native iOS rating dialog will be opened.
-  iOSRequestReview,
+  /// When a native rating dialog is requested.
+  requestReview,
 
   /// When the classic Rate my app dialog will be opened.
   dialogOpen,

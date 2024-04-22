@@ -1,10 +1,19 @@
-import Flutter
+#if canImport(Flutter)
+    import Flutter
+#elseif canImport(FlutterMacOS)
+    import FlutterMacOS
+#endif
 import StoreKit
 import UIKit
 
 public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "rate_my_app", binaryMessenger: registrar.messenger())
+        #if canImport(Flutter)
+            let messenger = registrar.messenger()
+        #elseif canImport(FlutterMacOS)
+            let messenger = registrar.messenger
+        #endif
+        let channel = FlutterMethodChannel(name: "rate_my_app", binaryMessenger: messenger)
         let instance = SwiftRateMyAppPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
     }
@@ -13,18 +22,10 @@ public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
         let arguments: [String: Any?] = (call.arguments ?? [:]) as! [String: Any?]
         switch call.method {
         case "launchNativeReviewDialog":
-            if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
-                result(true)
-            } else {
-                result(false)
-            }
+            SKStoreReviewController.requestReview()
+            result(true)
         case "isNativeDialogSupported":
-            if #available(iOS 10.3, *) {
-                result(true)
-            } else {
-                result(false)
-            }
+            result(true)
         case "launchStore":
             let appId: String? = arguments["appId"] as! String?
             if appId == nil || appId!.isEmpty {
@@ -47,18 +48,10 @@ public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
             return false
         }
 
-        if #available(iOS 10.0, *) {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                return true
-            }
-            return false
-        } else {
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.openURL(url)
-                return true
-            }
-            return false
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            return true
         }
+        return false
     }
 }

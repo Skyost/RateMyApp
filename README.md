@@ -13,21 +13,7 @@ _Rate my app_ is really inspired by [Android-Rate](https://github.com/hotchemi/A
 
 ### Installation
 
-If you're building your app for Android, be sure that your app is upgraded to the [Android Embedding V2](https://github.com/flutter/flutter/wiki/Upgrading-pre-1.12-Android-projects)
-(if you've created your project with a Flutter version ≥ 1.12, you should be okay).
-
-On iOS, if you want to target a version before _10.3_, add this in your `Info.plist` :
-
-```xml
-<key>LSApplicationQueriesSchemes</key>
-<array>
-    <string>itms</string>
-</array>
-```
-
-By the way, it's important to note that your bundle identifier (in your `Info.plist`) must match the App ID on iTunes Connect and the package identifier (in your `build.gradle`) must match your App ID on Google Play.
-Oh, and your project [must use Swift](https://github.com/Skyost/RateMyApp/issues/90).
-
+It's important that your bundle identifier (in your `Info.plist`) match the App ID on iTunes Connect and the package identifier (in your `build.gradle`) match your App ID on Google Play.
 If for any reason it doesn't match please go to the _[Using custom identifiers](#using-custom-identifiers)_ section.
 
 ### How it works
@@ -38,10 +24,10 @@ _Rate my app_ default constructor takes two main parameters (see _[Example](#exa
 * `minLaunches` Minimum app launches count.
 
 If everything above is verified, the method `shouldOpenDialog` will return `true` (`false` otherwise).
-Then you should call `showRateDialog` which is going to show a native rating dialog on iOS ≥ _10.3_ and a custom rating prompt dialog on Android (and on older iOS versions).
+Then you should call `showRateDialog` which is going to show a native rating dialog, if supported, or a custom rating prompt dialog.
 
-If you prefer, you can call `showStarRateDialog` which will show a dialog containing a star rating bar that will allow you to take custom actions based on the rating
-(for example if the user puts less than 3 stars then open your app bugs report page or something like this and if he puts more ask him to rate your app on the store page).
+If you prefer, you can call `showStarRateDialog` which will more or less do the same, but is able to fallback on a dialog containing a star rating bar.
+It allows you to take custom actions based on the rating (for example if the user puts less than 3 stars then open your app bugs report page or something like this and if he puts more ask him to rate your app on the store page).
 Still, you have to be careful with these practises (see [this paragraph](https://appradar.com/blog/ask-users-leave-review-in-app-stores#fraudulent-methods-to-gain-more-app-store-reviews) on App Radar).
 
 ## Screenshots
@@ -144,7 +130,7 @@ rateMyApp.init().then((_) {
 ### Minimal Example
 
 Below is the minimal code example. This will be for the basic minimal working of this plugin.
-The below will launch a simple message popup after the defined minimal days/minimal launches along with the default buttons :
+The code below will launch a simple message popup after the defined minimal days/minimal launches along with the default buttons :
 _Rate_, _Maybe later_ and _Cancel_, with their default behavior.
 
 Place this in your main widget state :
@@ -208,7 +194,7 @@ You can totally choose to not use it and to initialize _Rate my app_ in your `ma
 It's possible to use custom store identifiers ! Just pass the following parameters during the plugin initialization :
 
 * `googlePlayIdentifier` Your Google Play identifier (usually a package name).
-* `appStoreIdentifier` Your App Store identifier (usually numbers). **It's required if you're targeting an iOS version before iOS 10.3.**
+* `appStoreIdentifier` Your App Store identifier (usually numbers).
 
 ### Using custom conditions
 
@@ -219,7 +205,7 @@ _Rate my app_ comes with three default conditions :
 * `MinimumAppLaunchesCondition` Allows to set a minimum app launches count since the first app launch before showing the dialog.
 * `DoNotOpenAgainCondition` Allows to prevent the dialog from being opened (when the user clicks on the _No_ button for example).
 
-You can easily create your custom conditions ! All you have to do is to extend the `Condition` class. There are five methods to override :
+You can easily create your custom conditions ! All you have to do is to extend the `Condition` class. There are five methods to implement :
 
 * `readFromPreferences` You should read your condition values from the provided shared preferences here.
 * `saveToPreferences` You should save your condition values to the provided shared preferences here.

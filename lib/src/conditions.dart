@@ -2,7 +2,7 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Represents a condition, which need to be met in order for the Rate my app dialog to open.
-abstract class Condition {
+mixin Condition {
   /// Reads the condition values from the specified shared preferences.
   void readFromPreferences(SharedPreferences preferences, String preferencesPrefix);
 
@@ -21,13 +21,13 @@ abstract class Condition {
 }
 
 /// A condition that can easily be displayed thanks to the provided method.
-abstract class DebuggableCondition extends Condition {
+mixin DebuggableCondition on Condition {
   /// Gets the condition values in a readable string.
   String get valuesAsString;
 }
 
 /// The minimum days condition.
-class MinimumDaysCondition extends DebuggableCondition {
+class MinimumDaysCondition with Condition, DebuggableCondition {
   /// Minimum days before being able to show the dialog.
   final int minDays;
 
@@ -61,7 +61,7 @@ class MinimumDaysCondition extends DebuggableCondition {
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.requestReview) {
       minimumDate = _now(Duration(days: remindDays));
       return true;
     }
@@ -85,7 +85,7 @@ class MinimumDaysCondition extends DebuggableCondition {
 }
 
 /// The minimum app launches condition.
-class MinimumAppLaunchesCondition extends DebuggableCondition {
+class MinimumAppLaunchesCondition with Condition, DebuggableCondition {
   /// Minimum launches before being able to show the dialog.
   final int minLaunches;
 
@@ -124,7 +124,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
       return true;
     }
 
-    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.iOSRequestReview) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.requestReview) {
       launches -= remindLaunches;
       return true;
     }
@@ -139,7 +139,7 @@ class MinimumAppLaunchesCondition extends DebuggableCondition {
 }
 
 /// The do not open again condition.
-class DoNotOpenAgainCondition extends DebuggableCondition {
+class DoNotOpenAgainCondition with Condition, DebuggableCondition {
   /// Whether the dialog should not be opened again.
   late bool doNotOpenAgain;
 
