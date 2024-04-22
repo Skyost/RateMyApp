@@ -4,7 +4,9 @@
     import FlutterMacOS
 #endif
 import StoreKit
-import UIKit
+#if canImport(UIKit)
+    import UIKit
+#endif
 
 public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -33,25 +35,28 @@ public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
                 return
             }
 
-            if openURL(link: "itms-apps://itunes.apple.com/app/id\(appId!)?action=write-review") {
+            if openUrl(link: "itms-apps://itunes.apple.com/app/id\(appId!)?action=write-review") {
                 result(0)
             } else {
-                result(openURL(link: "https://itunes.apple.com/app/id\(appId!)") ? 1 : 2)
+                result(openUrl(link: "https://itunes.apple.com/app/id\(appId!)") ? 1 : 2)
             }
         default:
             result(FlutterMethodNotImplemented)
         }
     }
 
-    private func openURL(link: String) -> Bool {
+    private func openUrl(link: String) -> Bool {
         guard let url = URL(string: link) else {
             return false
         }
-
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            return true
-        }
-        return false
+        #if canImport(UIKit)
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                return true
+            }
+            return false
+        #else
+            return NSWorkspace.shared.open(url)
+        #endif
     }
 }
