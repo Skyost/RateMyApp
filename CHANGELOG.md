@@ -1,3 +1,9 @@
+## 2.1.0
+* Updated project to target latest OS versions.
+* Added macOS support.
+* Bumped Android / Gradle version.
+* Fixed a bug on Darwin when no `appId` is provided.
+
 ## 2.0.0
 * Added support of namespace property to support Android Gradle Plugin (AGP) 8. Projects with AGP < 4.2 are not supported anymore. It is highly recommended to update at least to AGP 7.0 or newer.
 
