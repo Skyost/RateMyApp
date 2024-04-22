@@ -33,13 +33,13 @@ class _RateMyAppTestAppState extends State<_RateMyAppTestApp> {
             builder: builder,
             onInitialized: (context, rateMyApp) {
               setState(() => builder = (context) => ContentWidget(rateMyApp: rateMyApp));
-              rateMyApp.conditions.forEach((condition) {
+              for (Condition condition in rateMyApp.conditions) {
                 if (condition is DebuggableCondition) {
                   print(condition.valuesAsString); // We iterate through our list of conditions and we print all debuggable ones.
                 }
-              });
+              }
 
-              print('Are all conditions met ? ' + (rateMyApp.shouldOpenDialog ? 'Yes' : 'No'));
+              print('Are all conditions met ? ${rateMyApp.shouldOpenDialog ? 'Yes' : 'No'}');
 
               if (rateMyApp.shouldOpenDialog) {
                 rateMyApp.showRateDialog(context);

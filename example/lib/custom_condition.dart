@@ -26,15 +26,15 @@ class MaxDialogOpeningCondition with Condition, DebuggableCondition {
   @override
   void readFromPreferences(SharedPreferences preferences, String preferencesPrefix) {
     // Here we can read the values (or we set their default values).
-    dialogOpeningCount = preferences.getInt(preferencesPrefix + 'dialogOpeningCount') ?? 0;
-    starDialogOpeningCount = preferences.getInt(preferencesPrefix + 'starDialogOpeningCount') ?? 0;
+    dialogOpeningCount = preferences.getInt('${preferencesPrefix}dialogOpeningCount') ?? 0;
+    starDialogOpeningCount = preferences.getInt('${preferencesPrefix}starDialogOpeningCount') ?? 0;
   }
 
   @override
   Future<void> saveToPreferences(SharedPreferences preferences, String preferencesPrefix) async {
     // Here we save our current values.
-    await preferences.setInt(preferencesPrefix + 'dialogOpeningCount', dialogOpeningCount);
-    await preferences.setInt(preferencesPrefix + 'starDialogOpeningCount', starDialogOpeningCount);
+    await preferences.setInt('${preferencesPrefix}dialogOpeningCount', dialogOpeningCount);
+    await preferences.setInt('${preferencesPrefix}starDialogOpeningCount', starDialogOpeningCount);
   }
 
   @override
@@ -64,14 +64,7 @@ class MaxDialogOpeningCondition with Condition, DebuggableCondition {
   @override
   String get valuesAsString {
     // Allows to easily debug this condition.
-    return 'Dialog opening count : ' +
-        dialogOpeningCount.toString() +
-        '\nMax dialog opening count : ' +
-        maxDialogOpeningCount.toString() +
-        'Star dialog opening count : ' +
-        starDialogOpeningCount.toString() +
-        '\nMax star dialog opening count : ' +
-        maxStarDialogOpeningCount.toString();
+    return 'Dialog opening count : $dialogOpeningCount\nMax dialog opening count : ${maxDialogOpeningCount}Star dialog opening count : $starDialogOpeningCount\nMax star dialog opening count : $maxStarDialogOpeningCount';
   }
 
   @override
