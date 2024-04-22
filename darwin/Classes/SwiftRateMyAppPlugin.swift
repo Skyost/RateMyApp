@@ -29,7 +29,7 @@ public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
         case "isNativeDialogSupported":
             result(true)
         case "launchStore":
-            let appId: String? = arguments["appId"] as! String?
+            let appId: String? = arguments["appId"] == nil ? nil : arguments["appId"] as! String?
             if appId == nil || appId!.isEmpty {
                 result(2)
                 return
