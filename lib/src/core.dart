@@ -112,6 +112,7 @@ class RateMyApp {
   Future<void> showRateDialog(
     BuildContext context, {
     String? title,
+    String? imagePath,
     String? message,
     DialogContentBuilder? contentBuilder,
     DialogActionsBuilder? actionsBuilder,
@@ -136,6 +137,7 @@ class RateMyApp {
     RateMyAppDialog rateMyAppDialog = RateMyAppDialog(
       this,
       title: title ?? 'Rate this app',
+      image: imagePath,
       message: message ?? 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
       contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
       actionsBuilder: actionsBuilder,
@@ -177,6 +179,7 @@ class RateMyApp {
   Future<void> showStarRateDialog(
     BuildContext context, {
     String? title,
+    String? imagePath,
     String? message,
     DialogContentBuilder? contentBuilder,
     StarDialogActionsBuilder? actionsBuilder,
@@ -201,6 +204,7 @@ class RateMyApp {
     RateMyAppStarDialog starRateDialog = RateMyAppStarDialog(
       this,
       title: title ?? 'Rate this app',
+      image: imagePath,
       message: message ?? 'You like this app ? Then take a little bit of your time to leave a rating :',
       contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
       actionsBuilder: actionsBuilder,
