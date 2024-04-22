@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 
@@ -37,7 +38,7 @@ class _ContentWidgetState extends State<ContentWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            for (DebuggableCondition condition in debuggableConditions) //
+            for (DebuggableCondition condition in debuggableConditions)
               textCenter(condition.valuesAsString),
             textCenter(
                 'Are conditions met ? ${shouldOpenDialog ? 'Yes' : 'No'}'),
@@ -46,29 +47,39 @@ class _ContentWidgetState extends State<ContentWidget> {
               child: ElevatedButton(
                 onPressed: () async {
                   await widget.rateMyApp.showRateDialog(
-                      context); // We launch the default Rate my app dialog.
+                    context,
+                    ignoreNativeDialog: kDebugMode,
+                  ); // We launch the default Rate my app dialog.
                   refresh();
                 },
                 child: const Text('Launch "Rate my app" dialog'),
               ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await widget.rateMyApp.showStarRateDialog(context,
-                    actionsBuilder: (_, stars) => starRateDialogActionsBuilder(
-                        context,
-                        stars)); // We launch the Rate my app dialog with stars.
-                refresh();
-              },
-              child: const Text('Launch "Rate my app" star dialog'),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await widget.rateMyApp.showStarRateDialog(
+                    context,
+                    actionsBuilder: (_, stars) =>
+                        starRateDialogActionsBuilder(context, stars),
+                    ignoreNativeDialog: kDebugMode,
+                  ); // We launch the Rate my app dialog with stars.
+                  refresh();
+                },
+                child: const Text('Launch "Rate my app" star dialog'),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                await widget.rateMyApp
-                    .reset(); // We reset all Rate my app conditions values.
-                refresh();
-              },
-              child: const Text('Reset'),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await widget.rateMyApp
+                      .reset(); // We reset all Rate my app conditions values.
+                  refresh();
+                },
+                child: const Text('Reset'),
+              ),
             ),
           ],
         ),
@@ -143,11 +154,13 @@ class _ContentWidgetState extends State<ContentWidget> {
           await widget.rateMyApp
               .callEvent(RateMyAppEventType.rateButtonPressed);
           if (context.mounted) {
-            Navigator.pop<RateMyAppDialogButton>(context, RateMyAppDialogButton.rate);
+            Navigator.pop<RateMyAppDialogButton>(
+                context, RateMyAppDialogButton.rate);
             refresh();
           }
         },
-        child: Text(MaterialLocalizations.of(context).okButtonLabel.toUpperCase()),
+        child:
+            Text(MaterialLocalizations.of(context).okButtonLabel.toUpperCase()),
       ),
       cancelButton,
     ];
