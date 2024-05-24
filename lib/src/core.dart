@@ -55,7 +55,9 @@ class RateMyApp {
   Future<void> init() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     for (Condition condition in conditions) {
-      condition.readFromPreferences(preferences, preferencesPrefix);
+      if (condition is SharedPreferencesCondition) {
+        condition.readFromPreferences(preferences, preferencesPrefix);
+      }
     }
     await callEvent(RateMyAppEventType.initialized);
   }
@@ -64,7 +66,9 @@ class RateMyApp {
   Future<void> save() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     for (Condition condition in conditions) {
-      await condition.saveToPreferences(preferences, preferencesPrefix);
+      if (condition is SharedPreferencesCondition) {
+        await condition.saveToPreferences(preferences, preferencesPrefix);
+      }
     }
 
     await callEvent(RateMyAppEventType.saved);
@@ -73,7 +77,9 @@ class RateMyApp {
   /// Resets the plugin data.
   Future<void> reset() async {
     for (Condition condition in conditions) {
-      condition.reset();
+      if (condition is ResetableCondition) {
+        condition.reset();
+      }
     }
     await save();
   }
@@ -252,7 +258,10 @@ class RateMyApp {
   Future<LaunchStoreResult> launchStore() async {
     int? result = await _channel.invokeMethod<int>('launchStore',
         storeIdentifier == null ? null : {'appId': storeIdentifier});
-    return LaunchStoreResult.values.firstWhere((value) => value.index == result, orElse: () => LaunchStoreResult.errorOccurred);
+    return LaunchStoreResult.values.firstWhere(
+      (value) => value.index == result,
+      orElse: () => LaunchStoreResult.errorOccurred,
+    );
   }
 
   /// Calls the specified event.

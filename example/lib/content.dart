@@ -39,9 +39,9 @@ class _ContentWidgetState extends State<ContentWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             for (DebuggableCondition condition in debuggableConditions)
-              textCenter(condition.valuesAsString),
+              textCenter(condition.toString()),
             textCenter(
-                'Are conditions met ? ${shouldOpenDialog ? 'Yes' : 'No'}'),
+                'Are conditions met : ${shouldOpenDialog ? 'Yes' : 'No'}'),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: ElevatedButton(
