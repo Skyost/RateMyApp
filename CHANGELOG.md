@@ -1,3 +1,6 @@
+## 2.2.0
+* Better handling of conditions.
+
 ## 2.1.0
 * Updated project to target latest OS versions.
 * Added macOS support.

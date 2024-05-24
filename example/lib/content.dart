@@ -142,7 +142,9 @@ class _ContentWidgetState extends State<ContentWidget> {
     return [
       TextButton(
         onPressed: () async {
-          print(message);
+          if (kDebugMode) {
+            print(message);
+          }
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(message),
