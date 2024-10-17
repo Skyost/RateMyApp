@@ -64,7 +64,7 @@ class MinimumDaysCondition extends Condition
   final int remindDays;
 
   /// The minimum date required to meet this condition.
-  late DateTime minimumDate;
+  DateTime minimumDate = DateTime.now();
 
   /// Creates a new minimum days condition instance.
   MinimumDaysCondition({
