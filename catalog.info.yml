@@ -1,0 +1,14 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: RateMyApp 
+  description: This a fork from the RateMyApp component. This plugin allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
+  links: [
+    {name: 'Website', url: 'https://github.com/Skyost/RateMyApp'} 
+  ]
+  tags: []
+  annotations: {}
+spec:
+  type: ExternalSource
+  lifecycle: production
+  owner: driver-journey
