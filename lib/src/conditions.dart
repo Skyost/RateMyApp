@@ -15,12 +15,12 @@ abstract class Condition {
 /// A condition that reads and stores its values to the shared preferences.
 mixin SharedPreferencesCondition on Condition {
   /// Reads the condition values from the specified shared preferences.
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix);
+  Future<void> readFromPreferences(
+      SharedPreferencesAsync preferences, String preferencesPrefix);
 
   /// Saves the condition values to the specified shared preferences.
   Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix);
+      SharedPreferencesAsync preferences, String preferencesPrefix);
 }
 
 /// A resetable condition.
@@ -73,16 +73,16 @@ class MinimumDaysCondition extends Condition
   });
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+  Future<void> readFromPreferences(
+      SharedPreferencesAsync preferences, String preferencesPrefix) async {
     minimumDate = DateTime.fromMillisecondsSinceEpoch(
-        preferences.getInt('${preferencesPrefix}minimumDate') ??
+        (await preferences.getInt('${preferencesPrefix}minimumDate')) ??
             _now().millisecondsSinceEpoch);
   }
 
   @override
   Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+      SharedPreferencesAsync preferences, String preferencesPrefix) {
     return preferences.setInt(
         '${preferencesPrefix}minimumDate', minimumDate.millisecondsSinceEpoch);
   }
@@ -142,14 +142,14 @@ class MinimumAppLaunchesCondition extends Condition
   });
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
-    launches = preferences.getInt('${preferencesPrefix}launches') ?? 0;
+  Future<void> readFromPreferences(
+      SharedPreferencesAsync preferences, String preferencesPrefix) async {
+    launches = (await preferences.getInt('${preferencesPrefix}launches')) ?? 0;
   }
 
   @override
   Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+      SharedPreferencesAsync preferences, String preferencesPrefix) {
     return preferences.setInt('${preferencesPrefix}launches', launches);
   }
 
@@ -190,15 +190,16 @@ class DoNotOpenAgainCondition extends Condition
   late bool doNotOpenAgain;
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+  Future<void> readFromPreferences(
+      SharedPreferencesAsync preferences, String preferencesPrefix) async {
     doNotOpenAgain =
-        preferences.getBool('${preferencesPrefix}doNotOpenAgain') ?? false;
+        (await preferences.getBool('${preferencesPrefix}doNotOpenAgain')) ??
+            false;
   }
 
   @override
   Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+      SharedPreferencesAsync preferences, String preferencesPrefix) {
     return preferences.setBool(
         '${preferencesPrefix}doNotOpenAgain', doNotOpenAgain);
   }

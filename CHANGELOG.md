@@ -1,3 +1,7 @@
+## 2.3.0
+* Now using `SharedPreferencesAsync` to avoid messing with existing `SharedPreferencesWithCache`
+  implementations.
+
 ## 2.2.0
 * Better handling of conditions.
 

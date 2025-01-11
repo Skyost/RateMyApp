@@ -1,6 +1,6 @@
 name: rate_my_app
 description: Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
-version: 2.2.0 # Remember to also change the version in "darwin/rate_my_app.podspec" and "android/build.gradle".
+version: 2.3.0 # Remember to also change the version in "darwin/rate_my_app.podspec" and "android/build.gradle".
 homepage: https://github.com/Skyost/RateMyApp
 
 environment:
@@ -8,13 +8,13 @@ environment:
   flutter: '>=3.10.0'
 
 dependencies:
-  shared_preferences: '>=2.0.0 <3.0.0'
+  shared_preferences: '>=2.3.0 <3.0.0'
   flutter_rating_bar: '>=4.0.0 <5.0.0'
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:
   plugin:

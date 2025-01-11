@@ -6,8 +6,7 @@ import 'content.dart';
 
 /// First plugin test method.
 void main() {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // This allows to use async methods in the main method without any problem.
+  WidgetsFlutterBinding.ensureInitialized(); // This allows to use async methods in the main method without any problem.
   runApp(const _RateMyAppTestApp());
 }
 
@@ -38,18 +37,15 @@ class _RateMyAppTestAppState extends State<_RateMyAppTestApp> {
             ),
             builder: builder,
             onInitialized: (context, rateMyApp) {
-              setState(() =>
-                  builder = (context) => ContentWidget(rateMyApp: rateMyApp));
+              setState(() => builder = (context) => ContentWidget(rateMyApp: rateMyApp));
               for (Condition condition in rateMyApp.conditions) {
                 if (condition is DebuggableCondition) {
-                  condition
-                      .printToConsole(); // We iterate through our list of conditions and we print all debuggable ones.
+                  condition.printToConsole(); // We iterate through our list of conditions and we print all debuggable ones.
                 }
               }
 
               if (kDebugMode) {
-                print(
-                    'Are all conditions met : ${rateMyApp.shouldOpenDialog ? 'Yes' : 'No'}');
+                print('Are all conditions met : ${rateMyApp.shouldOpenDialog ? 'Yes' : 'No'}');
               }
 
               if (rateMyApp.shouldOpenDialog) {
@@ -61,6 +57,5 @@ class _RateMyAppTestAppState extends State<_RateMyAppTestApp> {
       );
 
   /// Builds the progress indicator, allowing to wait for Rate my app to initialize.
-  static Widget buildProgressIndicator(BuildContext context) =>
-      const Center(child: CircularProgressIndicator());
+  static Widget buildProgressIndicator(BuildContext context) => const Center(child: CircularProgressIndicator());
 }

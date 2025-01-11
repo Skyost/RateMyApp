@@ -3,8 +3,7 @@ import 'package:rate_my_app/rate_my_app.dart';
 /// Here's an example of a custom condition.
 /// Will not be met if the dialog has been opened too many times.
 /// Add it using : `rateMyApp.conditions.add(MaxDialogOpeningCondition(_rateMyApp));`.
-class MaxDialogOpeningCondition extends Condition
-    with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
+class MaxDialogOpeningCondition extends Condition with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
   /// Maximum default dialog opening count (inclusive).
   final int maxDialogOpeningCount;
 
@@ -24,23 +23,17 @@ class MaxDialogOpeningCondition extends Condition
   });
 
   @override
-  void readFromPreferences(
-      SharedPreferences preferences, String preferencesPrefix) {
+  Future<void> readFromPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) async {
     // Here we can read the values (or we set their default values).
-    dialogOpeningCount =
-        preferences.getInt('${preferencesPrefix}dialogOpeningCount') ?? 0;
-    starDialogOpeningCount =
-        preferences.getInt('${preferencesPrefix}starDialogOpeningCount') ?? 0;
+    dialogOpeningCount = (await preferences.getInt('${preferencesPrefix}dialogOpeningCount')) ?? 0;
+    starDialogOpeningCount = (await preferences.getInt('${preferencesPrefix}starDialogOpeningCount')) ?? 0;
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferences preferences, String preferencesPrefix) async {
+  Future<void> saveToPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) async {
     // Here we save our current values.
-    await preferences.setInt(
-        '${preferencesPrefix}dialogOpeningCount', dialogOpeningCount);
-    await preferences.setInt(
-        '${preferencesPrefix}starDialogOpeningCount', starDialogOpeningCount);
+    await preferences.setInt('${preferencesPrefix}dialogOpeningCount', dialogOpeningCount);
+    await preferences.setInt('${preferencesPrefix}starDialogOpeningCount', starDialogOpeningCount);
   }
 
   @override
@@ -81,7 +74,6 @@ class MaxDialogOpeningCondition extends Condition
   @override
   bool get isMet {
     // This allows to check whether this condition is met in its current state.
-    return dialogOpeningCount <= maxDialogOpeningCount &&
-        starDialogOpeningCount <= maxStarDialogOpeningCount;
+    return dialogOpeningCount <= maxDialogOpeningCount && starDialogOpeningCount <= maxStarDialogOpeningCount;
   }
 }
