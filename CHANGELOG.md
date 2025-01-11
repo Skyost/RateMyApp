@@ -1,3 +1,6 @@
+## 2.3.1
+* Fixed a problem while initializing RateMyApp.
+
 ## 2.3.0
 * Now using `SharedPreferencesAsync` to avoid messing with existing `SharedPreferencesWithCache`
   implementations.

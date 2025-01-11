@@ -1,6 +1,6 @@
 name: rate_my_app
 description: Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
-version: 2.3.0 # Remember to also change the version in "darwin/rate_my_app.podspec" and "android/build.gradle".
+version: 2.3.1 # Remember to also change the version in "darwin/rate_my_app.podspec" and "android/build.gradle".
 homepage: https://github.com/Skyost/RateMyApp
 
 environment:

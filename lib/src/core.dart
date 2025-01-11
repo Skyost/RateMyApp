@@ -56,7 +56,7 @@ class RateMyApp {
     SharedPreferencesAsync preferences = SharedPreferencesAsync();
     for (Condition condition in conditions) {
       if (condition is SharedPreferencesCondition) {
-        condition.readFromPreferences(preferences, preferencesPrefix);
+        await condition.readFromPreferences(preferences, preferencesPrefix);
       }
     }
     await callEvent(RateMyAppEventType.initialized);
