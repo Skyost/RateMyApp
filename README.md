@@ -102,7 +102,7 @@ rateMyApp.init().then((_) {
       // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
       actionsBuilder: (context, stars) { // Triggered when the user updates the star rating.
         return [ // Return a list of actions (that will be shown at the bottom of the dialog).
-          FlatButton(
+          ElevatedButton(
             child: Text('OK'),
             onPressed: () async {
               print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
