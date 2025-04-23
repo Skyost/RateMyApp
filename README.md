@@ -35,13 +35,13 @@ Still, you have to be careful with these practises (see [this paragraph](https:/
 <details>
     <summary>On Android</summary>
     <img src="https://github.com/Skyost/RateMyApp/raw/master/images/android.png" height="500">
-    <br><em><code>showRateDialog</code> method with <code>ignoreNative</code> set to <code>true</code>.</em>
+    <br><em><code>showRateDialog</code> method with <code>ignoreNativeDialog</code> set to <code>true</code>.</em>
 </details>
 
 <details>
     <summary>On iOS</summary>
     <img src="https://github.com/Skyost/RateMyApp/raw/master/images/ios_10_3.png" height="500">
-    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreNative</code> set to <code>false</code>.</em>
+    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreNativeDialog</code> set to <code>false</code>.</em>
 </details>
 
 ## Using it in your code
