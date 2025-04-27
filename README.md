@@ -35,13 +35,13 @@ Still, you have to be careful with these practises (see [this paragraph](https:/
 <details>
     <summary>On Android</summary>
     <img src="https://github.com/Skyost/RateMyApp/raw/master/images/android.png" height="500">
-    <br><em><code>showRateDialog</code> method with <code>ignoreNative</code> set to <code>true</code>.</em>
+    <br><em><code>showRateDialog</code> method with <code>ignoreNativeDialog</code> set to <code>true</code>.</em>
 </details>
 
 <details>
     <summary>On iOS</summary>
     <img src="https://github.com/Skyost/RateMyApp/raw/master/images/ios_10_3.png" height="500">
-    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreNative</code> set to <code>false</code>.</em>
+    <br><em><code>showRateDialog</code> and <code>showStarRateDialog</code> methods with <code>ignoreNativeDialog</code> set to <code>false</code>.</em>
 </details>
 
 ## Using it in your code
@@ -102,7 +102,7 @@ rateMyApp.init().then((_) {
       // contentBuilder: (context, defaultContent) => content, // This one allows you to change the default dialog content.
       actionsBuilder: (context, stars) { // Triggered when the user updates the star rating.
         return [ // Return a list of actions (that will be shown at the bottom of the dialog).
-          FlatButton(
+          ElevatedButton(
             child: Text('OK'),
             onPressed: () async {
               print('Thanks for the ' + (stars == null ? '0' : stars.round().toString()) + ' star(s) !');
