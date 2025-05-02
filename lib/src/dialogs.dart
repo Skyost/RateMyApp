@@ -273,7 +273,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
                   ),
                   Icon(
                     Icons.star_border,
-                    color: widget.starRatingOptions.borderColor,
+                    color: widget.starRatingOptions.borderColorChecked,
                     size: widget.starRatingOptions.itemSize,
                   ),
                 ],

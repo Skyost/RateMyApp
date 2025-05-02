@@ -83,6 +83,9 @@ class StarRatingOptions {
   /// Item Color
   final Color itemColor;
 
+  /// Border color of the item checked. Defaults to [itemColor]
+  final Color  borderColorChecked;
+
   /// Border color of the default Rating Widget. Defaults to [itemColor]
   final Color? borderColor;
 
@@ -115,6 +118,7 @@ class StarRatingOptions {
     this.itemSize = 40,
     this.itemCount = 5,
     this.itemColor = Colors.orangeAccent,
+    Color? borderColorChecked,
     this.borderColor,
     this.glow = false,
     this.glowRadius = 2,
@@ -122,7 +126,7 @@ class StarRatingOptions {
     this.direction = Axis.horizontal,
     this.tapOnlyMode = false,
     this.wrapAlignment = WrapAlignment.start,
-  });
+  }) : borderColorChecked = borderColorChecked ?? itemColor;
 }
 
 /// Allows to control dialogs transitions.
