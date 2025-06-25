@@ -1,3 +1,6 @@
+## 2.3.2
+* Added the ability to have a custom border color for checked items.
+
 ## 2.3.1
 * Fixed a problem while initializing RateMyApp.
 

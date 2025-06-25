@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'rate_my_app'
-  s.version          = '2.3.0'
+  s.version          = '2.3.2'
   s.summary          = 'Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).'
   s.description      = <<-DESC
 Allows to kindly ask users to rate your app if custom conditions are met (eg. install time, number of launches, etc...).
