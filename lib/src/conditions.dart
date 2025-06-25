@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Represents a condition, which need to be met in order for the Rate my app dialog to open.
 abstract class Condition {
@@ -15,12 +14,10 @@ abstract class Condition {
 /// A condition that reads and stores its values to the shared preferences.
 mixin SharedPreferencesCondition on Condition {
   /// Reads the condition values from the specified shared preferences.
-  Future<void> readFromPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix);
+  Future<void> readFromPreferences(SharedPreferencesAsync preferences, String preferencesPrefix);
 
   /// Saves the condition values to the specified shared preferences.
-  Future<void> saveToPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix);
+  Future<void> saveToPreferences(SharedPreferencesAsync preferences, String preferencesPrefix);
 }
 
 /// A resetable condition.
@@ -55,8 +52,7 @@ mixin DebuggableCondition on Condition {
 }
 
 /// The minimum days condition.
-class MinimumDaysCondition extends Condition
-    with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
+class MinimumDaysCondition extends Condition with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
   /// Minimum days before being able to show the dialog.
   final int minDays;
 
@@ -73,18 +69,13 @@ class MinimumDaysCondition extends Condition
   });
 
   @override
-  Future<void> readFromPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix) async {
-    minimumDate = DateTime.fromMillisecondsSinceEpoch(
-        (await preferences.getInt('${preferencesPrefix}minimumDate')) ??
-            _now().millisecondsSinceEpoch);
+  Future<void> readFromPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) async {
+    minimumDate = DateTime.fromMillisecondsSinceEpoch((await preferences.getInt('${preferencesPrefix}minimumDate')) ?? _now().millisecondsSinceEpoch);
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix) {
-    return preferences.setInt(
-        '${preferencesPrefix}minimumDate', minimumDate.millisecondsSinceEpoch);
+  Future<void> saveToPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) {
+    return preferences.setInt('${preferencesPrefix}minimumDate', minimumDate.millisecondsSinceEpoch);
   }
 
   @override
@@ -95,8 +86,7 @@ class MinimumDaysCondition extends Condition
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if (eventType == RateMyAppEventType.laterButtonPressed ||
-        eventType == RateMyAppEventType.requestReview) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.requestReview) {
       minimumDate = _now(Duration(days: remindDays));
       return true;
     }
@@ -112,20 +102,17 @@ class MinimumDaysCondition extends Condition
       };
 
   /// Returns a formatted date string.
-  String _dateToString(DateTime date) =>
-      '${_addZeroIfNeeded(date.day)}/${_addZeroIfNeeded(date.month)}/${date.year} ${_addZeroIfNeeded(date.hour)}:${_addZeroIfNeeded(date.minute)}';
+  String _dateToString(DateTime date) => '${_addZeroIfNeeded(date.day)}/${_addZeroIfNeeded(date.month)}/${date.year} ${_addZeroIfNeeded(date.hour)}:${_addZeroIfNeeded(date.minute)}';
 
   /// Adds a zero to a given number if needed.
   String _addZeroIfNeeded(int number) => number.toString().padLeft(2, '0');
 
   /// Returns the current date with the minimum days added.
-  DateTime _now([Duration? toAdd]) =>
-      DateTime.now().add(toAdd ?? Duration(days: minDays));
+  DateTime _now([Duration? toAdd]) => DateTime.now().add(toAdd ?? Duration(days: minDays));
 }
 
 /// The minimum app launches condition.
-class MinimumAppLaunchesCondition extends Condition
-    with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
+class MinimumAppLaunchesCondition extends Condition with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
   /// Minimum launches before being able to show the dialog.
   final int minLaunches;
 
@@ -142,14 +129,12 @@ class MinimumAppLaunchesCondition extends Condition
   });
 
   @override
-  Future<void> readFromPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix) async {
+  Future<void> readFromPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) async {
     launches = (await preferences.getInt('${preferencesPrefix}launches')) ?? 0;
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix) {
+  Future<void> saveToPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) {
     return preferences.setInt('${preferencesPrefix}launches', launches);
   }
 
@@ -166,8 +151,7 @@ class MinimumAppLaunchesCondition extends Condition
       return true;
     }
 
-    if (eventType == RateMyAppEventType.laterButtonPressed ||
-        eventType == RateMyAppEventType.requestReview) {
+    if (eventType == RateMyAppEventType.laterButtonPressed || eventType == RateMyAppEventType.requestReview) {
       launches -= remindLaunches;
       return true;
     }
@@ -184,24 +168,18 @@ class MinimumAppLaunchesCondition extends Condition
 }
 
 /// The do not open again condition.
-class DoNotOpenAgainCondition extends Condition
-    with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
+class DoNotOpenAgainCondition extends Condition with SharedPreferencesCondition, ResetableCondition, DebuggableCondition {
   /// Whether the dialog should not be opened again.
   late bool doNotOpenAgain;
 
   @override
-  Future<void> readFromPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix) async {
-    doNotOpenAgain =
-        (await preferences.getBool('${preferencesPrefix}doNotOpenAgain')) ??
-            false;
+  Future<void> readFromPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) async {
+    doNotOpenAgain = (await preferences.getBool('${preferencesPrefix}doNotOpenAgain')) ?? false;
   }
 
   @override
-  Future<void> saveToPreferences(
-      SharedPreferencesAsync preferences, String preferencesPrefix) {
-    return preferences.setBool(
-        '${preferencesPrefix}doNotOpenAgain', doNotOpenAgain);
+  Future<void> saveToPreferences(SharedPreferencesAsync preferences, String preferencesPrefix) {
+    return preferences.setBool('${preferencesPrefix}doNotOpenAgain', doNotOpenAgain);
   }
 
   @override
@@ -212,8 +190,7 @@ class DoNotOpenAgainCondition extends Condition
 
   @override
   bool onEventOccurred(RateMyAppEventType eventType) {
-    if (eventType == RateMyAppEventType.rateButtonPressed ||
-        eventType == RateMyAppEventType.noButtonPressed) {
+    if (eventType == RateMyAppEventType.rateButtonPressed || eventType == RateMyAppEventType.noButtonPressed) {
       doNotOpenAgain = true;
       return true;
     }

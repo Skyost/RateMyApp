@@ -34,14 +34,12 @@ class RateMyApp {
     int? remindLaunches,
     this.googlePlayIdentifier,
     this.appStoreIdentifier,
-  }) : conditions = [] {
-    populateWithDefaultConditions(
-      minDays: minDays,
-      remindDays: remindDays,
-      minLaunches: minLaunches,
-      remindLaunches: remindLaunches,
-    );
-  }
+  }) : conditions = _buildDefaultConditionsList(
+          minDays: minDays,
+          remindDays: remindDays,
+          minLaunches: minLaunches,
+          remindLaunches: remindLaunches,
+        );
 
   /// Creates a new Rate my app instance with custom conditions.
   const RateMyApp.customConditions({
@@ -108,20 +106,17 @@ class RateMyApp {
   }
 
   /// Returns whether native review dialog is supported.
-  Future<bool?> get isNativeReviewDialogSupported =>
-      _channel.invokeMethod<bool>('isNativeDialogSupported');
+  Future<bool?> get isNativeReviewDialogSupported => _channel.invokeMethod<bool>('isNativeDialogSupported');
 
   /// Launches the native review dialog.
   /// You should check for [isNativeReviewDialogSupported] before running the method.
-  Future<void> launchNativeReviewDialog() =>
-      _channel.invokeMethod('launchNativeReviewDialog');
+  Future<void> launchNativeReviewDialog() => _channel.invokeMethod('launchNativeReviewDialog');
 
   /// Shows the rate dialog.
   Future<void> showRateDialog(
     BuildContext context, {
     String title = 'Rate this app',
-    String message =
-        'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+    String message = 'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
     DialogContentBuilder? contentBuilder,
     DialogActionsBuilder? actionsBuilder,
     String rateButton = 'Rate',
@@ -135,8 +130,7 @@ class RateMyApp {
     String barrierLabel = '',
     DialogTransition dialogTransition = const DialogTransition(),
   }) async {
-    if (!ignoreNativeDialog &&
-        ((await isNativeReviewDialogSupported) ?? false)) {
+    if (!ignoreNativeDialog && ((await isNativeReviewDialogSupported) ?? false)) {
       callEvent(RateMyAppEventType.requestReview);
       await launchNativeReviewDialog();
       return;
@@ -146,8 +140,7 @@ class RateMyApp {
       this,
       title: title,
       message: message,
-      contentBuilder:
-          contentBuilder ?? ((context, defaultContent) => defaultContent),
+      contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
       actionsBuilder: actionsBuilder,
       rateButton: rateButton,
       noButton: noButton,
@@ -191,8 +184,7 @@ class RateMyApp {
   Future<void> showStarRateDialog(
     BuildContext context, {
     String title = 'Rate this app',
-    String message =
-        'You like this app ? Then take a little bit of your time to leave a rating :',
+    String message = 'You like this app ? Then take a little bit of your time to leave a rating :',
     DialogContentBuilder? contentBuilder,
     StarDialogActionsBuilder? actionsBuilder,
     bool ignoreNativeDialog = false,
@@ -207,8 +199,7 @@ class RateMyApp {
     String barrierLabel = '',
     DialogTransition dialogTransition = const DialogTransition(),
   }) async {
-    if (!ignoreNativeDialog &&
-        ((await isNativeReviewDialogSupported) ?? false)) {
+    if (!ignoreNativeDialog && ((await isNativeReviewDialogSupported) ?? false)) {
       callEvent(RateMyAppEventType.requestReview);
       await launchNativeReviewDialog();
       return;
@@ -221,8 +212,7 @@ class RateMyApp {
       this,
       title: title,
       message: message,
-      contentBuilder:
-          contentBuilder ?? ((context, defaultContent) => defaultContent),
+      contentBuilder: contentBuilder ?? ((context, defaultContent) => defaultContent),
       actionsBuilder: actionsBuilder,
       dialogStyle: dialogStyle,
       starRatingOptions: starRatingOptions,
@@ -232,8 +222,7 @@ class RateMyApp {
     if (context.mounted) {
       // Using [showDialog()] when [TransitionType.none] to get rid of the default fading animation of [showGeneralDialog].
       clickedButton = dialogTransition.transitionType == TransitionType.none
-          ? await showDialog(
-              context: context, builder: (context) => starRateDialog)
+          ? await showDialog(context: context, builder: (context) => starRateDialog)
           : await showGeneralDialog(
               context: context,
               transitionDuration: dialogTransition.transitionDuration,
@@ -256,8 +245,7 @@ class RateMyApp {
 
   /// Launches the corresponding store.
   Future<LaunchStoreResult> launchStore() async {
-    int? result = await _channel.invokeMethod<int>('launchStore',
-        storeIdentifier == null ? null : {'appId': storeIdentifier});
+    int? result = await _channel.invokeMethod<int>('launchStore', storeIdentifier == null ? null : {'appId': storeIdentifier});
     return LaunchStoreResult.values.firstWhere(
       (value) => value.index == result,
       orElse: () => LaunchStoreResult.errorOccurred,
@@ -268,8 +256,7 @@ class RateMyApp {
   Future<void> callEvent(RateMyAppEventType eventType) async {
     bool saveSharedPreferences = false;
     for (Condition condition in conditions) {
-      saveSharedPreferences =
-          condition.onEventOccurred(eventType) || saveSharedPreferences;
+      saveSharedPreferences = condition.onEventOccurred(eventType) || saveSharedPreferences;
     }
     if (saveSharedPreferences) {
       await save();
@@ -282,17 +269,34 @@ class RateMyApp {
     int? remindDays,
     int? minLaunches,
     int? remindLaunches,
-  }) {
-    conditions.add(MinimumDaysCondition(
-      minDays: minDays ?? 7,
-      remindDays: remindDays ?? 7,
-    ));
-    conditions.add(MinimumAppLaunchesCondition(
-      minLaunches: minLaunches ?? 10,
-      remindLaunches: remindLaunches ?? 10,
-    ));
-    conditions.add(DoNotOpenAgainCondition());
-  }
+  }) =>
+      conditions.addAll(
+        _buildDefaultConditionsList(
+          minDays: minDays,
+          remindDays: remindDays,
+          minLaunches: minLaunches,
+          remindLaunches: remindLaunches,
+        ),
+      );
+
+  /// Builds the default conditions list.
+  static List<Condition> _buildDefaultConditionsList({
+    int? minDays,
+    int? remindDays,
+    int? minLaunches,
+    int? remindLaunches,
+  }) =>
+      [
+        MinimumDaysCondition(
+          minDays: minDays ?? 7,
+          remindDays: remindDays ?? 7,
+        ),
+        MinimumAppLaunchesCondition(
+          minLaunches: minLaunches ?? 10,
+          remindLaunches: remindLaunches ?? 10,
+        ),
+        DoNotOpenAgainCondition(),
+      ];
 
   /// Builds the animations widget.
   Widget buildAnimations({
@@ -303,39 +307,31 @@ class RateMyApp {
     switch (dialogTransition.transitionType) {
       case TransitionType.fade:
         return FadeTransition(
-          opacity:
-              CurvedAnimation(curve: dialogTransition.curve, parent: animation),
+          opacity: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: child,
         );
       case TransitionType.rotation:
         return RotationTransition(
-          turns:
-              CurvedAnimation(curve: dialogTransition.curve, parent: animation),
+          turns: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: child,
         );
       case TransitionType.scale:
         return ScaleTransition(
           alignment: dialogTransition.alignment ?? Alignment.center,
-          scale:
-              CurvedAnimation(curve: dialogTransition.curve, parent: animation),
+          scale: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: child,
         );
       case TransitionType.scaleAndFade:
         return FadeTransition(
-          opacity:
-              CurvedAnimation(curve: dialogTransition.curve, parent: animation),
+          opacity: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
           child: ScaleTransition(
-            scale: CurvedAnimation(
-                curve: dialogTransition.curve, parent: animation),
+            scale: CurvedAnimation(curve: dialogTransition.curve, parent: animation),
             child: child,
           ),
         );
       case TransitionType.slide:
         return SlideTransition(
-          position: Tween<Offset>(
-                  begin: dialogTransition.startOffset ?? const Offset(1, 0),
-                  end: Offset.zero)
-              .animate(
+          position: Tween<Offset>(begin: dialogTransition.startOffset ?? const Offset(1, 0), end: Offset.zero).animate(
             CurvedAnimation(parent: animation, curve: dialogTransition.curve),
           ),
         );

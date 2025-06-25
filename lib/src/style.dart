@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart'
-    as flutter_rating_bar;
+import 'package:flutter_rating_bar/flutter_rating_bar.dart' as flutter_rating_bar;
 
 /// Allows to tweak the plugin dialogs.
 class DialogStyle {
@@ -41,7 +40,7 @@ class DialogStyle {
   });
 }
 
-// In order to allow the user to use this rating widget class, we have to expose it through our package
+// In order to allow the user to use this rating widget class, we have to expose it through our package.
 
 /// Local exposure of the Rating Widget class. Use this to customize the Rating Widget if you don't want to use [StartRatingOptions.itemBuilder].
 class RatingWidget extends flutter_rating_bar.RatingWidget {
@@ -80,13 +79,13 @@ class StarRatingOptions {
   /// The item count.
   final int itemCount;
 
-  /// Item Color
+  /// The item color.
   final Color itemColor;
 
-  /// Border color of the item checked. Defaults to [itemColor]
-  final Color  borderColorChecked;
+  /// Border color of the item checked. Defaults to [itemColor].
+  final Color borderColorChecked;
 
-  /// Border color of the default Rating Widget. Defaults to [itemColor]
+  /// Border color of the default Rating Widget. Defaults to [itemColor].
   final Color? borderColor;
 
   /// Whether the items should glow.
@@ -141,9 +140,7 @@ class DialogTransition {
   final TransitionType transitionType;
 
   /// Custom transition
-  final Widget Function(
-          BuildContext, Animation<double>, Animation<double>, Widget)?
-      customTransitionBuilder;
+  final Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder;
 
   /// Starting offset for slide transition : only used with [TransitionType.slide].
   final Offset? startOffset;
@@ -158,11 +155,10 @@ class DialogTransition {
     this.customTransitionBuilder,
     this.startOffset,
     this.alignment,
-  }) : transitionType = customTransitionBuilder == null
-            ? transitionType
-            : TransitionType.custom;
+  }) : transitionType = customTransitionBuilder == null ? transitionType : TransitionType.custom;
 }
 
+/// Allows to control dialogs transitions.
 enum TransitionType {
   /// Scales in the dialog from given alignment from [DialogTransition.alignment] (default: Center).
   scale,
