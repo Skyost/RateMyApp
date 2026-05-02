@@ -1,5 +1,7 @@
 .DS_Store
 .dart_tool/
+.build/
+.swiftpm/
 .idea/
 *.iml
 pub_publish.bat

@@ -4,8 +4,8 @@ version: 2.3.2 # Remember to also change the version in "darwin/rate_my_app.pods
 homepage: https://github.com/Skyost/RateMyApp
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
-  flutter: '>=3.10.0'
+  sdk: ^3.11.0
+  flutter: '>=3.41.0'
 
 dependencies:
   shared_preferences: '>=2.3.0 <3.0.0'
