@@ -1,3 +1,7 @@
+## 2.4.0
+* Updated Gradle build scripts.
+* Now supporting Swift Package Manager.
+
 ## 2.3.2
 * Added the ability to have a custom border color for checked items.
 
