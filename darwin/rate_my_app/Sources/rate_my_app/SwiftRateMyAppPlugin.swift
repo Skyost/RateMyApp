@@ -21,28 +21,49 @@ public class SwiftRateMyAppPlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let arguments: [String: Any?] = (call.arguments ?? [:]) as! [String: Any?]
+        let arguments = call.arguments as? [String: Any]
         switch call.method {
         case "launchNativeReviewDialog":
-            SKStoreReviewController.requestReview()
-            result(true)
+            result(requestReview())
         case "isNativeDialogSupported":
             result(true)
         case "launchStore":
-            let appId: String? = arguments["appId"] == nil ? nil : arguments["appId"] as! String?
-            if appId == nil || appId!.isEmpty {
+            guard let appId = arguments?["appId"] as? String, !appId.isEmpty else {
                 result(2)
                 return
             }
 
-            if openUrl(link: "itms-apps://itunes.apple.com/app/id\(appId!)?action=write-review") {
+            if openUrl(link: "itms-apps://itunes.apple.com/app/id\(appId)?action=write-review") {
                 result(0)
             } else {
-                result(openUrl(link: "https://itunes.apple.com/app/id\(appId!)") ? 1 : 2)
+                result(openUrl(link: "https://itunes.apple.com/app/id\(appId)") ? 1 : 2)
             }
         default:
             result(FlutterMethodNotImplemented)
         }
+    }
+
+    private func requestReview() -> Bool {
+        #if canImport(UIKit)
+            if #available(iOS 14.0, *) {
+                let foregroundScene = UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .first { scene in
+                        scene.activationState == .foregroundActive || scene.activationState == .foregroundInactive
+                    }
+
+                guard let scene = foregroundScene else {
+                    return false
+                }
+
+                SKStoreReviewController.requestReview(in: scene)
+            } else {
+                SKStoreReviewController.requestReview()
+            }
+        #else
+            SKStoreReviewController.requestReview()
+        #endif
+        return true
     }
 
     private func openUrl(link: String) -> Bool {
