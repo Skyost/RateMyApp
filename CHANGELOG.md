@@ -1,3 +1,6 @@
+## 2.4.1
+* Fixed a build error on both iOS and macOS.
+
 ## 2.4.0
 * Updated Gradle build scripts.
 * Now supporting Swift Package Manager.

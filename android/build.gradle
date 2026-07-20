@@ -1,5 +1,5 @@
 group 'fr.skyost.ratemyapp'
-version '2.4.0'
+version '2.4.1'
 
 buildscript {
     ext.kotlin_version = '2.3.21'
