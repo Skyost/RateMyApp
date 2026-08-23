@@ -24,7 +24,7 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
 
     namespace 'fr.skyost.ratemyapp'
 
@@ -34,9 +34,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
-    }
-    lintOptions {
-        disable 'InvalidPackage'
     }
     dependencies {
         implementation 'com.google.android.play:review:2.0.2'
