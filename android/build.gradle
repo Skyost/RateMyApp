@@ -1,19 +1,6 @@
 group 'fr.skyost.ratemyapp'
 version '2.4.1'
 
-buildscript {
-    ext.kotlin_version = '2.3.21'
-    repositories {
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 rootProject.allprojects {
     repositories {
         google()
@@ -22,10 +9,9 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
 
     namespace 'fr.skyost.ratemyapp'
 
@@ -36,18 +22,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-    lintOptions {
-        disable 'InvalidPackage'
-    }
     dependencies {
         implementation 'com.google.android.play:review:2.0.2'
         implementation 'com.google.android.play:review-ktx:2.0.2'
     }
 }
 
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
