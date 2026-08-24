@@ -77,7 +77,7 @@ class RateMyAppDialog extends StatelessWidget {
       ),
     );
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       title: Padding(
         padding: dialogStyle.titlePadding,
         child: Text(
@@ -198,7 +198,7 @@ class _RateMyAppStarDialogState extends State<RateMyAppStarDialog> {
       ),
     );
 
-    return AlertDialog(
+    return AlertDialog.adaptive(
       title: Padding(
         padding: widget.dialogStyle.titlePadding,
         child: Text(
