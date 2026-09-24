@@ -1,3 +1,6 @@
+## 2.4.2
+* Migrated the plugin to built-in Kotlin.
+
 ## 2.4.1
 * Fixed a build error on both iOS and macOS.
 
