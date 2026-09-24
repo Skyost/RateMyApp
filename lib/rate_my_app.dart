@@ -1,5 +1,6 @@
 /// RateMyApp, created by Skyost
 /// Github : https://github.com/Skyost/RateMyApp
+library;
 
 export 'package:rate_my_app/src/conditions.dart';
 export 'package:rate_my_app/src/core.dart';
